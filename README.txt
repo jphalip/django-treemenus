@@ -1,5 +1,5 @@
 =================
-Django Tree-Menus
+Django Tree Menus
 =================
 
 
@@ -15,7 +15,7 @@ Installing an official release
 ------------------------------
 
 Official releases are made available from
-http://code.google.com/p/django-tree-menus/
+http://code.google.com/p/django-treemenus/
 
 Download the .zip distribution file and unpack it. Inside is a script
 named ``setup.py``. Enter this command::
@@ -27,18 +27,18 @@ named ``setup.py``. Enter this command::
 Installing the development version
 ----------------------------------
 
-Alternatively, if you'd like to update Django Tree-Menus occasionally to pick
+Alternatively, if you'd like to update Django Tree Menus occasionally to pick
 up the latest bug fixes and enhancements before they make it into an
 official release, perform a Subversion checkout instead::
 
-   svn checkout http://django-tree-menus.googlecode.com/svn/trunk/treemenus
+   svn checkout http://django-treemenus.googlecode.com/svn/trunk/treemenus
 
 Add the resulting folder to your PYTHONPATH or symlink (junction,
 if you're on Windows) the ``treemenus`` directory inside it into a
 directory which is on your PYTHONPATH, such as your Python
 installation's ``site-packages`` directory.
 
-Hooking Tree-Menus to your project
+Hooking TreeMenus to your project
 ----------------------------------
 
 1. Add ``treemenus`` to the ``INSTALLED_APPS`` setting of your
