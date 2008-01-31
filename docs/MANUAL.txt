@@ -1,0 +1,320 @@
+=================
+Django Tree Menus
+=================
+
+This is a simple and generic tree-like menuing system for Django_ with an
+easy-to-use admin interface. It covers all the essentials for building
+tree-structured menus and should be enough for a lot of projects.
+However it is easily extendable if you need to add some special behaviour.
+
+.. _Django: http://www.djangoproject.com/
+
+Installation
+============
+
+Installing an official release
+------------------------------
+
+Official releases are made available from
+http://code.google.com/p/django-treemenus/
+
+Download the .zip distribution file and unpack it. Inside is a script
+named ``setup.py``. Run this command::
+
+   python setup.py install
+
+...and the package will install automatically.
+
+Installing the development version
+----------------------------------
+
+Alternatively, if you'd like to update Django Tree Menus occasionally to pick
+up the latest bug fixes and enhancements before they make it into an
+official release, perform a Subversion checkout instead::
+
+   svn checkout http://django-treemenus.googlecode.com/svn/trunk/treemenus/
+
+Add the resulting folder to your PYTHONPATH or symlink (junction,
+if you're on Windows) the ``treemenus`` directory inside it into a
+directory which is on your PYTHONPATH, such as your Python
+installation's ``site-packages`` directory.
+
+Hooking Tree Menus to your project
+----------------------------------
+
+1. Add ``treemenus`` to the ``INSTALLED_APPS`` setting of your
+   Django project.
+
+2. Add the treememus **admin templates** (included in the package) to the
+   ``TEMPLATE_DIRS``, for example::
+
+    TEMPLATE_DIRS = (
+        ...
+        '/home/Python/Lib/site-packages/treemenus/templates/',
+    )
+
+3. Create django-treemenus tables by running the following command from the
+   root of your project::
+
+    python manage.py syncdb
+
+4. Modify your URLConf. Because the treemenus application contains some
+   custom admin views, you need to declare its URL configuration before
+   the admin's::
+
+    urlpatterns = patterns('',
+        ...
+        (r'^admin/treemenus/', include('treemenus.admin_urls')),
+        ...
+        (r'^admin/', include('django.contrib.admin.urls')),
+        ...
+    )
+
+5. Create and add your custom templates to your project template folder. These
+   templates are necessary to specify how you want your menus to be displayed
+   on your site (See further below for more details on the use of templates).
+   Some sample templates are also provided in the package to get you started.
+
+Basic use
+=========
+
+To build a menu, log into the admin interface, and click "Menus" under
+the Treemenus application section, then click "Add menu". Give your new
+menu a name and then save.
+
+Then, to create menu items, click on your menu in the menu list. You will
+then see a table in the bottom part of the page with only one item: the
+menu's root. Click "Add an item", select its parent (obviously, since this
+is the first item you're creating you can only select the root). Fill out
+the item's details and click "Save". The new item now shows up in the table.
+Now keep going to build the whole structure of your tree menu by creating as
+many branches as you like.
+
+When you've finished building your menu from the admin interface, you will
+have to write the appropriate templates to display the menu on your site
+(see below).
+
+Templates used by django-treemenus
+==================================
+
+The views included in django-treemenus use two templates. You need to create
+your own templates into your template folder or any folder referenced in the
+``TEMPLATE_DIRS`` setting of your project.
+
+``treemenus/menu.html``
+-----------------------
+
+Template to specify how to display a menu.
+
+**Context:**
+
+``menu``
+    Pointer to the menu to display. You can access its root item with
+    ``menu.root_item``.
+    
+``menu_type`` (optional)
+    This variable will only be present if it has been specified when
+    calling the ``show_menu`` template tag. (See the "Template tags"
+    section for more details).
+
+**Example for this template**::
+
+	{% ifequal menu_type "unordered-list" %}
+		<ul>
+			{% for menu_item in menu.root_item.children %}
+				{% show_menu_item menu_item %}
+			{% endfor %}
+		</ul>
+	{% endifequal %}
+	{% ifequal menu_type "ordered-list" %}
+		<ol>
+			{% for menu_item in menu.root_item.children %}
+				{% show_menu_item menu_item %}
+			{% endfor %}
+		</ol>
+	{% endifequal %}
+
+
+``treemenus/menu_item.html``
+----------------------------
+
+Template to specify how to display a menu item.
+
+**Context:**
+
+``menu_item``
+    Pointer to the menu_item to display. You can directly access all
+    its methods and variables.
+
+``menu_type`` (optional)
+    This variable will only be accessible if it has been specified when
+    calling the ``show_menu`` template tag (See the "Template tags"
+    section for more details).
+
+**Example for this template**::
+
+    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+
+Template tags
+=============
+
+There a 3 template tags to let you display your menus. To be able to use them
+you will first have to load the library they are contained in, with:
+
+{% load tree_menu_tags %}
+
+``show_menu``
+-------------
+
+This is the starting point. Call it whereever you want to display your menu
+(most of the time it will be in your site's base template).
+
+There are two parameters:
+
+    * ``menu_name``: name of the menu to display, as it has been saved via
+                     the admin interface.
+    * ``menu_type``: This parameter is optional. If it is given it is simply
+                     passed to the ``treemenus/menu.html`` template. It does
+                     not have any particular pre-defined function but can be
+                     tested with (% ifequal menu_type "sometype" %} to
+                     determine how to display the menu (See above example for
+                     the template ``treemenus/menu.html``).
+
+**Example of use**::
+
+    {% show_menu "TopMenu" %)
+    ...
+    {% show_menu "LeftMenu" "vertical" %)
+    ...
+    {% show_menu "RightMenu" "horizontal" %)
+
+``show_menu_item``
+------------------
+
+This tag allows you to display a menu item, which is the only parameter.
+
+**Example of use**::
+
+    {% show_menu_item menu_item %}
+
+``reverse_named_url``
+---------------------
+
+This tag allows you to reverse the named URL of a menu item, which is passed as a
+single string. To know more about named URLs, refer to `the Django template documentation`_.
+For example, the passed value could be 'latest_news' or 'show_profile user.id', and that
+would be reversed to the corresponding URL (as defined in your URLConf).
+
+.. _the Django template documentation: http://www.djangoproject.com/documentation/templates/#url
+
+**Example of use**::
+
+	<li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
+
+Fields and methods
+==================
+
+As you've guessed it, you can manipulate two types of objects: menus and menu
+items. In this section I present their fields and methods, which you can use
+in your templates.
+
+Menu
+----
+
+There is only one field that is available: ``root_item``, which points to...
+you got it, the menu's root item.
+
+Menu item
+---------
+
+``menu``
+
+ Returns the menu to which it belongs.
+
+``url``
+
+Returns the item's url.
+
+**Example of use**::
+
+	<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+
+``parent``
+
+Returns the menu item's parent (that is, another menu item).
+
+``rank``
+
+Returns the item's rank amongst its siblings. The first item of a branch has
+a rank of 0, the second one has a rank of 1, etc. To change an item's ranking
+you can move it up or down through the admin interface.
+
+**Example of use**::
+
+	<li><a class="menuitem-{{ menu_item.rank }}" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+
+``level``
+
+Returns the item's level in the hierarchy. This is automatically calculated by
+the system. For example, the root item has a level 0, and its children have a 
+level 1.
+
+**Example of use**::
+
+	{% ifequal menu_item.level 1 %}
+	    <li><a class="top-item" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+	{% else %}
+		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+	{% endifequal %}
+
+``caption``
+
+Returns the item's caption.
+
+``named_url``
+
+Use this parameter if you want to use named URLs instead of raw URLs.
+
+**Example of use**::
+
+    <li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
+
+``hasChildren``
+
+Returns True if the item has some children, False otherwise.
+
+``children``
+
+Returns a list with the menu item's children, ordered by rank.
+
+**Example of use**::
+
+	{% if menu_item.hasChildren %}
+	    <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
+			<ul>
+			    {% for child in menu_item.children %}
+			        {% show_menu_item child %}
+				{% endfor %}
+			</ul>
+		</li>
+	{% else %}
+		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+	{% endif %}
+	
+``siblings``
+
+Returns a list with the menu item's siblings (i.e all other items that have the
+same parent), ordered by rank.
+
+That's it!
+==========
+
+The fields and methods enumerated above provide the essential behaviour for a
+tree-structured menu. To add special behaviour, simply add some new fields or
+methods and make appropriate use of them in your templates.
+
+Please log any issue or bug report at http://code.google.com/p/django-treemenus/
+
+Enjoy!
+
+Julien Phalip (project developer)

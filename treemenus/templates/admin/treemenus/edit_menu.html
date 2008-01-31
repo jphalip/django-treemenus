@@ -1,0 +1,96 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% load adminmedia %}
+
+{% block stylesheet %}{% admin_media_prefix %}css/forms.css{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+     <a href="../">{% trans "Menus" %}</a> &rsaquo;
+     {{ menu.name }}
+
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Change menu" %}</h1>
+<form method="post" action=".">
+  <fieldset class="module aligned">
+  <h2>Details</h2>
+  
+  <table>
+  	{{ form }}
+  </table>
+  </fieldset>
+  
+  <fieldset class="module aligned">
+  <h2>{% trans "Menu Items" %}</h2>
+  
+  <div class="form-row" >
+  	  <img src="{% admin_media_prefix %}img/admin/icon_addlink.gif" width="10" height="10"/> <a href="{% url add_item menu.pk %}">{% trans "Add an item" %}</a>
+  </div>
+  
+  <div class="form-row" >
+	  <table cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>{% trans "Caption" %}</th>
+				<th>{% trans "Url" %}</th>
+				<th>{% trans "Named url" %}</th>
+				<th colspan="2">{% trans "Move" %}</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		  {% for menu_item in flat_structure %}
+			<tr class="{% cycle 'row1' 'row2' %}">
+			
+				{% if forloop.first %}
+					<td colspan="3">
+						[Root]
+					</td>
+				{% else %}
+					<td width="35%">
+						<a href="items/{{ menu_item.pk }}">{{ menu_item.caption_with_spacer|safe }}</a>
+					</td>
+					<td width="25%">
+						{{ menu_item.url }}
+					</td>
+					<td width="25%">
+						{{ menu_item.named_url }}
+					</td>
+				{% endif %}
+				
+				{% if menu_item.hasSiblings %}
+					{% ifnotequal menu_item.rank menu_item.siblings.count %}
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% admin_media_prefix %}img/admin/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
+					{% else %}
+						<td width="20">&nbsp;</td>
+					{% endifnotequal %}
+					
+					{% ifnotequal menu_item.rank 0 %}
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_up/"><img src="{% admin_media_prefix %}img/admin/arrow-up.gif" border="0" alt="{% trans 'Up' %}"/></a></td>
+					{% else %}
+						<td width="20">&nbsp;</td>
+					{% endifnotequal %}
+				{% else %}
+					<td width="20">&nbsp;</td><td width="20">&nbsp;</td>
+				{% endif %}
+			</tr>
+		  {% endfor %}
+		</tbody>
+	  </table>
+  </div>
+  </fieldset>
+  
+  
+  <div class="submit-row">
+	  <p class="float-left"><a href="delete/" class="deletelink">{% trans "Delete" %}</a></p>
+	  <input type="submit" value="{% trans 'Save' %}" class="default" {{ onclick_attrib }}/>
+  </div>
+</form>
+
+
+{% endblock %}

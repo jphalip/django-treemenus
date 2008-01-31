@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% load adminmedia %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block stylesheet %}{% admin_media_prefix %}css/forms.css{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+	{% ifequal add_or_edit "edit" %}
+	    <a href="../../../../../">{% trans "Home" %}</a> &rsaquo;
+	    <a href="../../../">Menus</a> &rsaquo;
+	    <a href="../../">{{ menu.name }}</a> &rsaquo;
+		{% trans 'Items' %} &rsaquo;
+		{{ menu_item|escape|truncatewords:"18" }}
+	{% else %}
+	    <a href="../../../../">{% trans "Home" %}</a> &rsaquo;
+	    <a href="../../">Menus</a> &rsaquo;
+	    <a href="../">{{ menu.name }}</a> &rsaquo;
+		{% trans 'Add Item' %}
+	{% endifequal %}
+</div>
+{% endblock %}
+
+{% block content %}
+<form method="post" action=".">
+  <fieldset class="module aligned">
+  	<table>
+  		{{ form }}
+  	</table>
+  </fieldset>
+  
+<div class="submit-row">
+<p class="float-left"><a href="delete/" class="deletelink">{% trans "Delete" %}</a></p>
+<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" />
+<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue"/>
+<input type="submit" value="{% trans 'Save' %}" class="default" />
+</div>
+</form>
+{% endblock %}
