@@ -346,6 +346,12 @@ customize your menu items.
 Also, no need to declare ``class Admin: pass``, as you'll be able to edit your extension
 parameters directly from the menu item's edit page.
 
+You then need to create the database table that will store your extension data by adding
+``menu_extension`` to the ``INSTALLED_APPS`` setting of your Django project, and then running
+the following command from the root of your project::
+
+    python manage.py syncdb
+
 Now, you need to specify a form to let you edit those extra parameters from the admin interface.
 In ``menu_extension.forms.py`` add the following::
 
@@ -363,8 +369,8 @@ documentation for ModelForm_ to see how that works, but it's pretty simple.
 .. _ModelForm: http://www.djangoproject.com/documentation/modelforms/
 
 Ok, we're almost there. All you need to do now is to let the ``treemenus`` application
-know where to find those two classes, by adding the following into your ``settings.py``
-file::
+know where to find those two classes, by adding the following into the setting file of your
+Django project::
 
     TREE_MENU_ITEM_EXTENSION_MODEL = 'menu_extension.models.MenuItemExtension'
     TREE_MENU_ITEM_EXTENSION_FORM = 'menu_extension.forms.MenuItemExtensionForm'
