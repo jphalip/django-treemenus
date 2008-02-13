@@ -1,5 +1,6 @@
 from itertools import chain
 
+from django.db import models
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -11,12 +12,13 @@ from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
-
+from django.core.exceptions import ImproperlyConfigured
+from django.conf import settings
 
 from models import Menu, MenuItem
 from forms import MenuForm, MenuItemForm
 from config import APP_LABEL
-from utils import clean_ranks
+from utils import clean_ranks, get_extension_model_class, get_extension_form_class, MenuItemExtensionNotAvailable, MenuItemExtensionFormNotAvailable
 
 def edit_menu(request, menu_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)
@@ -55,17 +57,30 @@ def get_parent_choices(menu, menu_item=None):
 
 
 
+
 def add_item(request, menu_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)
     
+    extension_form = None    
+    
     if request.method == 'POST':
         form = MenuItemForm(request.POST)
-        if form.is_valid():
+        
+        if hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL'):
+            extension_form = get_extension_form_class()(request.POST)
+        
+        if form.is_valid() and (not hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL') or extension_form.is_valid()):
             menu_item = form.save(commit=False)
             clean_ranks(menu_item.siblings()) # Clean ranks for new siblings
             menu_item.rank = menu_item.siblings().count()
             menu_item.menu = menu
             menu_item.save()
+            
+            extension = extension_form.save(commit=False)
+            extension.menu_item = menu_item
+            extension.save()
+            
+            
             msg = _('The menu item "%s" was added successfully.') % force_unicode(menu_item)
             
             if "_continue" in request.POST:
@@ -83,9 +98,11 @@ def add_item(request, menu_pk):
         choices = get_parent_choices(menu)
         form_class.base_fields['parent'].choices = choices
         form = form_class()
+        if hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL'):
+            extension_form = get_extension_form_class()()
     
     return render_to_response('admin/%s/add_edit_item.html' % APP_LABEL,
-                              { 'form': form, 'menu': menu, 'title': _('Add menu item'), 'add_or_edit': 'add' },
+                              { 'form': form, 'extension_form': extension_form, 'menu': menu, 'title': _('Add menu item'), 'add_or_edit': 'add' },
                               context_instance=RequestContext(request))
 add_item = staff_member_required(never_cache(add_item))
 
@@ -97,20 +114,14 @@ def edit_item(request, menu_pk, menu_item_pk):
     
     if request.method == 'POST':
         form = MenuItemForm(request.POST, instance=menu_item)
-        if form.is_valid():
-#            # Check if the parent has changed.
-#            if form.cleaned_data['parent'] != menu_item.parent:
-#                #If so, we need to recalculate the new ranks for the item and its siblings (both old and new ones).
-#                new_parent = form.cleaned_data['parent']
-#                old_parent = menu_item.parent
-#                clean_ranks(new_parent.children()) # Clean ranks for new siblings
-#                menu_item.rank = menu_item.siblings().count()
-#                form.save() # Save menu item in DB. It has now officially changed parent.
-#                clean_ranks(old_parent.children()) # Clean ranks for old siblings
-#            else:
-#                form.save() # Save menu item in DB
-            
+        
+        if hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL'):
+            menu_item = get_object_or_404(MenuItem, pk=menu_item_pk)
+            extension_form = get_extension_form_class()(request.POST, instance=menu_item.get_extension())
+        
+        if form.is_valid() and (not hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL') or extension_form.is_valid()):
             form.save()
+            extension_form.save()
             
             msg = _('The menu item "%s" was changed successfully.') % force_unicode(menu_item)
             if "_continue" in request.POST:
@@ -127,9 +138,11 @@ def edit_item(request, menu_pk, menu_item_pk):
         choices = get_parent_choices(menu, menu_item)
         form_class.base_fields['parent'].choices = choices
         form = form_class(instance=menu_item)
+        if hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL'):
+            extension_form = get_extension_form_class()(instance=menu_item.get_extension())
     
     return render_to_response('admin/%s/add_edit_item.html' % APP_LABEL,
-                              { 'form': form, 'menu': menu, 'menu_item': menu_item, 'title': _('Change menu item'), 'add_or_edit': 'edit' },
+                              { 'form': form, 'extension_form': extension_form, 'menu': menu, 'menu_item': menu_item, 'title': _('Change menu item'), 'add_or_edit': 'edit' },
                               context_instance=RequestContext(request))
 edit_item = staff_member_required(never_cache(edit_item))
 
@@ -145,7 +158,6 @@ def delete_item(request, menu_pk, menu_item_pk):
     if request.POST: # The user has already confirmed the deletion.
         obj_display = force_unicode(menu_item)
         menu_item.delete()
-#        clean_ranks(menu_item.siblings())
         request.user.message_set.create(message=_('The %(name)s "%(obj)s" was deleted successfully.') % {'name': force_unicode(opts.verbose_name), 'obj': obj_display})
         return HttpResponseRedirect("../../../")
     extra_context = {

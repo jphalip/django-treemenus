@@ -5,7 +5,13 @@ Django Tree Menus
 This is a simple and generic tree-like menuing system for Django_ with an
 easy-to-use admin interface. It covers all the essentials for building
 tree-structured menus and should be enough for a lot of projects.
-However it is easily extendable if you need to add some special behaviour.
+It is also easily extendable if you need to add some special behaviour to
+your menu items.
+
+**Please note: django-treemenus requires to have the latest trunk of django
+installed to work properly. It should work with Python 2.3 and above, but
+has mostly been tested under Python 2.5, so please log an issue at
+http://code.google.com/p/django-treemenus/ if you find any bug.**
 
 .. _Django: http://www.djangoproject.com/
 
@@ -28,16 +34,14 @@ named ``setup.py``. Run this command::
 Installing the development version
 ----------------------------------
 
-Alternatively, if you'd like to update Django Tree Menus occasionally to pick
-up the latest bug fixes and enhancements before they make it into an
-official release, perform a Subversion checkout instead::
+If you prefer to update Django Tree Menus occasionally to get the latest bug
+fixes and improvements before they are included in an official release, do a
+Subversion checkout instead::
 
    svn checkout http://django-treemenus.googlecode.com/svn/trunk/treemenus/
 
-Add the resulting folder to your PYTHONPATH or symlink (junction,
-if you're on Windows) the ``treemenus`` directory inside it into a
-directory which is on your PYTHONPATH, such as your Python
-installation's ``site-packages`` directory.
+Then add the ``treemenus`` folder to your PYTHONPATH or symlink (junction, if
+you're on Windows), such as in your Python's ``site-packages`` directory.
 
 Hooking Tree Menus to your project
 ----------------------------------
@@ -306,12 +310,85 @@ Returns a list with the menu item's children, ordered by rank.
 Returns a list with the menu item's siblings (i.e all other items that have the
 same parent), ordered by rank.
 
-That's it!
-==========
+Extending your menus
+====================
 
 The fields and methods enumerated above provide the essential behaviour for a
-tree-structured menu. To add special behaviour, simply add some new fields or
-methods and make appropriate use of them in your templates.
+tree-structured menu. If that is not enough for you, it is also possible to add special
+behaviour by extending the menu item definition. To do so, you need to create a model
+class that will contain all the extra parameters for your menu items.
+
+To illustrate this, let's say that you'd like to add a ``published`` parameter to your
+menu items so that they only show up on your site if ``published`` is turned to ``True``.
+
+To do so, create a new application (let's call it ``menu_extension``), with the following
+structure::
+
+    menu_extension
+        __init__.py
+        models.py
+        forms.py
+
+Then, in ``menu_extension.models.py`` add the following::
+
+	from django.db import models
+	from treemenus.models import MenuItem
+	
+	class MenuItemExtension(models.Model):
+	    menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+	    published = models.BooleanField(default=False)
+
+It is required that your extension object has field ``menu_item`` that is a **unique** link
+to a menu item object. This is what makes the extension possible. ``editable=False`` is there
+because you don't want to have that field appear on the menu item edit page.
+Then you can notice our field ``published``, feel free to add any other field there to
+customize your menu items.
+Also, no need to declare ``class Admin: pass``, as you'll be able to edit your extension
+parameters directly from the menu item's edit page.
+
+Now, you need to specify a form to let you edit those extra parameters from the admin interface.
+In ``menu_extension.forms.py`` add the following::
+
+	from django import newforms as forms
+	from models import MenuItemExtension
+	
+	class MenuItemExtensionForm(forms.ModelForm):
+	    class Meta:
+	        model = MenuItemExtension
+
+It is required that the form is a ModelForm_ object, which is only available in recent Django
+trunk (so you may consider updating your version of Django). I leave you to read the
+documentation for ModelForm_ to see how that works, but it's pretty simple.
+
+.. _ModelForm: http://www.djangoproject.com/documentation/modelforms/
+
+Ok, we're almost there. All you need to do now is to let the ``treemenus`` application
+know where to find those two classes, by adding the following into your ``settings.py``
+file::
+
+    TREE_MENU_ITEM_EXTENSION_MODEL = 'menu_extension.models.MenuItemExtension'
+    TREE_MENU_ITEM_EXTENSION_FORM = 'menu_extension.forms.MenuItemExtensionForm'
+
+And that's it! Now, when creating or editing a menu item, you'll see an extra section with
+all the extension parameters (in this example, the ``published`` check box).
+
+Now, if you want to use ``published`` parameter in your template, you need to use the
+menu item's ``get_extension`` method, as follows::
+
+	{% if menu_item.get_extension.published %}
+		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+	{% endif %}
+
+Your menu items will now only appear if their ``published`` check box has been ticked.
+
+Using this technique, you can obviously extend your menu items with whatever parameter
+you'd like. Other examples might be that you want to add special CSS styles to certain
+menu items, or to make some of them show up only if the user is logged in, etc. Simply
+add fields in you extension model and make use of them in your templates to create
+special behaviour.
+
+That's it!!
+===========
 
 Please log any issue or bug report at http://code.google.com/p/django-treemenus/
 

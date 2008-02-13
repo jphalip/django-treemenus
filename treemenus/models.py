@@ -4,9 +4,13 @@ from django.db import models
 from django import newforms as forms
 from django.newforms import IntegerField, Widget, HiddenInput
 from django.utils.translation import ugettext as _
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+
+from utils import clean_ranks, get_extension_model_class, MenuItemExtensionNotAvailable
 
 
-from utils import clean_ranks
+
 
 
 class MenuItem(models.Model):
@@ -39,7 +43,8 @@ class MenuItem(models.Model):
                     clean_ranks(old_parent.children()) # Clean ranks for old siblings
             else:
                 super(MenuItem, self).save() # Save menu item in DB
-        else:
+        
+        else: # Saving the menu item for the first time (i.e creating the object)
             super(MenuItem, self).save()
     
     def delete(self):
@@ -103,7 +108,18 @@ class MenuItem(models.Model):
                 i = i +1
         return -1
 
+    def get_extension(self):
+        """
+        Returns an extension object for this menu item, that is, an object containing
+        customized behaviour created by a developer using treemenus.
+        The extension module class must be declared in the settings file with AUTH_PROFILE_MODULE.
+        Raises MenuItemExtensionNotAvailable if no extension module found.
+        """
+        if not hasattr(self, '_extension_cache'):
+            extension_model_class = get_extension_model_class()
+            self._extension_cache = extension_model_class._default_manager.get(menu_item__id__exact=self.id)
 
+        return self._extension_cache
 
 
 class Menu(models.Model):

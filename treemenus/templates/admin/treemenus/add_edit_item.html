@@ -32,6 +32,15 @@
   	</table>
   </fieldset>
   
+  {% if extension_form %}
+  <fieldset class="module aligned">
+    <h2>{% trans "Other parameters" %}</h2>
+  	<table>
+  		{{ extension_form }}
+  	</table>
+  </fieldset>
+  {% endif %}
+  
 <div class="submit-row">
 <p class="float-left"><a href="delete/" class="deletelink">{% trans "Delete" %}</a></p>
 <input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" />
