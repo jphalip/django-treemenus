@@ -18,7 +18,7 @@ from django.conf import settings
 from models import Menu, MenuItem
 from forms import MenuForm, MenuItemForm
 from config import APP_LABEL
-from utils import clean_ranks, get_extension_model_class, get_extension_form_class, MenuItemExtensionNotAvailable, MenuItemExtensionFormNotAvailable
+from utils import clean_ranks, get_extension_model_class, get_extension_form_class, MenuItemExtensionError
 
 def edit_menu(request, menu_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)
@@ -111,6 +111,8 @@ add_item = staff_member_required(never_cache(add_item))
 def edit_item(request, menu_pk, menu_item_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)
     menu_item = get_object_or_404(MenuItem, pk=menu_item_pk)
+    
+    extension_form = None
     
     if request.method == 'POST':
         form = MenuItemForm(request.POST, instance=menu_item)

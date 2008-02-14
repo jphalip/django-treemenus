@@ -173,11 +173,11 @@ you will first have to load the library they are contained in, with:
 This is the starting point. Call it whereever you want to display your menu
 (most of the time it will be in your site's base template).
 
-There are two parameters:
+There are two attributes:
 
     * ``menu_name``: name of the menu to display, as it has been saved via
                      the admin interface.
-    * ``menu_type``: This parameter is optional. If it is given it is simply
+    * ``menu_type``: This attribute is optional. If it is given it is simply
                      passed to the ``treemenus/menu.html`` template. It does
                      not have any particular pre-defined function but can be
                      tested with (% ifequal menu_type "sometype" %} to
@@ -195,7 +195,7 @@ There are two parameters:
 ``show_menu_item``
 ------------------
 
-This tag allows you to display a menu item, which is the only parameter.
+This tag allows you to display a menu item, which is the only attribute.
 
 **Example of use**::
 
@@ -215,17 +215,17 @@ would be reversed to the corresponding URL (as defined in your URLConf).
 
 	<li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
 
-Fields and methods
-==================
+Attributes and methods
+======================
 
 As you've guessed it, you can manipulate two types of objects: menus and menu
-items. In this section I present their fields and methods, which you can use
+items. In this section I present their attributes and methods, which you can use
 in your templates.
 
 Menu
 ----
 
-There is only one field that is available: ``root_item``, which points to...
+There is only one attribute that is available: ``root_item``, which points to...
 you got it, the menu's root item.
 
 Menu item
@@ -277,7 +277,7 @@ Returns the item's caption.
 
 ``named_url``
 
-Use this parameter if you want to use named URLs instead of raw URLs.
+Use this attribute if you want to use named URLs instead of raw URLs.
 
 **Example of use**::
 
@@ -310,15 +310,15 @@ Returns a list with the menu item's children, ordered by rank.
 Returns a list with the menu item's siblings (i.e all other items that have the
 same parent), ordered by rank.
 
-Extending your menus
-====================
+Customizing/Extending
+=====================
 
-The fields and methods enumerated above provide the essential behaviour for a
-tree-structured menu. If that is not enough for you, it is also possible to add special
-behaviour by extending the menu item definition. To do so, you need to create a model
-class that will contain all the extra parameters for your menu items.
+The attributes and methods enumerated above provide the essential behaviour for a
+tree-structured menu. If that is not enough for you, it is also possible to add
+customized behaviour by extending the menu item definition. To do so, you need to
+create a model class that will contain all the extra attributes for your menu items.
 
-To illustrate this, let's say that you'd like to add a ``published`` parameter to your
+To illustrate this, let's say that you'd like to add a ``published`` attribute to your
 menu items so that they only show up on your site if ``published`` is turned to ``True``.
 
 To do so, create a new application (let's call it ``menu_extension``), with the following
@@ -338,13 +338,14 @@ Then, in ``menu_extension.models.py`` add the following::
 	    menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
 	    published = models.BooleanField(default=False)
 
-It is required that your extension object has field ``menu_item`` that is a **unique** link
+It is required that your extension object has the attribute ``menu_item`` that is a **unique** link
 to a menu item object. This is what makes the extension possible. ``editable=False`` is there
-because you don't want to have that field appear on the menu item edit page.
-Then you can notice our field ``published``, feel free to add any other field there to
-customize your menu items.
+because you don't want to have that attribute appear on the menu item edit page.
+Then you can notice our attribute ``published``, feel free to add any other attribute there to
+customize your menu items. Just note that you cannot add attributes named 'caption', 'level', 'menu',
+'named_url', 'parent', 'rank', or 'url', as they would clash with the menu item's attributes.
 Also, no need to declare ``class Admin: pass``, as you'll be able to edit your extension
-parameters directly from the menu item's edit page.
+attributes directly from the menu item's edit page.
 
 You then need to create the database table that will store your extension data by adding
 ``menu_extension`` to the ``INSTALLED_APPS`` setting of your Django project, and then running
@@ -352,7 +353,7 @@ the following command from the root of your project::
 
     python manage.py syncdb
 
-Now, you need to specify a form to let you edit those extra parameters from the admin interface.
+Now, you need to specify a form to let you edit those extra attributes from the admin interface.
 In ``menu_extension.forms.py`` add the following::
 
 	from django import newforms as forms
@@ -376,9 +377,9 @@ Django project::
     TREE_MENU_ITEM_EXTENSION_FORM = 'menu_extension.forms.MenuItemExtensionForm'
 
 And that's it! Now, when creating or editing a menu item, you'll see an extra section with
-all the extension parameters (in this example, the ``published`` check box).
+all the extension attributes (in this example, the ``published`` check box).
 
-Now, if you want to use ``published`` parameter in your template, you need to use the
+Now, if you want to use ``published`` attribute in your template, you need to use the
 menu item's ``get_extension`` method, as follows::
 
 	{% if menu_item.get_extension.published %}
@@ -387,10 +388,10 @@ menu item's ``get_extension`` method, as follows::
 
 Your menu items will now only appear if their ``published`` check box has been ticked.
 
-Using this technique, you can obviously extend your menu items with whatever parameter
+Using this technique, you can obviously extend your menu items with whatever attribute
 you'd like. Other examples might be that you want to add special CSS styles to certain
 menu items, or to make some of them show up only if the user is logged in, etc. Simply
-add fields in you extension model and make use of them in your templates to create
+add attributes in you extension model and make use of them in your templates to create
 special behaviour.
 
 That's it!!
