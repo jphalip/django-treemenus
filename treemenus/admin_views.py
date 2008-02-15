@@ -124,7 +124,9 @@ def edit_item(request, menu_pk, menu_item_pk):
         
         if form.is_valid() and (not hasattr(settings, 'TREE_MENU_ITEM_EXTENSION_MODEL') or extension_form.is_valid()):
             form.save()
-            extension_form.save()
+            
+            if extension_form:
+                extension_form.save()
             
             msg = _('The menu item "%s" was changed successfully.') % force_unicode(menu_item)
             if "_continue" in request.POST:
