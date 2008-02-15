@@ -76,9 +76,10 @@ def add_item(request, menu_pk):
             menu_item.menu = menu
             menu_item.save()
             
-            extension = extension_form.save(commit=False)
-            extension.menu_item = menu_item
-            extension.save()
+            if extension_form:
+                extension = extension_form.save(commit=False)
+                extension.menu_item = menu_item
+                extension.save()
             
             
             msg = _('The menu item "%s" was added successfully.') % force_unicode(menu_item)
