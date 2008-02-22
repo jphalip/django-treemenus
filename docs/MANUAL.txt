@@ -392,7 +392,151 @@ Using this technique, you can obviously extend your menu items with whatever att
 you'd like. Other examples might be that you want to add special CSS styles to certain
 menu items, or to make some of them show up only if the user is logged in, etc. Simply
 add attributes in you extension model and make use of them in your templates to create
-special behaviour.
+special behaviour. See the 'Tips and Tricks' section for more ideas.
+
+Tips and tricks
+===============
+
+In this section I give some examples on using or extending menus.
+These may just cover some of your own specific needs or at least inspire you and get
+you started to make the most out of your menus.
+
+Internationalization
+--------------------
+
+Making your menus multi-lingual is very easy if you use the `Django internationalization`_
+module. What you can do is apply the translation to the ``caption`` attribute
+of a menu_item. For example::
+    
+    {% load i18n %}
+    ...
+    <li><a href="{{ menu_item.url }}">{% trans menu_item.caption %}</a></li>
+
+_Django internationalization:http://www.djangoproject.com/documentation/i18n/
+
+If you use more complex or custom translation systems, you may simply define your
+extension class (or create it if you don't already have one) with a method to manage
+the translation, for example::
+
+    class MenuItemExtension(models.Model):
+        menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+        ...
+       
+        def translation():
+            translation = do_something_with(self.menu_item.caption)
+            return translation
+
+And then in your template::
+
+<li><a href="{{ menu_item.url }}">{% trans menu_item.get_extension.translation %}</a></li>
+
+Login restriction
+-----------------
+
+If you want to make some of your menus items private and only available to logged in
+users, that's simple! Simply define your extension class (or create it if you don't
+already have one) like the following::
+
+	class MenuItemExtension(models.Model):
+	    menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+	    protected = models.BooleanField(default=False)
+	    ...
+	    
+And then in your template::
+	{% if menu_item.get_extension.protected %}
+	    {% if user.is_authenticated %}
+		    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+		{% endif %}
+	{% else %}
+	    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+	{% endif %}
+
+(assuming that the context variable 'user' represents the currently logged-in user)
+
+Automatically select menu items
+-------------------------------
+
+Here I'm going to explain how to automatically select a menu item when visiting
+a given page of your site. This is a good example to illustrate the power of
+extensions for customizing your menu's behaviour.
+For this example, let's say that you'd like to visually select the menu item
+'Contact' when visiting the url 'http://www.mysite.com/contact/'
+
+First, define your extension class (or create it if you don't already have one)
+like the following::
+
+    class MenuItemExtension(models.Model):
+        menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+        selected_patterns = models.TextField(blank=True)
+
+``selected_patterns`` is the attribute which will specify for what urls the menu
+item should have the 'selected' status.
+Refer to the section on extensions above to see how to hook your extension class
+to your menus.
+
+Now, in the admin section, edit the 'Contact' menu item and type the following
+line in its ``selected_patterns`` textfield::
+
+    ^/contact/$
+
+Here we're using regular expressions so that gives us some flexibility to specify
+our 'selected' url patterns. Refer to the official python documentation on
+`regular expressions syntax`_ for more detailed information. In this example we're
+only using one regular expression pattern (^/contact/$) but you could add as many
+as you'd like by typing a different pattern on each line of the textfield.
+
+_regular expressions syntax:http://docs.python.org/lib/re-syntax.html
+
+Then, in your ``menu_item.html`` template, use the following 'if' statement::
+
+    {% load menu_extension_filters %}
+    ...
+    <li><a href="{{ menu_item.url }}" class="{% if menu_item.get_extension.selected_patterns|match_path:request.path %} selected{% endif %}">{{ menu_item.caption }}</a></li>
+
+With this code, every menu item whose attribute ``selected_patterns`` matches the
+current url will be given the 'selected' CSS class (it's up to you to define in
+your style sheet what that 'selected' class actually does - maybe change the colour
+or the font?). In this example we're allocating a special style to visually
+distinguish the selected menu items, but you're obviously free to use the 'if'
+statement above to do any form of disctinction you like (for example displaying
+all children of a selected menu, etc.)
+Don't forget to load the ``menu_extension_filters`` module, which we're going to
+create in a moment.
+
+We now need to create the 'match_path' filter. In your ``menu_extension``
+application (or whatever name you've given to your menu extension application)
+create a directory ``templatetags`` containing two files: ``__init__.py`` (leave it
+empty) and ``menu_extension_filters`` containing the following code::
+
+    import re
+    from django import template
+    
+    register = template.Library()
+    
+    def match_path(patterns, path):
+        for pattern in patterns.splitlines():
+            if re.compile(pattern).match(path):
+                return True
+        return False
+    register.filter('match_path', match_path)
+
+What it does is test each pattern on each line of our patterns (remember, you can
+add one pattern on each line of the ``selected_patterns`` textfield) and returns
+true if any of those matches the given path.
+
+Finally, to be able to access the current url through ``request.path`` in your
+template, you need to do 2 things:
+
+1) Add ``django.core.context_processors.request`` to your
+``TEMPLATE_CONTEXT_PROCESSORS`` setting (see the `Django documentation on context
+processors`_ for more details).
+
+_Django documentation on context processor:http://www.djangoproject.com/documentation/templates_python/#django-core-context-processors-request
+
+2) Use a RequestContext object in your views to pass to your templates. (see Django
+documentation on RequestContext_).
+
+_RequestContext:http://www.djangoproject.com/documentation/templates_python/#subclassing-context-requestcontext
 
 That's it!!
 ===========
