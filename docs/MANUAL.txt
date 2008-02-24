@@ -412,6 +412,8 @@ of a menu_item. For example::
     ...
     <li><a href="{{ menu_item.url }}">{% trans menu_item.caption %}</a></li>
 
+Then, add manually the translation entries in your *.po file.
+
 _Django internationalization:http://www.djangoproject.com/documentation/i18n/
 
 If you use more complex or custom translation systems, you may simply define your
