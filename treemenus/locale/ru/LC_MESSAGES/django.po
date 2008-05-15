@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-05-15 18:16+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin_views.py:85
+#, python-format
+msgid "The menu item \"%s\" was added successfully."
+msgstr "Пункт меню \"%s\" добавлен."
+
+#: admin_views.py:88 admin_views.py:133
+msgid "You may edit it again below."
+msgstr "Можно редактировать его ниже"
+
+#: admin_views.py:91 admin_views.py:136
+msgid "You may add another menu item below."
+msgstr "Можно добавить новый пункт меню."
+
+#: admin_views.py:106
+msgid "Add menu item"
+msgstr "Добавить пункт меню"
+
+#: admin_views.py:131
+#, python-format
+msgid "The menu item \"%s\" was changed successfully."
+msgstr "Пункт меню \"%s\" изменён"
+
+#: admin_views.py:150
+msgid "Change menu item"
+msgstr "Изменить пункт меню"
+
+#: admin_views.py:166
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr ""
+
+#: admin_views.py:169
+msgid "Are you sure?"
+msgstr ""
+
+#: admin_views.py:195 admin_views.py:210
+#, python-format
+msgid "The menu item \"%s\" was moved successfully."
+msgstr "Пункт меню \"%s\" перемещён"
+
+#: admin_views.py:197
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move down."
+msgstr "Пункт меню \"%s\" нельзя переместить ниже."
+
+#: admin_views.py:212
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move up."
+msgstr "Пункт меню \"%s\" нельзя переместить выше."
+
+#: models.py:17
+msgid "Parent"
+msgstr "Родительский элемент"
+
+#: models.py:18 templates/admin/treemenus/edit_menu.html:39
+msgid "Caption"
+msgstr "Заголовок"
+
+#: models.py:19
+msgid "URL"
+msgstr "URL"
+
+#: models.py:20
+msgid "Named URL"
+msgstr "Именованый URL"
+
+#: models.py:21
+msgid "Level"
+msgstr "Уровень"
+
+#: models.py:22
+msgid "Rank"
+msgstr ""
+
+#: models.py:23 models.py:147
+msgid "Menu"
+msgstr "Меню"
+
+#: models.py:124
+msgid "Name"
+msgstr "Название"
+
+#: models.py:125
+msgid "Root Item"
+msgstr "Корневой пункт"
+
+#: models.py:129
+msgid "Root"
+msgstr "Корень"
+
+#: models.py:148 templates/admin/treemenus/add_edit_item.html:14
+#: templates/admin/treemenus/add_edit_item.html:20
+#: templates/admin/treemenus/delete_item_confirmation.html:9
+#: templates/admin/treemenus/edit_menu.html:11
+msgid "Menus"
+msgstr "Меню"
+
+#: templates/admin/treemenus/add_edit_item.html:13
+#: templates/admin/treemenus/add_edit_item.html:19
+#: templates/admin/treemenus/delete_item_confirmation.html:8
+#: templates/admin/treemenus/edit_menu.html:10
+msgid "Home"
+msgstr ""
+
+#: templates/admin/treemenus/add_edit_item.html:16
+#: templates/admin/treemenus/delete_item_confirmation.html:11
+msgid "Items"
+msgstr "Пункты меню"
+
+#: templates/admin/treemenus/add_edit_item.html:22
+msgid "Add Item"
+msgstr "Добавить пункт меню"
+
+#: templates/admin/treemenus/add_edit_item.html:37
+msgid "Other attributes"
+msgstr "Другие аттрибуты"
+
+#: templates/admin/treemenus/add_edit_item.html:45
+#: templates/admin/treemenus/delete_item_confirmation.html:13
+#: templates/admin/treemenus/edit_menu.html:90
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/treemenus/add_edit_item.html:46
+msgid "Save and add another"
+msgstr ""
+
+#: templates/admin/treemenus/add_edit_item.html:47
+msgid "Save and continue editing"
+msgstr ""
+
+#: templates/admin/treemenus/add_edit_item.html:48
+#: templates/admin/treemenus/edit_menu.html:91
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:17
+#, python-format
+msgid "Are you sure you want to delete the menu item \"%(menu_item)s\"?"
+msgstr "Удалить пункт меню \"%(menu_item)s\"?"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:21
+msgid "Yes, I'm sure"
+msgstr "Да, конечно"
+
+#: templates/admin/treemenus/edit_menu.html:18
+msgid "Change menu"
+msgstr "Изменить меню"
+
+#: templates/admin/treemenus/edit_menu.html:21
+msgid "Details"
+msgstr "Подробно"
+
+#: templates/admin/treemenus/edit_menu.html:29
+msgid "Menu Items"
+msgstr "Пункты меню"
+
+#: templates/admin/treemenus/edit_menu.html:32
+msgid "Add an item"
+msgstr "Добавить пункт"
+
+#: templates/admin/treemenus/edit_menu.html:40
+msgid "Url"
+msgstr "Url"
+
+#: templates/admin/treemenus/edit_menu.html:41
+msgid "Named url"
+msgstr "Именованый url"
+
+#: templates/admin/treemenus/edit_menu.html:42
+msgid "Move"
+msgstr "Переместить"
+
+#: templates/admin/treemenus/edit_menu.html:52
+#, fuzzy
+msgid "[Root]"
+msgstr "[Корень]"
+
+#: templates/admin/treemenus/edit_menu.html:68
+msgid "Down"
+msgstr "Вниз"
+
+#: templates/admin/treemenus/edit_menu.html:74
+msgid "Up"
+msgstr "Вверх"

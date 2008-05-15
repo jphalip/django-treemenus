@@ -6,7 +6,7 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
      <a href="../../../../../../">{% trans "Home" %}</a> &rsaquo;
-     <a href="../../../../">Menus</a> &rsaquo;
+     <a href="../../../../">{% trans "Menus" %}</a> &rsaquo;
      <a href="../../../">{{ menu.name }}</a> &rsaquo;
      {% trans 'Items' %} &rsaquo;
 	 <a href="../">{{ menu_item|escape|truncatewords:"18" }}</a> &rsaquo;
@@ -14,7 +14,7 @@
 </div>
 {% endblock %}
 {% block content %}
-    <p>Are you sure you want to delete the menu item "{{ menu_item }}"?</p>
+    <p>{% blocktrans %}Are you sure you want to delete the menu item "{{ menu_item }}"?{% endblocktrans %}</p>
     <form action="." method="post">
     <div>
     <input type="hidden" name="post" value="yes" />

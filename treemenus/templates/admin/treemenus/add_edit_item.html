@@ -11,13 +11,13 @@
 <div class="breadcrumbs">
 	{% ifequal add_or_edit "edit" %}
 	    <a href="../../../../../">{% trans "Home" %}</a> &rsaquo;
-	    <a href="../../../">Menus</a> &rsaquo;
+	    <a href="../../../">{% trans "Menus" %}</a> &rsaquo;
 	    <a href="../../">{{ menu.name }}</a> &rsaquo;
 		{% trans 'Items' %} &rsaquo;
 		{{ menu_item|escape|truncatewords:"18" }}
 	{% else %}
 	    <a href="../../../../">{% trans "Home" %}</a> &rsaquo;
-	    <a href="../../">Menus</a> &rsaquo;
+	    <a href="../../">{% trans "Menus" %}</a> &rsaquo;
 	    <a href="../">{{ menu.name }}</a> &rsaquo;
 		{% trans 'Add Item' %}
 	{% endifequal %}
