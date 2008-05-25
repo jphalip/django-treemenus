@@ -1,0 +1,204 @@
+# English translation of django.
+# Copyright (C) 2008 THE django'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the django package.
+# sqrbass <>, 2008.
+# , fuzzy
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: django VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-05-15 18:16+0000\n"
+"PO-Revision-Date: 2008-05-21 19:30+0200\n"
+"Last-Translator: sqrbass <>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: admin_views.py:85
+#, python-format
+msgid "The menu item \"%s\" was added successfully."
+msgstr "Het menu onderdeel \"%s\" is succesvol opgeslagen."
+
+#: admin_views.py:88 admin_views.py:133
+msgid "You may edit it again below."
+msgstr "U kunt direct hieronder wijzigen."
+
+#: admin_views.py:91 admin_views.py:136
+msgid "You may add another menu item below."
+msgstr "U kunt een nieuw menu hieronder toevoegen."
+
+#: admin_views.py:106
+msgid "Add menu item"
+msgstr "Menu toevoegen"
+
+#: admin_views.py:131
+#, python-format
+msgid "The menu item \"%s\" was changed successfully."
+msgstr "Het menu onderdeel \"%s\" is succesvol gewijzigd."
+
+#: admin_views.py:150
+msgid "Change menu item"
+msgstr "Menu wijzigen"
+
+#: admin_views.py:166
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr "Het %(name)s \"%(obj)s\" was succesvol verwijderd."
+
+#: admin_views.py:169
+msgid "Are you sure?"
+msgstr "Weet u het zeker?"
+
+#: admin_views.py:195 admin_views.py:210
+#, python-format
+msgid "The menu item \"%s\" was moved successfully."
+msgstr "Het menu onderdeel \"%s\" is succesvol verplaatst."
+
+#: admin_views.py:197
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move down."
+msgstr "Het menu onderdeel \"%s\" kan niet verder naar beneden geplaatst worden."
+
+#: admin_views.py:212
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move up."
+msgstr "Het menu onderdeel \"%s\" kan niet verder omhoog geplaatst worden."
+
+#: models.py:17
+msgid "Parent"
+msgstr "Onderdeel van"
+
+#: models.py:18 templates/admin/treemenus/edit_menu.html:39
+msgid "Caption"
+msgstr "Naam"
+
+#: models.py:19
+msgid "URL"
+msgstr "URL"
+
+#: models.py:20
+msgid "Named URL"
+msgstr "Named URL"
+
+#: models.py:21
+msgid "Level"
+msgstr "Niveau"
+
+#: models.py:22
+msgid "Rank"
+msgstr "Volgorde"
+
+#: models.py:23 models.py:147
+msgid "Menu"
+msgstr "Menu"
+
+#: models.py:124
+msgid "Name"
+msgstr "Naam"
+
+#: models.py:125
+msgid "Root Item"
+msgstr "Begin Item"
+
+#: models.py:129
+msgid "Root"
+msgstr "Root"
+
+#: models.py:148 templates/admin/treemenus/add_edit_item.html:14
+#: templates/admin/treemenus/add_edit_item.html:20
+#: templates/admin/treemenus/delete_item_confirmation.html:9
+#: templates/admin/treemenus/edit_menu.html:11
+msgid "Menus"
+msgstr "Menus"
+
+#: templates/admin/treemenus/add_edit_item.html:13
+#: templates/admin/treemenus/add_edit_item.html:19
+#: templates/admin/treemenus/delete_item_confirmation.html:8
+#: templates/admin/treemenus/edit_menu.html:10
+msgid "Home"
+msgstr "Home"
+
+#: templates/admin/treemenus/add_edit_item.html:16
+#: templates/admin/treemenus/delete_item_confirmation.html:11
+msgid "Items"
+msgstr "Onderdelen"
+
+#: templates/admin/treemenus/add_edit_item.html:22
+msgid "Add Item"
+msgstr "Menu Toevoegen"
+
+#: templates/admin/treemenus/add_edit_item.html:37
+msgid "Other attributes"
+msgstr "Overige eigenschappen"
+
+#: templates/admin/treemenus/add_edit_item.html:45
+#: templates/admin/treemenus/delete_item_confirmation.html:13
+#: templates/admin/treemenus/edit_menu.html:90
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: templates/admin/treemenus/add_edit_item.html:46
+msgid "Save and add another"
+msgstr "Opslaan en direct nieuwe toevoegen"
+
+#: templates/admin/treemenus/add_edit_item.html:47
+msgid "Save and continue editing"
+msgstr "Opslaan en doorgaan met bewerken"
+
+#: templates/admin/treemenus/add_edit_item.html:48
+#: templates/admin/treemenus/edit_menu.html:91
+msgid "Save"
+msgstr "Opslaan"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:17
+#, python-format
+msgid "Are you sure you want to delete the menu item \"%(menu_item)s\"?"
+msgstr "Weet u zeker dat u het menu onderdeel \"%(menu_item)s\" wil verwijderen ?"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:21
+msgid "Yes, I'm sure"
+msgstr "Ja, ik weet het zeker"
+
+#: templates/admin/treemenus/edit_menu.html:18
+msgid "Change menu"
+msgstr "Wijzig menu"
+
+#: templates/admin/treemenus/edit_menu.html:21
+msgid "Details"
+msgstr "Details"
+
+#: templates/admin/treemenus/edit_menu.html:29
+msgid "Menu Items"
+msgstr "Menu Onderdelen"
+
+#: templates/admin/treemenus/edit_menu.html:32
+msgid "Add an item"
+msgstr "Toevoegen aan menu"
+
+#: templates/admin/treemenus/edit_menu.html:40
+msgid "Url"
+msgstr "Url"
+
+#: templates/admin/treemenus/edit_menu.html:41
+msgid "Named url"
+msgstr "Named url"
+
+#: templates/admin/treemenus/edit_menu.html:42
+msgid "Move"
+msgstr "Verplaats"
+
+#: templates/admin/treemenus/edit_menu.html:52
+msgid "[Root]"
+msgstr "[Root]"
+
+#: templates/admin/treemenus/edit_menu.html:68
+msgid "Down"
+msgstr "Naarbeneden"
+
+#: templates/admin/treemenus/edit_menu.html:74
+msgid "Up"
+msgstr "Omhoog"
+

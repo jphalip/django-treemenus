@@ -1,0 +1,210 @@
+# English translation of django.
+# Copyright (C) 2008 THE django'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the django package.
+# sqrbass <>, 2008.
+# , fuzzy
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-05-15 18:16+0000\n"
+"PO-Revision-Date: 2008-05-25 23:10+1000\n"
+"Last-Translator: Julien Phalip <jphalip@yahoo.fr>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin_views.py:85
+#, python-format
+msgid "The menu item \"%s\" was added successfully."
+msgstr "L'élément de menu \"%s\" a été ajouté."
+
+#: admin_views.py:88
+#: admin_views.py:133
+msgid "You may edit it again below."
+msgstr "Vous pouvez l'éditer ci-dessous."
+
+#: admin_views.py:91
+#: admin_views.py:136
+msgid "You may add another menu item below."
+msgstr "Vous pouvez ajouter un autre élément de menu ci-dessous."
+
+#: admin_views.py:106
+msgid "Add menu item"
+msgstr "Ajouter un élément de menu"
+
+#: admin_views.py:131
+#, python-format
+msgid "The menu item \"%s\" was changed successfully."
+msgstr "L'élément de menu \"%s\" a été modifié."
+
+#: admin_views.py:150
+msgid "Change menu item"
+msgstr "Changer élément de menu"
+
+#: admin_views.py:166
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr "Le %(name)s \"%(obj)s\" a été supprimé."
+
+#: admin_views.py:169
+msgid "Are you sure?"
+msgstr "Etes-vous sûr ?"
+
+#: admin_views.py:195
+#: admin_views.py:210
+#, python-format
+msgid "The menu item \"%s\" was moved successfully."
+msgstr "L'élément de menu \"%s\" a été déplacé."
+
+#: admin_views.py:197
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move down."
+msgstr "L'élément de menu \"%s\" ne peut pas être déplacé vers le bas."
+
+#: admin_views.py:212
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move up."
+msgstr "L'élément de menu \"%s\" ne peut pas être déplacé vers le haut."
+
+#: models.py:17
+msgid "Parent"
+msgstr "Parent"
+
+#: models.py:18
+#: templates/admin/treemenus/edit_menu.html:39
+msgid "Caption"
+msgstr "Légende"
+
+#: models.py:19
+msgid "URL"
+msgstr "URL"
+
+#: models.py:20
+msgid "Named URL"
+msgstr "Nom d'URL"
+
+#: models.py:21
+msgid "Level"
+msgstr "Niveau"
+
+#: models.py:22
+msgid "Rank"
+msgstr "Rang"
+
+#: models.py:23
+#: models.py:147
+msgid "Menu"
+msgstr "Menu"
+
+#: models.py:124
+msgid "Name"
+msgstr "Nom"
+
+#: models.py:125
+msgid "Root Item"
+msgstr "Article Racine"
+
+#: models.py:129
+msgid "Root"
+msgstr "Racine"
+
+#: models.py:148
+#: templates/admin/treemenus/add_edit_item.html:14
+#: templates/admin/treemenus/add_edit_item.html:20
+#: templates/admin/treemenus/delete_item_confirmation.html:9
+#: templates/admin/treemenus/edit_menu.html:11
+msgid "Menus"
+msgstr "Menus"
+
+#: templates/admin/treemenus/add_edit_item.html:13
+#: templates/admin/treemenus/add_edit_item.html:19
+#: templates/admin/treemenus/delete_item_confirmation.html:8
+#: templates/admin/treemenus/edit_menu.html:10
+msgid "Home"
+msgstr "Accueil"
+
+#: templates/admin/treemenus/add_edit_item.html:16
+#: templates/admin/treemenus/delete_item_confirmation.html:11
+msgid "Items"
+msgstr "Elements"
+
+#: templates/admin/treemenus/add_edit_item.html:22
+msgid "Add Item"
+msgstr "Ajouter Element"
+
+#: templates/admin/treemenus/add_edit_item.html:37
+msgid "Other attributes"
+msgstr "Autres attributs"
+
+#: templates/admin/treemenus/add_edit_item.html:45
+#: templates/admin/treemenus/delete_item_confirmation.html:13
+#: templates/admin/treemenus/edit_menu.html:90
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/admin/treemenus/add_edit_item.html:46
+msgid "Save and add another"
+msgstr "Sauver et ajouter un nouveau"
+
+#: templates/admin/treemenus/add_edit_item.html:47
+msgid "Save and continue editing"
+msgstr "Sauver et continuer les modifications"
+
+#: templates/admin/treemenus/add_edit_item.html:48
+#: templates/admin/treemenus/edit_menu.html:91
+msgid "Save"
+msgstr "Sauver"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:17
+#, python-format
+msgid "Are you sure you want to delete the menu item \"%(menu_item)s\"?"
+msgstr "Etes-vous sûr de vouloir supprimer l'élément de menu \"%(menu_item)s\" ?"
+
+#: templates/admin/treemenus/delete_item_confirmation.html:21
+msgid "Yes, I'm sure"
+msgstr "Oui, je suis sûr"
+
+#: templates/admin/treemenus/edit_menu.html:18
+msgid "Change menu"
+msgstr "Changer menu"
+
+#: templates/admin/treemenus/edit_menu.html:21
+msgid "Details"
+msgstr "Détails"
+
+#: templates/admin/treemenus/edit_menu.html:29
+msgid "Menu Items"
+msgstr "Eléments de menu"
+
+#: templates/admin/treemenus/edit_menu.html:32
+msgid "Add an item"
+msgstr "Ajouter un élément"
+
+#: templates/admin/treemenus/edit_menu.html:40
+msgid "Url"
+msgstr "Url"
+
+#: templates/admin/treemenus/edit_menu.html:41
+msgid "Named url"
+msgstr "Nom d'url"
+
+#: templates/admin/treemenus/edit_menu.html:42
+msgid "Move"
+msgstr "Déplacer"
+
+#: templates/admin/treemenus/edit_menu.html:52
+msgid "[Root]"
+msgstr "[Racine]"
+
+#: templates/admin/treemenus/edit_menu.html:68
+msgid "Down"
+msgstr "Bas"
+
+#: templates/admin/treemenus/edit_menu.html:74
+msgid "Up"
+msgstr "Haut"
+
