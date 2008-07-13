@@ -15,10 +15,10 @@ from django.utils.encoding import force_unicode
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 
-from models import Menu, MenuItem
-from forms import MenuForm, MenuItemForm
-from config import APP_LABEL
-from utils import clean_ranks, get_extension_model_class, get_extension_form_class, MenuItemExtensionError
+from treemenus.models import Menu, MenuItem
+from treemenus.forms import MenuForm, MenuItemForm
+from treemenus.config import APP_LABEL
+from treemenus.utils import clean_ranks, get_extension_model_class, get_extension_form_class, MenuItemExtensionError
 
 def edit_menu(request, menu_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)

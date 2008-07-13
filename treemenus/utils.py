@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db.models.base import ModelBase
 from django.newforms.models import ModelFormMetaclass
-from config import APP_LABEL
+
+from treemenus.config import APP_LABEL
 
 class MenuItemExtensionError(Exception):
     def __init__(self, value):

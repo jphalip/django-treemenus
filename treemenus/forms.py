@@ -1,6 +1,6 @@
 from django import newforms as forms
 
-from models import Menu, MenuItem
+from treemenus.models import Menu, MenuItem
 
 
 

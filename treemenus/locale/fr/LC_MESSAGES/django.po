@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: django VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-15 18:16+0000\n"
-"PO-Revision-Date: 2008-05-25 23:10+1000\n"
+"PO-Revision-Date: 2008-07-13 12:32+1000\n"
 "Last-Translator: Julien Phalip <jphalip@yahoo.fr>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -130,11 +130,11 @@ msgstr "Accueil"
 #: templates/admin/treemenus/add_edit_item.html:16
 #: templates/admin/treemenus/delete_item_confirmation.html:11
 msgid "Items"
-msgstr "Elements"
+msgstr "Eléments"
 
 #: templates/admin/treemenus/add_edit_item.html:22
 msgid "Add Item"
-msgstr "Ajouter Element"
+msgstr "Ajouter Elément"
 
 #: templates/admin/treemenus/add_edit_item.html:37
 msgid "Other attributes"

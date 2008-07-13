@@ -3,24 +3,25 @@ from itertools import chain
 from django.db import models
 from django import newforms as forms
 from django.newforms import IntegerField, Widget, HiddenInput
+from django.utils.translation import ugettext_lazy
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-from utils import clean_ranks, get_extension_model_class, MenuItemExtensionError
+from treemenus.utils import clean_ranks, get_extension_model_class, MenuItemExtensionError
 
 
 
 
 
 class MenuItem(models.Model):
-    parent = models.ForeignKey('self', verbose_name=_('Parent'), null=True, blank=True)
-    caption = models.CharField(_('Caption'), max_length=50)
-    url = models.CharField(_('URL'), max_length=200, blank=True)
-    named_url = models.CharField(_('Named URL'), max_length=200, blank=True)
-    level = models.IntegerField(_('Level'), default=0, editable=False)
-    rank = models.IntegerField(_('Rank'), default=0, editable=False)
-    menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=_('Menu'), null=True, blank=True, editable=False)
+    parent = models.ForeignKey('self', verbose_name=ugettext_lazy('Parent'), null=True, blank=True)
+    caption = models.CharField(ugettext_lazy('Caption'), max_length=50)
+    url = models.CharField(ugettext_lazy('URL'), max_length=200, blank=True)
+    named_url = models.CharField(ugettext_lazy('Named URL'), max_length=200, blank=True)
+    level = models.IntegerField(ugettext_lazy('Level'), default=0, editable=False)
+    rank = models.IntegerField(ugettext_lazy('Rank'), default=0, editable=False)
+    menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('Menu'), null=True, blank=True, editable=False)
     
     def __unicode__(self):
         return self.caption
@@ -121,8 +122,8 @@ class MenuItem(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(_('Name'), max_length=50)
-    root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=_('Root Item'), null=True, blank=True, editable=False)
+    name = models.CharField(ugettext_lazy('Name'), max_length=50)
+    root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=ugettext_lazy('Root Item'), null=True, blank=True, editable=False)
     def save(self):
         if not self.root_item:
             root_item = MenuItem()
@@ -146,6 +147,3 @@ class Menu(models.Model):
     class Meta:
         verbose_name = _('Menu')
         verbose_name_plural = _('Menus')
-        
-    class Admin:
-        pass
