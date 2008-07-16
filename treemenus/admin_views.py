@@ -32,7 +32,7 @@ def edit_menu(request, menu_pk):
         form = MenuForm(instance = menu)
     
     return render_to_response('admin/%s/edit_menu.html' % APP_LABEL,
-                              { 'form': form, 'menu': menu, 'flat_structure': menu.root_item.get_flattened() },
+                              { 'form': form, 'menu': menu, 'title': _('Change Menu'), 'flat_structure': menu.root_item.get_flattened() },
                               context_instance=RequestContext(request))
 edit_menu = staff_member_required(never_cache(edit_menu))
 
