@@ -1,12 +1,8 @@
 from itertools import chain
 
 from django.db import models
-from django import newforms as forms
-from django.newforms import IntegerField, Widget, HiddenInput
 from django.utils.translation import ugettext_lazy
 from django.utils.translation import ugettext as _
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 
 from treemenus.utils import clean_ranks, get_extension_model_class, MenuItemExtensionError
 

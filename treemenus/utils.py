@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db.models.base import ModelBase
-from django.newforms.models import ModelFormMetaclass
+from django.forms.models import ModelFormMetaclass
 
 from treemenus.config import APP_LABEL
 
