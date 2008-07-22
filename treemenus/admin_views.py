@@ -177,13 +177,13 @@ delete_item = staff_member_required(never_cache(delete_item))
 
 def move_item(menu_item, vector):
     old_rank = menu_item.rank
-    swaping_sibling = MenuItem.objects.get(parent=menu_item.parent, rank=old_rank+vector)
-    new_rank = swaping_sibling.rank
-    swaping_sibling.rank = old_rank
+    swapping_sibling = MenuItem.objects.get(parent=menu_item.parent, rank=old_rank+vector)
+    new_rank = swapping_sibling.rank
+    swapping_sibling.rank = old_rank
     menu_item.rank = new_rank
     
     menu_item.save()
-    swaping_sibling.save()
+    swapping_sibling.save()
 
 
 def move_down_item(request, menu_pk, menu_item_pk):
