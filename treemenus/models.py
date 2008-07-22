@@ -3,6 +3,7 @@ from itertools import chain
 from django.db import models
 from django.utils.translation import ugettext_lazy
 from django.utils.translation import ugettext as _
+from django.core.exceptions import ObjectDoesNotExist
 
 from treemenus.utils import clean_ranks, get_extension_model_class, MenuItemExtensionError
 
@@ -113,7 +114,11 @@ class MenuItem(models.Model):
         """
         if not hasattr(self, '_extension_cache'):
             extension_model_class = get_extension_model_class()
-            self._extension_cache = extension_model_class._default_manager.get(menu_item__id__exact=self.id)
+            try:
+                self._extension_cache = extension_model_class._default_manager.get(menu_item__id__exact=self.id)
+            except ObjectDoesNotExist:
+                self._extension_cache = extension_model_class()
+                self._extension_cache.menu_item = self
         return self._extension_cache
 
 
