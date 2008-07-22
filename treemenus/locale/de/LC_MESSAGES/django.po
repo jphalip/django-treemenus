@@ -1,83 +1,84 @@
 # English translation of django.
 # Copyright (C) 2008 THE django'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the django package.
-# sqrbass <>, 2008.
+# toke <toke@toke.de>, 2008.
 # , fuzzy
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: django VERSION\n"
+"Project-Id-Version: django-treemenus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-15 18:16+0000\n"
-"PO-Revision-Date: 2008-07-13 12:32+1000\n"
+"PO-Revision-Date: 2008-07-22 12:30+1000\n"
 "Last-Translator: Julien Phalip <jphalip@yahoo.fr>\n"
-"Language-Team: French"
+"Language-Team: German - Thomas Kerpe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
 
 #: admin_views.py:85
 #, python-format
 msgid "The menu item \"%s\" was added successfully."
-msgstr "L'élément de menu \"%s\" a été ajouté."
+msgstr "Der MenÃ¼eintrag \"%s\" wurde erfolgreich hinzugefÃ¼gt."
 
 #: admin_views.py:88
 #: admin_views.py:133
 msgid "You may edit it again below."
-msgstr "Vous pouvez l'éditer ci-dessous."
+msgstr "Der Eintrag kann unten erneut bearbeitet werden."
 
 #: admin_views.py:91
 #: admin_views.py:136
 msgid "You may add another menu item below."
-msgstr "Vous pouvez ajouter un autre élément de menu ci-dessous."
+msgstr "Ein neuer Eintrag kann unten hinzugefÃ¼gt werden."
 
 #: admin_views.py:106
 msgid "Add menu item"
-msgstr "Ajouter un élément de menu"
+msgstr "MenÃ¼eintrag hinzufÃ¼gen"
 
 #: admin_views.py:131
 #, python-format
 msgid "The menu item \"%s\" was changed successfully."
-msgstr "L'élément de menu \"%s\" a été modifié."
+msgstr "Der MenÃ¼eintrag \"%s\" wurde erfolgreich hinzugefÃ¼gt."
 
 #: admin_views.py:150
 msgid "Change menu item"
-msgstr "Changer élément de menu"
+msgstr "MenÃ¼eintrag Ã¤nder"
 
 #: admin_views.py:166
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was deleted successfully."
-msgstr "Le %(name)s \"%(obj)s\" a été supprimé."
+msgstr "Der %(name)s \"%(obj)s\" wurde erfolgreich gelÃ¶scht."
 
 #: admin_views.py:169
 msgid "Are you sure?"
-msgstr "Etes-vous sûr ?"
+msgstr "Sind Sie sicher?"
 
 #: admin_views.py:195
 #: admin_views.py:210
 #, python-format
 msgid "The menu item \"%s\" was moved successfully."
-msgstr "L'élément de menu \"%s\" a été déplacé."
+msgstr "Der MenÃ¼eintrag \"%s\" wurde erfolgreich verschoben."
 
 #: admin_views.py:197
 #, python-format
 msgid "The menu item \"%s\" is not allowed to move down."
-msgstr "L'élément de menu \"%s\" ne peut pas être déplacé vers le bas."
+msgstr "Der MenÃ¼eintrag \"%s\" darf nicht tiefer verschoben werden."
 
 #: admin_views.py:212
 #, python-format
 msgid "The menu item \"%s\" is not allowed to move up."
-msgstr "L'élément de menu \"%s\" ne peut pas être déplacé vers le haut."
+msgstr "Der MenÃ¼eintrag \"%s\" darf nicht hÃ¶her verschoben werden."
 
 #: models.py:17
 msgid "Parent"
-msgstr "Parent"
+msgstr "Vater"
 
 #: models.py:18
 #: templates/admin/treemenus/edit_menu.html:39
 msgid "Caption"
-msgstr "Légende"
+msgstr "Name"
 
 #: models.py:19
 msgid "URL"
@@ -85,11 +86,11 @@ msgstr "URL"
 
 #: models.py:20
 msgid "Named URL"
-msgstr "Nom d'URL"
+msgstr "Benannte URL"
 
 #: models.py:21
 msgid "Level"
-msgstr "Niveau"
+msgstr "Ebene"
 
 #: models.py:22
 msgid "Rank"
@@ -98,19 +99,19 @@ msgstr "Rang"
 #: models.py:23
 #: models.py:147
 msgid "Menu"
-msgstr "Menu"
+msgstr "MenÃ¼"
 
 #: models.py:124
 msgid "Name"
-msgstr "Nom"
+msgstr "Name"
 
 #: models.py:125
 msgid "Root Item"
-msgstr "Article Racine"
+msgstr "Root Eintrag"
 
 #: models.py:129
 msgid "Root"
-msgstr "Racine"
+msgstr "Root"
 
 #: models.py:148
 #: templates/admin/treemenus/add_edit_item.html:14
@@ -118,71 +119,71 @@ msgstr "Racine"
 #: templates/admin/treemenus/delete_item_confirmation.html:9
 #: templates/admin/treemenus/edit_menu.html:11
 msgid "Menus"
-msgstr "Menus"
+msgstr "MenÃ¼s"
 
 #: templates/admin/treemenus/add_edit_item.html:13
 #: templates/admin/treemenus/add_edit_item.html:19
 #: templates/admin/treemenus/delete_item_confirmation.html:8
 #: templates/admin/treemenus/edit_menu.html:10
 msgid "Home"
-msgstr "Accueil"
+msgstr "Home"
 
 #: templates/admin/treemenus/add_edit_item.html:16
 #: templates/admin/treemenus/delete_item_confirmation.html:11
 msgid "Items"
-msgstr "Eléments"
+msgstr "EintrÃ¤ge"
 
 #: templates/admin/treemenus/add_edit_item.html:22
 msgid "Add Item"
-msgstr "Ajouter Elément"
+msgstr "Eintrag hinzufÃ¼gen"
 
 #: templates/admin/treemenus/add_edit_item.html:37
 msgid "Other attributes"
-msgstr "Autres attributs"
+msgstr "Weiteres Attribut"
 
 #: templates/admin/treemenus/add_edit_item.html:45
 #: templates/admin/treemenus/delete_item_confirmation.html:13
 #: templates/admin/treemenus/edit_menu.html:90
 msgid "Delete"
-msgstr "Supprimer"
+msgstr "LÃ¶schen"
 
 #: templates/admin/treemenus/add_edit_item.html:46
 msgid "Save and add another"
-msgstr "Sauver et ajouter un nouveau"
+msgstr "Speichern und neu hinzufÃ¼gen"
 
 #: templates/admin/treemenus/add_edit_item.html:47
 msgid "Save and continue editing"
-msgstr "Sauver et continuer les modifications"
+msgstr "Speichern und weiter bearbeiten"
 
 #: templates/admin/treemenus/add_edit_item.html:48
 #: templates/admin/treemenus/edit_menu.html:91
 msgid "Save"
-msgstr "Sauver"
+msgstr "Speichern"
 
 #: templates/admin/treemenus/delete_item_confirmation.html:17
 #, python-format
 msgid "Are you sure you want to delete the menu item \"%(menu_item)s\"?"
-msgstr "Etes-vous sûr de vouloir supprimer l'élément de menu \"%(menu_item)s\" ?"
+msgstr "Sind Sie sicher das sie den MenÃ¼entrag \"%(menu_item)s\" lÃ¶schen mÃ¶chten?"
 
 #: templates/admin/treemenus/delete_item_confirmation.html:21
 msgid "Yes, I'm sure"
-msgstr "Oui, je suis sûr"
+msgstr "Ja, ich bin sicher"
 
 #: templates/admin/treemenus/edit_menu.html:18
 msgid "Change menu"
-msgstr "Changer menu"
+msgstr "MenÃ¼ Ã¤ndern"
 
 #: templates/admin/treemenus/edit_menu.html:21
 msgid "Details"
-msgstr "Détails"
+msgstr "Details"
 
 #: templates/admin/treemenus/edit_menu.html:29
 msgid "Menu Items"
-msgstr "Eléments de menu"
+msgstr "MenÃ¼eintrÃ¤ge"
 
 #: templates/admin/treemenus/edit_menu.html:32
 msgid "Add an item"
-msgstr "Ajouter un élément"
+msgstr "Eintrag hinzufÃ¼gen"
 
 #: templates/admin/treemenus/edit_menu.html:40
 msgid "Url"
@@ -190,21 +191,21 @@ msgstr "Url"
 
 #: templates/admin/treemenus/edit_menu.html:41
 msgid "Named url"
-msgstr "Nom d'url"
+msgstr "Benannte url"
 
 #: templates/admin/treemenus/edit_menu.html:42
 msgid "Move"
-msgstr "Déplacer"
+msgstr "Verschieben"
 
 #: templates/admin/treemenus/edit_menu.html:52
 msgid "[Root]"
-msgstr "[Racine]"
+msgstr "[Root]"
 
 #: templates/admin/treemenus/edit_menu.html:68
 msgid "Down"
-msgstr "Bas"
+msgstr "Runter"
 
 #: templates/admin/treemenus/edit_menu.html:74
 msgid "Up"
-msgstr "Haut"
+msgstr "Hoch"
 
