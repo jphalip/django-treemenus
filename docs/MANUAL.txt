@@ -49,20 +49,12 @@ Hooking Tree Menus to your project
 1. Add ``treemenus`` to the ``INSTALLED_APPS`` setting of your
    Django project.
 
-2. Add the treememus **admin templates** (included in the package) to the
-   ``TEMPLATE_DIRS``, for example::
-
-    TEMPLATE_DIRS = (
-        ...
-        '/home/Python/Lib/site-packages/treemenus/templates/',
-    )
-
-3. Create django-treemenus tables by running the following command from the
+2. Create django-treemenus tables by running the following command from the
    root of your project::
 
     python manage.py syncdb
 
-4. Modify your URLConf. Because the treemenus application contains some
+3. Modify your URLConf. Because the treemenus application contains some
    custom admin views, you need to declare its URL configuration before
    the admin's::
 
@@ -74,7 +66,7 @@ Hooking Tree Menus to your project
         ...
     )
 
-5. Create and add your custom templates to your project template folder. These
+4. Create and add your custom templates to your project template folder. These
    templates are necessary to specify how you want your menus to be displayed
    on your site (See further below for more details on the use of templates).
    Some sample templates are also provided in the package to get you started.
