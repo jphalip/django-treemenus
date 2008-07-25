@@ -1,35 +1,14 @@
-{% extends "admin/base_site.html" %}
-{% load i18n %}
+{% extends "admin/change_form.html" %}
+{% load i18n adminmedia %}
 
-{% load adminmedia %}
 
-{% block stylesheet %}{% admin_media_prefix %}css/forms.css{% endblock %}
-
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
-     <a href="../">{% trans "Menus" %}</a> &rsaquo;
-     {{ menu.name }}
-
-</div>
-{% endblock %}
-
-{% block content %}
-<h1>{% trans "Change menu" %}</h1>
-<form method="post" action=".">
-  <fieldset class="module aligned">
-  <h2>{% trans "Details" %}</h2>
-  
-  <table>
-  	{{ form }}
-  </table>
-  </fieldset>
-  
+{% block after_related_objects %}
+{% if change %}
   <fieldset class="module aligned">
   <h2>{% trans "Menu Items" %}</h2>
   
   <div class="form-row" >
-  	  <img src="{% admin_media_prefix %}img/admin/icon_addlink.gif" width="10" height="10"/> <a href="{% url add_item menu.pk %}">{% trans "Add an item" %}</a>
+  	  <img src="{% admin_media_prefix %}img/admin/icon_addlink.gif" width="10" height="10"/> <a href="items/add/">{% trans "Add an item" %}</a>
   </div>
   
   <div class="form-row" >
@@ -44,7 +23,7 @@
 		</thead>
 
 		<tbody>
-		  {% for menu_item in flat_structure %}
+		  {% for menu_item in original.root_item.get_flattened %}
 			<tr class="{% cycle 'row1' 'row2' %}">
 			
 				{% if forloop.first %}
@@ -84,13 +63,5 @@
 	  </table>
   </div>
   </fieldset>
-  
-  
-  <div class="submit-row">
-	  <p class="float-left"><a href="delete/" class="deletelink">{% trans "Delete" %}</a></p>
-	  <input type="submit" value="{% trans 'Save' %}" class="default" {{ onclick_attrib }}/>
-  </div>
-</form>
-
-
+{% endif %}
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+
+{% comment %}
+We have to override this or the path to jsi18n will be wrong.
+Note the "super.super", as the direct parent has the wrong url.
+{% endcomment %}
+{% block extrahead %}{{ block.super.super }}
+<script type="text/javascript" src="../../../../../jsi18n/"></script>
+{{ media }}
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+	{% if add %}
+	    <a href="../../../../../">{% trans "Home" %}</a> &rsaquo;
+	    <a href="../../../">{% trans "Menus" %}</a> &rsaquo;
+	    <a href="../../">{{ menu.name }}</a> &rsaquo;
+		{% trans 'Add Item' %}
+	{% else %}
+        <a href="../../../../../">{% trans "Home" %}</a> &rsaquo;
+	    <a href="../../../">{% trans "Menus" %}</a> &rsaquo;
+	    <a href="../../">{{ menu.name }}</a> &rsaquo;
+		{% trans 'Items' %} &rsaquo;
+		{{ original|escape|truncatewords:"18" }}
+	{% endif %}
+</div>
+{% endblock %}
+

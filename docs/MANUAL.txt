@@ -54,19 +54,7 @@ Hooking Tree Menus to your project
 
     python manage.py syncdb
 
-3. Modify your URLConf. Because the treemenus application contains some
-   custom admin views, you need to declare its URL configuration before
-   the admin's::
-
-    urlpatterns = patterns('',
-        ...
-        (r'^admin/treemenus/', include('treemenus.admin_urls')),
-        ...
-        (r'^admin/(.*)', admin.site.root),
-        ...
-    )
-
-4. Create and add your custom templates to your project template folder. These
+3. Create and add your custom templates to your project template folder. These
    templates are necessary to specify how you want your menus to be displayed
    on your site (See further below for more details on the use of templates).
    Some sample templates are also provided in the package to get you started.
