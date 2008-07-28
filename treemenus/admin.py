@@ -62,8 +62,7 @@ class MenuItemAdmin(admin.ModelAdmin):
     def save_add(self, request, form, formsets, post_url_continue):
         response = super(MenuItemAdmin, self).save_add(request, form, formsets, post_url_continue)
         if request.POST.has_key("_continue"):
-            #TODO: Know issue: how to redirect to the newly created object's edit page?
-            return HttpResponseRedirect("../../")
+            return response
         elif request.POST.has_key("_addanother"):
             return HttpResponseRedirect(request.path)
         elif request.POST.has_key("_popup"):
