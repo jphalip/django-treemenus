@@ -103,20 +103,20 @@ Template to specify how to display a menu.
 
 **Example for this template**::
 
-	{% ifequal menu_type "unordered-list" %}
-		<ul>
-			{% for menu_item in menu.root_item.children %}
-				{% show_menu_item menu_item %}
-			{% endfor %}
-		</ul>
-	{% endifequal %}
-	{% ifequal menu_type "ordered-list" %}
-		<ol>
-			{% for menu_item in menu.root_item.children %}
-				{% show_menu_item menu_item %}
-			{% endfor %}
-		</ol>
-	{% endifequal %}
+    {% ifequal menu_type "unordered-list" %}
+        <ul>
+            {% for menu_item in menu.root_item.children %}
+                {% show_menu_item menu_item %}
+            {% endfor %}
+        </ul>
+    {% endifequal %}
+    {% ifequal menu_type "ordered-list" %}
+        <ol>
+            {% for menu_item in menu.root_item.children %}
+                {% show_menu_item menu_item %}
+            {% endfor %}
+        </ol>
+    {% endifequal %}
 
 
 ``treemenus/menu_item.html``
@@ -193,7 +193,7 @@ would be reversed to the corresponding URL (as defined in your URLConf).
 
 **Example of use**::
 
-	<li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
+    <li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
 
 Attributes and methods
 ======================
@@ -221,7 +221,7 @@ Returns the item's url.
 
 **Example of use**::
 
-	<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
 
 ``parent``
 
@@ -235,7 +235,7 @@ you can move it up or down through the admin interface.
 
 **Example of use**::
 
-	<li><a class="menuitem-{{ menu_item.rank }}" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    <li><a class="menuitem-{{ menu_item.rank }}" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
 
 ``level``
 
@@ -245,11 +245,11 @@ level 1.
 
 **Example of use**::
 
-	{% ifequal menu_item.level 1 %}
-	    <li><a class="top-item" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-	{% else %}
-		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-	{% endifequal %}
+    {% ifequal menu_item.level 1 %}
+        <li><a class="top-item" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% else %}
+        <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% endifequal %}
 
 ``caption``
 
@@ -273,18 +273,18 @@ Returns a list with the menu item's children, ordered by rank.
 
 **Example of use**::
 
-	{% if menu_item.hasChildren %}
-	    <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
-			<ul>
-			    {% for child in menu_item.children %}
-			        {% show_menu_item child %}
-				{% endfor %}
-			</ul>
-		</li>
-	{% else %}
-		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-	{% endif %}
-	
+    {% if menu_item.hasChildren %}
+        <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
+            <ul>
+                {% for child in menu_item.children %}
+                    {% show_menu_item child %}
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% endif %}
+    
 ``siblings``
 
 Returns a list with the menu item's siblings (i.e all other items that have the
@@ -311,21 +311,18 @@ structure::
 
 Then, in ``menu_extension.models.py`` add the following::
 
-	from django.db import models
-	from treemenus.models import MenuItem
-	
-	class MenuItemExtension(models.Model):
-	    menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
-	    published = models.BooleanField(default=False)
+    from django.db import models
+    from treemenus.models import MenuItem
+    
+    class MenuItemExtension(models.Model):
+        menu_item = models.OneToOneField (MenuItem, related_name="extension")
+        published = models.BooleanField(default=False)
 
 It is required that your extension object has the attribute ``menu_item`` that is a **unique** link
-to a menu item object. This is what makes the extension possible. ``editable=False`` is there
-because you don't want to have that attribute appear on the menu item edit page.
+to a menu item object. This is what makes the extension possible.
 Then you can notice our attribute ``published``, feel free to add any other attribute there to
 customize your menu items. Just note that you cannot add attributes named 'caption', 'level', 'menu',
 'named_url', 'parent', 'rank', or 'url', as they would clash with the menu item's attributes.
-Also, no need to declare ``class Admin: pass``, as you'll be able to edit your extension
-attributes directly from the menu item's edit page.
 
 You then need to create the database table that will store your extension data by adding
 ``menu_extension`` to the ``INSTALLED_APPS`` setting of your Django project, and then running
@@ -334,37 +331,34 @@ the following command from the root of your project::
     python manage.py syncdb
 
 Now, you need to specify a form to let you edit those extra attributes from the admin interface.
-In ``menu_extension.forms.py`` add the following::
+In your project's ``admin.py`` or your extension menu app's ``admin.py``, add the following::
 
-	from django import newforms as forms
-	from models import MenuItemExtension
-	
-	class MenuItemExtensionForm(forms.ModelForm):
-	    class Meta:
-	        model = MenuItemExtension
+    from treemenus.admin import MenuAdmin, MenuItemAdmin
+    from treemenus.admin import Menu
+    from menu_extension.models import MenuItemExtension
+    
+    class MenuItemExtensionInline(admin.StackedInline):
+        model = MenuItemExtension
+        max_num = 1
+    
+    class CustomMenuItemAdmin(MenuItemAdmin):
+        inlines = [MenuItemExtensionInline,]
+    
+    class CustomMenuAdmin(MenuAdmin):
+        menu_item_admin_class = CustomMenuItemAdmin
 
-It is required that the form is a ModelForm_ object, which is only available in recent Django
-trunk (so you may consider updating your version of Django). I leave you to read the
-documentation for ModelForm_ to see how that works, but it's pretty simple.
+    admin.site.unregister(Menu) # Unregister the standard admin options
+    admin.site.register(Menu, CustomMenuAdmin) # Register the new, customized, admin options
 
-.. _ModelForm: http://www.djangoproject.com/documentation/modelforms/
-
-Ok, we're almost there. All you need to do now is to let the ``treemenus`` application
-know where to find those two classes, by adding the following into the setting file of your
-Django project::
-
-    TREE_MENU_ITEM_EXTENSION_MODEL = 'menu_extension.models.MenuItemExtension'
-    TREE_MENU_ITEM_EXTENSION_FORM = 'menu_extension.forms.MenuItemExtensionForm'
-
-And that's it! Now, when creating or editing a menu item, you'll see an extra section with
+And that's it! Now, when creating or editing a menu item, you'll see an inline form with
 all the extension attributes (in this example, the ``published`` check box).
 
 Now, if you want to use ``published`` attribute in your template, you need to use the
-menu item's ``get_extension`` method, as follows::
+menu item's ``extension`` method, as follows::
 
-	{% if menu_item.get_extension.published %}
-		<li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-	{% endif %}
+    {% if menu_item.extension.published %}
+        <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% endif %}
 
 Your menu items will now only appear if their ``published`` check box has been ticked.
 
@@ -401,7 +395,7 @@ extension class (or create it if you don't already have one) with a method to ma
 the translation, for example::
 
     class MenuItemExtension(models.Model):
-        menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+        menu_item = models.OneToOneField (MenuItem, related_name="extension")
         ...
        
         def translation():
@@ -410,7 +404,7 @@ the translation, for example::
 
 And then in your template::
 
-<li><a href="{{ menu_item.url }}">{% trans menu_item.get_extension.translation %}</a></li>
+<li><a href="{{ menu_item.url }}">{% trans menu_item.extension.translation %}</a></li>
 
 Login restriction
 -----------------
@@ -419,19 +413,19 @@ If you want to make some of your menus items private and only available to logge
 users, that's simple! Simply define your extension class (or create it if you don't
 already have one) like the following::
 
-	class MenuItemExtension(models.Model):
-	    menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
-	    protected = models.BooleanField(default=False)
-	    ...
-	    
+    class MenuItemExtension(models.Model):
+        menu_item = models.OneToOneField (MenuItem, related_name="extension")
+        protected = models.BooleanField(default=False)
+        ...
+        
 And then in your template::
-	{% if menu_item.get_extension.protected %}
-	    {% if user.is_authenticated %}
-		    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-		{% endif %}
-	{% else %}
-	    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-	{% endif %}
+    {% if menu_item.extension.protected %}
+        {% if user.is_authenticated %}
+            <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+        {% endif %}
+    {% else %}
+        <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% endif %}
 
 (assuming that the context variable 'user' represents the currently logged-in user)
 
@@ -448,7 +442,7 @@ First, define your extension class (or create it if you don't already have one)
 like the following::
 
     class MenuItemExtension(models.Model):
-        menu_item = models.ForeignKey(MenuItem, unique=True, editable=False)
+        menu_item = models.OneToOneField (MenuItem, related_name="extension")
         selected_patterns = models.TextField(blank=True)
 
 ``selected_patterns`` is the attribute which will specify for what urls the menu
@@ -473,7 +467,7 @@ Then, in your ``menu_item.html`` template, use the following 'if' statement::
 
     {% load menu_extension_filters %}
     ...
-    <li><a href="{{ menu_item.url }}" class="{% if menu_item.get_extension.selected_patterns|match_path:request.path %} selected{% endif %}">{{ menu_item.caption }}</a></li>
+    <li><a href="{{ menu_item.url }}" class="{% if menu_item.extension.selected_patterns|match_path:request.path %} selected{% endif %}">{{ menu_item.caption }}</a></li>
 
 With this code, every menu item whose attribute ``selected_patterns`` matches the
 current url will be given the 'selected' CSS class (it's up to you to define in
