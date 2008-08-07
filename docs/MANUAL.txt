@@ -321,8 +321,7 @@ Then, in ``menu_extension.models.py`` add the following::
 It is required that your extension object has the attribute ``menu_item`` that is a **unique** link
 to a menu item object. This is what makes the extension possible.
 Then you can notice our attribute ``published``, feel free to add any other attribute there to
-customize your menu items. Just note that you cannot add attributes named 'caption', 'level', 'menu',
-'named_url', 'parent', 'rank', or 'url', as they would clash with the menu item's attributes.
+customize your menu items.
 
 You then need to create the database table that will store your extension data by adding
 ``menu_extension`` to the ``INSTALLED_APPS`` setting of your Django project, and then running
