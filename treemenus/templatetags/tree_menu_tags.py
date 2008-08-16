@@ -50,7 +50,7 @@ def reverse_named_url(parser, token):
     if len(bits) !=2 :
         raise TemplateSyntaxError("'%s' takes only one argument"
                                   " (named url)" % bits[0])
-    coco = parser.compile_filter(bits[1])
+    named_url = parser.compile_filter(bits[1])
     
-    return ReverseNamedURLNode(coco, parser)
+    return ReverseNamedURLNode(named_url, parser)
 reverse_named_url = register.tag(reverse_named_url)
