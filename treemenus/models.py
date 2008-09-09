@@ -23,7 +23,7 @@ class MenuItem(models.Model):
     def __unicode__(self):
         return self.caption
     
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         if self.parent:
             if self.level != self.parent.level + 1:
                 self.level = self.calcLevel() # The item has probably changed parent, so recalculate its level.
@@ -36,14 +36,21 @@ class MenuItem(models.Model):
                 if new_parent:
                     clean_ranks(new_parent.children()) # Clean ranks for new siblings
                     self.rank = new_parent.children().count()
-                super(MenuItem, self).save() # Save menu item in DB. It has now officially changed parent.
+                super(MenuItem, self).save(force_insert, force_update) # Save menu item in DB. It has now officially changed parent.
                 if old_parent:
                     clean_ranks(old_parent.children()) # Clean ranks for old siblings
             else:
-                super(MenuItem, self).save() # Save menu item in DB
+                super(MenuItem, self).save(force_insert, force_update) # Save menu item in DB
         
         else: # Saving the menu item for the first time (i.e creating the object)
-            super(MenuItem, self).save()
+            if not self.hasSiblings():
+                # No siblings - initial rank is 0.
+                self.rank = 0
+            else:
+                # Has siblings - initial rank is highest sibling rank plus 1.
+                siblings = self.siblings().order_by('-rank')
+                self.rank = siblings[0].rank + 1
+            super(MenuItem, self).save(force_insert, force_update)
     
     def delete(self):
         old_parent = self.parent
@@ -95,23 +102,14 @@ class MenuItem(models.Model):
     
     def hasChildren(self):
         return self.children().count() > 0
-    
-    def index(self):
-        siblings = self.parent.children()
-        i = -1
-        for obj in siblings:
-            if obj == self:
-                return i+1
-            else:
-                i = i +1
-        return -1
-    
-    
+
+
+
 
 class Menu(models.Model):
     name = models.CharField(ugettext_lazy('Name'), max_length=50)
     root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=ugettext_lazy('Root Item'), null=True, blank=True, editable=False)
-    def save(self):
+    def save(self, force_insert=False, force_update=False):
         if not self.root_item:
             root_item = MenuItem()
             root_item.caption = _('Root')
@@ -121,7 +119,7 @@ class Menu(models.Model):
             root_item.menu = self
             root_item.save() # Save, so that it gets a pk
             self.root_item = root_item
-        super(Menu, self).save()
+        super(Menu, self).save(force_insert, force_update)
 
     def delete(self):
         if self.root_item is not None:
