@@ -3,33 +3,13 @@ from django.utils.functional import wraps
 from django.contrib import admin
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.forms import ChoiceField
 from django.http import HttpResponseRedirect
 from django.contrib.admin.util import unquote
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 
 from treemenus.models import Menu, MenuItem
-from treemenus.utils import get_parent_choices
-
-
-
-class MenuItemChoiceField(ChoiceField):
-    ''' Custom field to display the list of items in a tree manner '''
-    def clean(self, value):
-        return MenuItem.objects.get(pk=value)
-
-
-def move_item(menu_item, vector):
-    ''' Helper function to move and item up or down in the database '''
-    old_rank = menu_item.rank
-    swapping_sibling = MenuItem.objects.get(parent=menu_item.parent, rank=old_rank+vector)
-    new_rank = swapping_sibling.rank
-    swapping_sibling.rank = old_rank
-    menu_item.rank = new_rank
-    menu_item.save()
-    swapping_sibling.save()
-
+from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item
 
 
 
@@ -43,13 +23,6 @@ class MenuItemAdmin(admin.ModelAdmin):
         super(MenuItemAdmin, self).__init__(model, admin_site)
         self._menu = menu
     
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        ''' Overriden to change the choices of the ``parent`` attribute's form field '''
-        if db_field.name == 'parent':
-            kwargs['choices'] = get_parent_choices(self._menu)
-            return MenuItemChoiceField(**kwargs)
-        return super(MenuItemAdmin, self).formfield_for_dbfield(db_field, **kwargs)
-
     def delete_view(self, request, object_id, extra_context=None):
         if request.method == 'POST':
             # Delete and return to menu page
@@ -82,6 +55,11 @@ class MenuItemAdmin(admin.ModelAdmin):
         else:
             return HttpResponseRedirect("../../")
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(MenuItemAdmin, self).get_form(request, obj, **kwargs)
+        choices = get_parent_choices(self._menu, obj)
+        form.base_fields['parent'] = MenuItemChoiceField(choices=choices)
+        return form
 
 class MenuAdmin(admin.ModelAdmin):
     menu_item_admin_class = MenuItemAdmin

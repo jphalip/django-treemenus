@@ -1,7 +1,7 @@
 {% load tree_menu_tags %}
 
 {% ifequal menu_type "unordered-list" %}
-	{% if menu_item.hasChildren %}
+	{% if menu_item.has_children %}
 	    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
 			<ul>
 			    {% for child in menu_item.children %}
@@ -15,7 +15,7 @@
 {% endifequal %}
 
 {% ifequal menu_type "ordered-list" %}
-	{% if menu_item.hasChildren %}
+	{% if menu_item.has_children %}
 	    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
 			<ol>
 			    {% for child in menu_item.children %}

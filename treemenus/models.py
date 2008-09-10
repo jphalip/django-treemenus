@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ObjectDoesNotExist
 
-from treemenus.utils import clean_ranks
 
 
 
@@ -24,9 +23,10 @@ class MenuItem(models.Model):
         return self.caption
     
     def save(self, force_insert=False, force_update=False):
+        from treemenus.utils import clean_ranks
         if self.parent:
             if self.level != self.parent.level + 1:
-                self.level = self.calcLevel() # The item has probably changed parent, so recalculate its level.
+                self.level = self._calculate_level() # The item has probably changed parent, so recalculate its level.
 
         if self.pk:
             new_parent = self.parent
@@ -43,7 +43,7 @@ class MenuItem(models.Model):
                 super(MenuItem, self).save(force_insert, force_update) # Save menu item in DB
         
         else: # Saving the menu item for the first time (i.e creating the object)
-            if not self.hasSiblings():
+            if not self.has_siblings():
                 # No siblings - initial rank is 0.
                 self.rank = 0
             else:
@@ -57,14 +57,7 @@ class MenuItem(models.Model):
         super(MenuItem, self).delete()
         if old_parent:
             clean_ranks(old_parent.children())
-    
-    def clean_siblings_ranks(self):
-        rank = 0
-        for child in self.siblings():
-            child.rank = rank
-            child.save()
-            rank += 1
-        
+            
     def caption_with_spacer(self):
         spacer = ''
         for i in range(0, self.level):
@@ -73,7 +66,7 @@ class MenuItem(models.Model):
             spacer += u'|-&nbsp;'
         return spacer + self.caption
     
-    def calcLevel(self):
+    def _calculate_level(self):
         if self.parent:
             return self.parent.level+1
         else:
@@ -95,12 +88,22 @@ class MenuItem(models.Model):
                 return self.parent.children().exclude(pk=self.pk)
     
     def hasSiblings(self):
+        import warnings
+        warnings.warn('hasSiblings() is deprecated, use has_siblings() instead.', DeprecationWarning, stacklevel=2)
+        return self.has_siblings()
+    
+    def has_siblings(self):
         return self.siblings().count() > 0
     
     def children(self):
         return MenuItem.objects.filter(parent=self).order_by('rank',)
     
     def hasChildren(self):
+        import warnings
+        warnings.warn('hasChildren() is deprecated, use has_children() instead.', DeprecationWarning, stacklevel=2)
+        return self.has_children()
+    
+    def has_children(self):
         return self.children().count() > 0
 
 

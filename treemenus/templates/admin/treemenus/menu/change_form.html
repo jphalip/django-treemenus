@@ -42,7 +42,7 @@
 					</td>
 				{% endif %}
 				
-				{% if menu_item.hasSiblings %}
+				{% if menu_item.has_siblings %}
 					{% ifnotequal menu_item.rank menu_item.siblings.count %}
 						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% admin_media_prefix %}img/admin/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
 					{% else %}

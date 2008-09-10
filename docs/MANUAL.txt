@@ -263,7 +263,7 @@ Use this attribute if you want to use named URLs instead of raw URLs.
 
     <li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
 
-``hasChildren``
+``has_children``
 
 Returns True if the item has some children, False otherwise.
 
@@ -273,7 +273,7 @@ Returns a list with the menu item's children, ordered by rank.
 
 **Example of use**::
 
-    {% if menu_item.hasChildren %}
+    {% if menu_item.has_children %}
         <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
             <ul>
                 {% for child in menu_item.children %}
