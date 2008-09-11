@@ -86,7 +86,10 @@ class MenuItem(models.Model):
         return self.siblings().count() > 0
     
     def children(self):
-        return MenuItem.objects.filter(parent=self).order_by('rank',)
+        _children = MenuItem.objects.filter(parent=self).order_by('rank',)
+        for child in _children:
+            child.parent = self # Hack to not run a query in _level() each time
+        return _children
     
     def hasChildren(self):
         import warnings
@@ -97,10 +100,12 @@ class MenuItem(models.Model):
         return self.children().count() > 0
 
     def _level(self):
-        if self.parent:
-            return self.parent.level + 1
-        else:
-            return 0
+        if not hasattr(self, '__level'):
+            if self.parent:
+                self.__level = self.parent.level + 1
+            else:
+                self.__level = 0
+        return self.__level
     level = property(_level)
     
     
