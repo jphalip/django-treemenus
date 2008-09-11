@@ -15,7 +15,6 @@ class MenuItem(models.Model):
     caption = models.CharField(ugettext_lazy('Caption'), max_length=50)
     url = models.CharField(ugettext_lazy('URL'), max_length=200, blank=True)
     named_url = models.CharField(ugettext_lazy('Named URL'), max_length=200, blank=True)
-    level = models.IntegerField(ugettext_lazy('Level'), default=0, editable=False)
     rank = models.IntegerField(ugettext_lazy('Rank'), default=0, editable=False)
     menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('Menu'), null=True, blank=True, editable=False)
     
@@ -24,10 +23,7 @@ class MenuItem(models.Model):
     
     def save(self, force_insert=False, force_update=False):
         from treemenus.utils import clean_ranks
-        if self.parent:
-            if self.level != self.parent.level + 1:
-                self.level = self._calculate_level() # The item has probably changed parent, so recalculate its level.
-
+                
         if self.pk:
             new_parent = self.parent
             old_parent = MenuItem.objects.get(pk=self.pk).parent
@@ -66,12 +62,6 @@ class MenuItem(models.Model):
             spacer += u'|-&nbsp;'
         return spacer + self.caption
     
-    def _calculate_level(self):
-        if self.parent:
-            return self.parent.level+1
-        else:
-            return 0
-    
     def get_flattened(self):
         flat_structure = [self]
         for child in self.children():
@@ -106,7 +96,20 @@ class MenuItem(models.Model):
     def has_children(self):
         return self.children().count() > 0
 
-
+    def _level(self):
+        if self.parent:
+            return self.parent.level + 1
+        else:
+            return 0
+    level = property(_level)
+    
+    
+    def _bobo(self):
+        if self.parent:
+            return self.parent.bobo + 1
+        else:
+            return 0
+    bobo = property(_bobo)
 
 
 class Menu(models.Model):
@@ -116,7 +119,6 @@ class Menu(models.Model):
         if not self.root_item:
             root_item = MenuItem()
             root_item.caption = _('Root')
-            root_item.level = 0
             if not self.pk: # If creating a new object (i.e does not have a pk yet)
                 super(Menu, self).save() # Save, so that it gets a pk
             root_item.menu = self
