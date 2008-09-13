@@ -1,10 +1,9 @@
-import unittest
+from django.test import TestCase
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks
 
-class TreemenusTestCase(unittest.TestCase):
-
+class TreemenusTestCase(TestCase):
 
     def test_change_parents(self):
         menu = Menu(name='menu_change_parents')
@@ -176,6 +175,9 @@ class TreemenusTestCase(unittest.TestCase):
         self.assertEquals(menu_item2.rank, 2)
         self.assertEquals(menu_item3.rank, 1)
         self.assertEquals(menu_item4.rank, 3)
+        
+        # Test forbidden move up
+        self.assertRaises(MenuItem.DoesNotExist, lambda: move_item(menu_item1, -1))
 
     def test_move_down(self):
         menu = Menu(name='menu_move_down')
@@ -202,6 +204,9 @@ class TreemenusTestCase(unittest.TestCase):
         self.assertEquals(menu_item2.rank, 1)
         self.assertEquals(menu_item3.rank, 3)
         self.assertEquals(menu_item4.rank, 2)
+        
+        # Test forbidden move up
+        self.assertRaises(MenuItem.DoesNotExist, lambda: move_item(menu_item3, 1))
         
     def test_clean_children_ranks(self):
         menu = Menu(name='menu_clean_children_ranks')
