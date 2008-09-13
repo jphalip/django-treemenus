@@ -21,6 +21,22 @@ def move_item(menu_item, vector):
 
 
 
+
+def move_item_or_clean_ranks(menu_item, vector):
+    ''' Helper function to move and item up or down in the database.
+        If the moving fails, we assume that the ranks were corrupted,
+        so we clean them and try the moving again.
+    '''
+    try:
+        move_item(menu_item, vector)
+    except MenuItem.DoesNotExist:
+        if menu_item.parent:
+            clean_ranks(menu_item.parent.children())
+            fresh_menu_item = MenuItem.objects.get(pk=menu_item.pk)
+            move_item(fresh_menu_item, vector)
+
+
+
 def get_parent_choices(menu, menu_item=None):
     """
     Returns flat list of tuples (possible_parent.pk, possible_parent.caption_with_spacer).

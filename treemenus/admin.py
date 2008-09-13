@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 
 from treemenus.models import Menu, MenuItem
-from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item
+from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_or_clean_ranks
 
 
 
@@ -127,7 +127,7 @@ class MenuAdmin(admin.ModelAdmin):
         menu_item = self.get_object_with_change_permissions(request, MenuItem, menu_item_pk)
         
         if menu_item.rank < menu_item.siblings().count():
-            move_item(menu_item, 1)
+            move_item_or_clean_ranks(menu_item, 1)
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
         else:
             msg = _('The menu item "%s" is not allowed to move down.') % force_unicode(menu_item)
@@ -139,7 +139,7 @@ class MenuAdmin(admin.ModelAdmin):
         menu_item = self.get_object_with_change_permissions(request, MenuItem, menu_item_pk)
         
         if menu_item.rank > 0:
-            move_item(menu_item, -1)
+            move_item_or_clean_ranks(menu_item, -1)
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
         else:
             msg = _('The menu item "%s" is not allowed to move up.') % force_unicode(menu_item)
