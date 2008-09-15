@@ -15,6 +15,7 @@ class MenuItem(models.Model):
     caption = models.CharField(ugettext_lazy('Caption'), max_length=50)
     url = models.CharField(ugettext_lazy('URL'), max_length=200, blank=True)
     named_url = models.CharField(ugettext_lazy('Named URL'), max_length=200, blank=True)
+    level = models.IntegerField(ugettext_lazy('Level'), default=0, editable=False)
     rank = models.IntegerField(ugettext_lazy('Rank'), default=0, editable=False)
     menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('Menu'), null=True, blank=True, editable=False)
     
@@ -23,7 +24,14 @@ class MenuItem(models.Model):
     
     def save(self, force_insert=False, force_update=False):
         from treemenus.utils import clean_ranks
-                
+
+        # Calculate level
+        old_level = self.level
+        if self.parent:
+            self.level = self.parent.level + 1
+        else:
+            self.level = 0
+        
         if self.pk:
             new_parent = self.parent
             old_parent = MenuItem.objects.get(pk=self.pk).parent
@@ -47,6 +55,13 @@ class MenuItem(models.Model):
                 siblings = self.siblings().order_by('-rank')
                 self.rank = siblings[0].rank + 1
             super(MenuItem, self).save(force_insert, force_update)
+       
+        # If level has changed, force children to refresh their own level
+        if old_level != self.level:
+            for child in self.children():
+                child.save() # Just saving is enough, it'll refresh its level correctly.
+    
+
     
     def delete(self):
         old_parent = self.parent
@@ -88,7 +103,7 @@ class MenuItem(models.Model):
     def children(self):
         _children = MenuItem.objects.filter(parent=self).order_by('rank',)
         for child in _children:
-            child.parent = self # Hack to not run a query in _level() each time
+            child.parent = self # Hack to avoid unnecessary DB queries further down the track.
         return _children
     
     def hasChildren(self):
@@ -98,23 +113,6 @@ class MenuItem(models.Model):
     
     def has_children(self):
         return self.children().count() > 0
-
-    def _level(self):
-        if not hasattr(self, '__level'):
-            if self.parent:
-                self.__level = self.parent.level + 1
-            else:
-                self.__level = 0
-        return self.__level
-    level = property(_level)
-    
-    
-    def _bobo(self):
-        if self.parent:
-            return self.parent.bobo + 1
-        else:
-            return 0
-    bobo = property(_bobo)
 
 
 class Menu(models.Model):
