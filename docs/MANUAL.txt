@@ -333,7 +333,7 @@ Now, you need to specify a form to let you edit those extra attributes from the 
 In your project's ``admin.py`` or your extension menu app's ``admin.py``, add the following::
 
     from treemenus.admin import MenuAdmin, MenuItemAdmin
-    from treemenus.admin import Menu
+    from treemenus.models import Menu
     from menu_extension.models import MenuItemExtension
     
     class MenuItemExtensionInline(admin.StackedInline):
