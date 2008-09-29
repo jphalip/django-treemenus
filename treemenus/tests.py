@@ -5,6 +5,139 @@ from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
 
 class TreemenusTestCase(TestCase):
 
+    def test_delete(self):
+        menu = Menu(name='menu_delete')
+        menu.save()
+        menu_item1 = MenuItem.objects.create(caption='menu_item1', parent=menu.root_item)
+        menu_item2 = MenuItem.objects.create(caption='menu_item2', parent=menu.root_item)
+        menu_item3 = MenuItem.objects.create(caption='menu_item3', parent=menu_item1)
+        menu_item4 = MenuItem.objects.create(caption='menu_item4', parent=menu_item1)
+        menu_item5 = MenuItem.objects.create(caption='menu_item5', parent=menu_item1)
+        menu_item6 = MenuItem.objects.create(caption='menu_item6', parent=menu_item2)
+        menu_item7 = MenuItem.objects.create(caption='menu_item7', parent=menu_item4)
+        menu_item8 = MenuItem.objects.create(caption='menu_item8', parent=menu_item4)
+        menu_item9 = MenuItem.objects.create(caption='menu_item9', parent=menu_item1)
+        menu_item10 = MenuItem.objects.create(caption='menu_item10', parent=menu_item4)
+        
+        # menu
+        #     ri
+        #         mi1
+        #             mi3
+        #             mi4
+        #                 mi7
+        #                 mi8
+        #                 mi10
+        #             mi5
+        #             mi9
+        #         mi2
+        #             mi6
+        
+        # Check initial ranks
+        self.assertEquals(menu_item1.rank, 0)
+        self.assertEquals(menu_item2.rank, 1)
+        self.assertEquals(menu_item3.rank, 0)
+        self.assertEquals(menu_item4.rank, 1)
+        self.assertEquals(menu_item5.rank, 2)
+        self.assertEquals(menu_item6.rank, 0)
+        self.assertEquals(menu_item7.rank, 0)
+        self.assertEquals(menu_item8.rank, 1)
+        self.assertEquals(menu_item9.rank, 3)
+        self.assertEquals(menu_item10.rank, 2)
+        
+        # Check initial levels
+        self.assertEquals(menu_item1.level, 1)
+        self.assertEquals(menu_item2.level, 1)
+        self.assertEquals(menu_item3.level, 2)
+        self.assertEquals(menu_item4.level, 2)
+        self.assertEquals(menu_item5.level, 2)
+        self.assertEquals(menu_item6.level, 2)
+        self.assertEquals(menu_item7.level, 3)
+        self.assertEquals(menu_item8.level, 3)
+        self.assertEquals(menu_item9.level, 2)
+        self.assertEquals(menu_item10.level, 3)
+
+        # Delete some items
+        menu_item8.delete()
+        menu_item3.delete()
+
+        # menu
+        #     ri
+        #         mi1
+        #             mi4
+        #                 mi7
+        #                 mi10
+        #             mi5
+        #             mi9
+        #         mi2
+        #             mi6
+
+        # Refetch items from db
+        menu_item1 = MenuItem.objects.get(pk=menu_item1.pk)
+        menu_item2 = MenuItem.objects.get(pk=menu_item2.pk)
+        menu_item4 = MenuItem.objects.get(pk=menu_item4.pk)
+        menu_item5 = MenuItem.objects.get(pk=menu_item5.pk)
+        menu_item6 = MenuItem.objects.get(pk=menu_item6.pk)
+        menu_item7 = MenuItem.objects.get(pk=menu_item7.pk)
+        menu_item9 = MenuItem.objects.get(pk=menu_item9.pk)
+        menu_item10 = MenuItem.objects.get(pk=menu_item10.pk)
+
+        # Check ranks
+        self.assertEquals(menu_item1.rank, 0)
+        self.assertEquals(menu_item2.rank, 1)
+        self.assertEquals(menu_item4.rank, 0)
+        self.assertEquals(menu_item5.rank, 1)
+        self.assertEquals(menu_item6.rank, 0)
+        self.assertEquals(menu_item7.rank, 0)
+        self.assertEquals(menu_item9.rank, 2)
+        self.assertEquals(menu_item10.rank, 1)
+        
+        # Check levels
+        self.assertEquals(menu_item1.level, 1)
+        self.assertEquals(menu_item2.level, 1)
+        self.assertEquals(menu_item4.level, 2)
+        self.assertEquals(menu_item5.level, 2)
+        self.assertEquals(menu_item6.level, 2)
+        self.assertEquals(menu_item7.level, 3)
+        self.assertEquals(menu_item9.level, 2)
+        self.assertEquals(menu_item10.level, 3)
+
+        # Delete some items
+        menu_item4.delete()
+        menu_item5.delete()
+
+        # menu
+        #     ri
+        #         mi1
+        #             mi9
+        #         mi2
+        #             mi6
+
+        # Refetch items from db
+        menu_item1 = MenuItem.objects.get(pk=menu_item1.pk)
+        menu_item2 = MenuItem.objects.get(pk=menu_item2.pk)
+        menu_item6 = MenuItem.objects.get(pk=menu_item6.pk)
+        menu_item9 = MenuItem.objects.get(pk=menu_item9.pk)
+
+        # Check ranks
+        self.assertEquals(menu_item1.rank, 0)
+        self.assertEquals(menu_item2.rank, 1)
+        self.assertEquals(menu_item6.rank, 0)
+        self.assertEquals(menu_item9.rank, 0)
+        
+        # Check levels
+        self.assertEquals(menu_item1.level, 1)
+        self.assertEquals(menu_item2.level, 1)
+        self.assertEquals(menu_item6.level, 2)
+        self.assertEquals(menu_item9.level, 2)
+
+        # Check that deleted items are in fact, gone.
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item3.pk))
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item4.pk))
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item5.pk))
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item7.pk))
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item8.pk))
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item10.pk))
+
     def test_change_parents(self):
         menu = Menu(name='menu_change_parents')
         menu.save()
