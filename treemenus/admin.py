@@ -32,6 +32,10 @@ class MenuItemAdmin(admin.ModelAdmin):
             # Show confirmation page
             return super(MenuItemAdmin, self).delete_view(request, object_id, extra_context)
 
+    def save_model(self, request, obj, form, change):
+        obj.menu = self._menu
+        obj.save()
+
     def save_add(self, request, form, formsets, post_url_continue):
         response = super(MenuItemAdmin, self).save_add(request, form, formsets, post_url_continue)
         if request.POST.has_key("_continue"):
