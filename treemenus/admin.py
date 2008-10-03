@@ -36,8 +36,8 @@ class MenuItemAdmin(admin.ModelAdmin):
         obj.menu = self._menu
         obj.save()
 
-    def save_add(self, request, form, formsets, post_url_continue):
-        response = super(MenuItemAdmin, self).save_add(request, form, formsets, post_url_continue)
+    def response_add(self, request, obj, post_url_continue='../%s/'):
+        response = super(MenuItemAdmin, self).response_add(request, obj, post_url_continue)
         if request.POST.has_key("_continue"):
             return response
         elif request.POST.has_key("_addanother"):
@@ -47,14 +47,14 @@ class MenuItemAdmin(admin.ModelAdmin):
         else:
             return HttpResponseRedirect("../../")
 
-    def save_change(self, request, form, formsets=None):
-        response =  super(MenuItemAdmin, self).save_change(request, form, formsets)
+    def response_change(self, request, obj):
+        response =  super(MenuItemAdmin, self).response_change(request, obj)
         if request.POST.has_key("_continue"):
             return HttpResponseRedirect(request.path)
         elif request.POST.has_key("_addanother"):
             return HttpResponseRedirect("../add/")
         elif request.POST.has_key("_saveasnew"):
-            #TODO: Know issue: how to redirect to the newly created object's edit page?
+            #FIXME: Return the right URL
             return HttpResponseRedirect("../../")
         else:
             return HttpResponseRedirect("../../")

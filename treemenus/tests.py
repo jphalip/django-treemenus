@@ -4,6 +4,125 @@ from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
 
 class TreemenusTestCase(TestCase):
+    fixtures = ['testdata.xml']
+    urls = 'treemenus.test_urls'
+
+
+    def setUp(self):
+        login = self.client.login(username='super', password='secret')
+        self.assertEqual(login, True)
+    
+    def test_view_add_item(self):
+        menu_data = {
+            "name": u"menu12387640",
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
+
+        menu = Menu.objects.get(name="menu12387640")
+
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"blah",
+            "url": u"http://www.example.com"
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+    
+        # Make sure the 'menu' attribute has been set correctly
+        menu_item = menu.root_item.children()[0]
+        self.assertEqual(menu_item.menu, menu)
+
+        # Save and continue editing
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"something0987456987546",
+            "url": u"http://www.example.com",
+            "_continue": ''
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        new_menu_item = MenuItem.objects.get(caption="something0987456987546")
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, new_menu_item.pk))
+
+        # Save and add another
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"something",
+            "url": u"http://www.example.com",
+            "_addanother": ''
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk)
+
+
+    def test_view_change_item(self):
+        # Add the menu
+        menu_data = {
+            "name": u"menu87623598762345",
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
+
+        menu = Menu.objects.get(name="menu87623598762345")
+
+        # Add the item
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"blah",
+            "url": u"http://www.example.com"
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+        
+        menu_item = menu.root_item.children()[0]
+        menu_item.menu = None # Corrupt it!
+        
+        # Change the item
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"something else",
+            "url": u"http://www.example.com"
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+
+        # Make sure the 'menu' attribute has been restored correctly
+        menu_item = menu.root_item.children()[0]
+        self.assertEqual(menu_item.menu, menu)
+        
+        # Save and continue editing
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"something else",
+            "url": u"http://www.example.com",
+            "_continue": ''
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk))
+
+        # Save and add another
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"something else",
+            "url": u"http://www.example.com",
+            "_addanother": ''
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk)
+
+#        # Save as new
+#        menu_item_data = {
+#            "parent": menu.root_item.pk,
+#            "caption": u"something else2345987002857",
+#            "url": u"http://www.example.com",
+#            "_saveasnew": ''
+#        }
+#        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
+#        new_menu_item = MenuItem.objects.get(caption="something else2345987002857")
+#        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, new_menu_item.pk))
+
+        
+
 
     def test_delete(self):
         menu = Menu(name='menu_delete')
