@@ -19,7 +19,7 @@ class TreemenusTestCase(TestCase):
         response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
 
-        menu = Menu.objects.get(name="menu12387640")
+        menu = Menu.objects.order_by('-pk')[0]
 
         menu_item_data = {
             "parent": menu.root_item.pk,
@@ -41,7 +41,7 @@ class TreemenusTestCase(TestCase):
             "_continue": ''
         }
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
-        new_menu_item = MenuItem.objects.get(caption="something0987456987546")
+        new_menu_item = MenuItem.objects.order_by('-pk')[0]
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, new_menu_item.pk))
 
         # Save and add another
@@ -54,6 +54,34 @@ class TreemenusTestCase(TestCase):
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk)
 
+    def test_view_delete_item(self):
+        menu_data = {
+            "name": u"menu545468763498",
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
+
+        menu = Menu.objects.order_by('-pk')[0]
+
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"blah",
+            "url": u"http://www.example.com"
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+
+        menu_item = menu.root_item.children()[0]
+
+        # Delete item confirmation
+        response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
+        self.assertEquals(response.request['PATH_INFO'], '/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
+        
+        # Delete item for good
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk), {'post': 'yes'})
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+        self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item.pk))
+        
 
     def test_view_change_item(self):
         # Add the menu
@@ -63,7 +91,7 @@ class TreemenusTestCase(TestCase):
         response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
 
-        menu = Menu.objects.get(name="menu87623598762345")
+        menu = Menu.objects.order_by('-pk')[0]
 
         # Add the item
         menu_item_data = {
@@ -109,20 +137,6 @@ class TreemenusTestCase(TestCase):
         }
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk)
-
-#        # Save as new
-#        menu_item_data = {
-#            "parent": menu.root_item.pk,
-#            "caption": u"something else2345987002857",
-#            "url": u"http://www.example.com",
-#            "_saveasnew": ''
-#        }
-#        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, menu_item.pk), menu_item_data)
-#        new_menu_item = MenuItem.objects.get(caption="something else2345987002857")
-#        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/' % (menu.pk, new_menu_item.pk))
-
-        
-
 
     def test_delete(self):
         menu = Menu(name='menu_delete')

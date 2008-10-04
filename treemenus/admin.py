@@ -19,12 +19,11 @@ from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_o
 class MenuItemAdmin(admin.ModelAdmin):
     ''' This class is used as a proxy by MenuAdmin to manipulate menu items. It should never be registered. '''
     def __init__(self, model, admin_site, menu):
-        #TODO: Try to get rid of _menu attribute...
         super(MenuItemAdmin, self).__init__(model, admin_site)
         self._menu = menu
     
     def delete_view(self, request, object_id, extra_context=None):
-        if request.method == 'POST':
+        if request.method == 'POST': # The user has already confirmed the deletion.
             # Delete and return to menu page
             ignored_response = super(MenuItemAdmin, self).delete_view(request, object_id, extra_context)
             return HttpResponseRedirect("../../../")
@@ -54,8 +53,7 @@ class MenuItemAdmin(admin.ModelAdmin):
         elif request.POST.has_key("_addanother"):
             return HttpResponseRedirect("../add/")
         elif request.POST.has_key("_saveasnew"):
-            #FIXME: Return the right URL
-            return HttpResponseRedirect("../../")
+            return HttpResponseRedirect("../%s/" % obj._get_pk_val())
         else:
             return HttpResponseRedirect("../../")
 
