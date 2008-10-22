@@ -54,6 +54,30 @@ class TreemenusTestCase(TestCase):
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk)
 
+    def test_view_history_item(self):
+        menu_data = {
+            "name": u"menu4578756856",
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/add/', menu_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/')
+
+        menu = Menu.objects.order_by('-pk')[0]
+
+        menu_item_data = {
+            "parent": menu.root_item.pk,
+            "caption": u"blah",
+            "url": u"http://www.example.com"
+        }
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/add/' % menu.pk, menu_item_data)
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
+
+        menu_item = menu.root_item.children()[0]
+
+        # Delete item confirmation
+        response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/history/' % (menu.pk, menu_item.pk))
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue('Change history' in response.content)
+
     def test_view_delete_item(self):
         menu_data = {
             "name": u"menu545468763498",

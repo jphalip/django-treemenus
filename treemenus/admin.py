@@ -82,6 +82,9 @@ class MenuAdmin(admin.ModelAdmin):
             match = re.match('^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/delete$', url)
             if match:
                 return self.delete_menu_item(request, match.group('menu_pk'), match.group('menu_item_pk'))
+            match = re.match('^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history$', url)
+            if match:
+                return self.history_menu_item(request, match.group('menu_pk'), match.group('menu_item_pk'))
             match = re.match('^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up$', url)
             if match:
                 return self.move_up_item(request, match.group('menu_pk'), match.group('menu_item_pk'))
@@ -123,6 +126,12 @@ class MenuAdmin(admin.ModelAdmin):
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
         return menu_item_admin.delete_view(request, menu_item_pk, extra_context={ 'menu': menu })
+
+    def history_menu_item(self, request, menu_pk, menu_item_pk):
+        ''' Custom view '''
+        menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
+        menu_item_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
+        return menu_item_admin.history_view(request, menu_item_pk, extra_context={ 'menu': menu })
 
     def move_down_item(self, request, menu_pk, menu_item_pk):
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
