@@ -7,7 +7,6 @@ class TreemenusTestCase(TestCase):
     fixtures = ['testdata.xml']
     urls = 'treemenus.test_urls'
 
-
     def setUp(self):
         login = self.client.login(username='super', password='secret')
         self.assertEqual(login, True)
@@ -595,3 +594,8 @@ class TreemenusTestCase(TestCase):
         self.assertEquals(menu_item2.rank, 0)
         self.assertEquals(menu_item3.rank, 1)
         self.assertEquals(menu_item4.rank, 2)
+
+    def test_menu_create(self):
+        # Regression test for issue #18
+        # http://code.google.com/p/django-treemenus/issues/detail?id=18
+        menu = Menu.objects.create(name="menu_created_with_force_insert_True")

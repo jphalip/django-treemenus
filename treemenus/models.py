@@ -124,7 +124,8 @@ class Menu(models.Model):
             root_item = MenuItem()
             root_item.caption = _('Root')
             if not self.pk: # If creating a new object (i.e does not have a pk yet)
-                super(Menu, self).save() # Save, so that it gets a pk
+                super(Menu, self).save(force_insert, force_update) # Save, so that it gets a pk
+                force_insert = False
             root_item.menu = self
             root_item.save() # Save, so that it gets a pk
             self.root_item = root_item
