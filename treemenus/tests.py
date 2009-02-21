@@ -452,7 +452,8 @@ class TreemenusTestCase(TestCase):
         self.assertEquals(menu_item3.rank, 2)
         self.assertEquals(menu_item4.rank, 3)
 
-        move_item(menu_item3, -1) # Move up
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/move_up/' % (menu.pk, menu_item3.pk))
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
         
         # Retrieve objects from db
         menu_item1 = MenuItem.objects.get(caption='menu_item1', parent=menu.root_item)
@@ -481,7 +482,8 @@ class TreemenusTestCase(TestCase):
         self.assertEquals(menu_item3.rank, 2)
         self.assertEquals(menu_item4.rank, 3)
 
-        move_item(menu_item3, 1) # Move down
+        response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/move_down/' % (menu.pk, menu_item3.pk))
+        self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
         
         # Retrieve objects from db
         menu_item1 = MenuItem.objects.get(caption='menu_item1', parent=menu.root_item)

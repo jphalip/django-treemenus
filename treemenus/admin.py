@@ -7,6 +7,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.admin.util import unquote
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
+from django.conf.urls.defaults import patterns
+from django.core.exceptions import PermissionDenied
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_or_clean_ranks
@@ -67,10 +69,9 @@ class MenuAdmin(admin.ModelAdmin):
     menu_item_admin_class = MenuItemAdmin
     
     def __call__(self, request, url):
-        ''' Overriden to route extra URLs.
-        
+        ''' DEPRECATED!! More recent versions of Django use the get_urls method instead.
+            Overriden to route extra URLs.
         '''
-
         if url:
             if url.endswith('items/add'):
                 return self.add_menu_item(request, unquote(url[:-10]))
@@ -91,8 +92,19 @@ class MenuAdmin(admin.ModelAdmin):
             match = re.match('^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down$', url)
             if match:
                 return self.move_down_item(request, match.group('menu_pk'), match.group('menu_item_pk'))
-        
         return super(MenuAdmin, self).__call__(request, url)
+    
+    def get_urls(self):
+        urls = super(MenuAdmin, self).get_urls()
+        my_urls = patterns('',
+            (r'^(?P<menu_pk>[-\w]+)/items/add/$', self.admin_site.admin_view(self.add_menu_item)),
+            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/$', self.admin_site.admin_view(self.edit_menu_item)),
+            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/delete/$', self.admin_site.admin_view(self.delete_menu_item)),
+            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history/$', self.admin_site.admin_view(self.history_menu_item)),
+            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up/$', self.admin_site.admin_view(self.move_up_item)),
+            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$', self.admin_site.admin_view(self.move_down_item)),
+        )
+        return my_urls + urls
     
     def get_object_with_change_permissions(self, request, model, obj_pk):
         ''' Helper function that returns a menu/menuitem if it exists and if the user has the change permissions '''
