@@ -1,0 +1,189 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-16 16:59+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Mykola Zamkovoi <nickzam@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\admin.py:154 .\admin.py:166
+#, python-format
+msgid "The menu item \"%s\" was moved successfully."
+msgstr "Пункт меню \"%s\" переміщено"
+
+#: .\admin.py:156
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move down."
+msgstr "Пункт меню \"%s\" не можна перемістити нижче."
+
+#: .\admin.py:168
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move up."
+msgstr "Пункт меню \"%s\" не можна перемістити вище."
+
+#: .\models.py:13
+msgid "Parent"
+msgstr "Батьківський елемент"
+
+#: .\models.py:14 .\templates\admin\treemenus\menu\change_form.html.py:24
+msgid "Caption"
+msgstr "Заголовок"
+
+#: .\models.py:15
+msgid "URL"
+msgstr "URL"
+
+#: .\models.py:16
+msgid "Named URL"
+msgstr "Поіменований URL"
+
+#: .\models.py:17
+msgid "Level"
+msgstr "Рівень"
+
+#: .\models.py:18
+msgid "Rank"
+msgstr "Ряд"
+
+#: .\models.py:19 .\models.py:142
+msgid "Menu"
+msgstr "Меню"
+
+#: .\models.py:119
+msgid "Name"
+msgstr "Назва"
+
+#: .\models.py:120
+msgid "Root Item"
+msgstr "Кореневий пункт"
+
+#: .\models.py:124
+msgid "Root"
+msgstr "Корінь"
+
+#: .\models.py:143 .\templates\admin\treemenus\menuitem\change_form.html.py:19
+#: .\templates\admin\treemenus\menuitem\change_form.html.py:24
+#: .\templates\admin\treemenus\menuitem\delete_confirmation.html.py:16
+#: .\templates\admin\treemenus\menuitem\object_history.html.py:16
+msgid "Menus"
+msgstr "Меню"
+
+#: .\models.py:146 .\models.py:147
+msgid "Меню"
+msgstr ""
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:8
+msgid "Menu Items"
+msgstr "Пункти меню"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:11
+msgid "Add an item"
+msgstr "Додати пункт"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:25
+msgid "Url"
+msgstr "Url"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:26
+msgid "Named url"
+msgstr "Поіменований url"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:27
+msgid "Move"
+msgstr "Перемістити"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:37
+#, fuzzy
+msgid "[Root]"
+msgstr "[Корінь]"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:53
+msgid "Down"
+msgstr "Вниз"
+
+#: .\templates\admin\treemenus\menu\change_form.html.py:59
+msgid "Up"
+msgstr "Вгору"
+
+#: .\templates\admin\treemenus\menuitem\change_form.html.py:18
+#: .\templates\admin\treemenus\menuitem\change_form.html.py:23
+#: .\templates\admin\treemenus\menuitem\delete_confirmation.html.py:15
+#: .\templates\admin\treemenus\menuitem\object_history.html.py:15
+msgid "Home"
+msgstr "Домівка"
+
+#: .\templates\admin\treemenus\menuitem\change_form.html.py:21
+msgid "Add Item"
+msgstr "Додати пункт меню"
+
+#: .\templates\admin\treemenus\menuitem\change_form.html.py:26
+#: .\templates\admin\treemenus\menuitem\delete_confirmation.html.py:18
+#: .\templates\admin\treemenus\menuitem\object_history.html.py:18
+msgid "Items"
+msgstr "Пункти меню"
+
+#: .\templates\admin\treemenus\menuitem\delete_confirmation.html.py:20
+msgid "Delete"
+msgstr "Видалити"
+
+#: .\templates\admin\treemenus\menuitem\object_history.html.py:20
+msgid "History"
+msgstr ""
+
+#~ msgid "The menu item \"%s\" was added successfully."
+#~ msgstr "Пункт меню \"%s\" додано."
+
+#~ msgid "You may edit it again below."
+#~ msgstr "Можна відредагувати його нижче"
+
+#~ msgid "You may add another menu item below."
+#~ msgstr "Нижче можна додати новий пункт меню."
+
+#~ msgid "Add menu item"
+#~ msgstr "Додати пункт меню"
+
+#~ msgid "The menu item \"%s\" was changed successfully."
+#~ msgstr "Пункт меню \"%s\" змінено"
+
+#~ msgid "Change menu item"
+#~ msgstr "Змінити пункт меню"
+
+#~ msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+#~ msgstr "%(name)s \"%(obj)s\" було успішно видалено"
+
+#~ msgid "Are you sure?"
+#~ msgstr "Ви впевнені?"
+
+#~ msgid "Other attributes"
+#~ msgstr "Інші атрібути"
+
+#~ msgid "Save and add another"
+#~ msgstr "Зберегти і додати інший"
+
+#~ msgid "Save and continue editing"
+#~ msgstr "Зберегти і продовжити редагування"
+
+#~ msgid "Save"
+#~ msgstr "Зберегти"
+
+#~ msgid "Are you sure you want to delete the menu item \"%(menu_item)s\"?"
+#~ msgstr "Видалити пункт меню \"%(menu_item)s\"?"
+
+#~ msgid "Yes, I'm sure"
+#~ msgstr "Так, я певен"
+
+#~ msgid "Change menu"
+#~ msgstr "Змінити меню"
+
+#~ msgid "Details"
+#~ msgstr "Детально"
