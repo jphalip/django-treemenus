@@ -166,11 +166,11 @@ There are two attributes:
 
 **Example of use**::
 
-    {% show_menu "TopMenu" %)
+    {% show_menu "TopMenu" %}
     ...
-    {% show_menu "LeftMenu" "vertical" %)
+    {% show_menu "LeftMenu" "vertical" %}
     ...
-    {% show_menu "RightMenu" "horizontal" %)
+    {% show_menu "RightMenu" "horizontal" %}
 
 ``show_menu_item``
 ------------------
