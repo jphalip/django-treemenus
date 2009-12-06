@@ -1,16 +1,32 @@
 from django.test import TestCase
+from django.conf import settings
+from django.core.management import call_command
+from django.db.models.loading import load_app
+from django.contrib.auth.models import User
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
 
 class TreemenusTestCase(TestCase):
-    fixtures = ['testdata.xml']
-    urls = 'treemenus.test_urls'
+    urls = 'treemenus.tests.urls'
 
     def setUp(self):
+        # Install testapp
+        self.old_INSTALLED_APPS = settings.INSTALLED_APPS
+        settings.INSTALLED_APPS += ['treemenus.tests.menu_extension']
+        load_app('menu_extension')
+        call_command('flush', verbosity=0, interactive=False)
+        call_command('syncdb', verbosity=0, interactive=False)
+        
+        # Log in as admin
+        User.objects.create_superuser('super', 'super@test.com', 'secret')
         login = self.client.login(username='super', password='secret')
         self.assertEqual(login, True)
-    
+
+    def tearDown(self):
+        # Restore settings
+        settings.INSTALLED_APPS = self.old_INSTALLED_APPS
+            
     def test_view_add_item(self):
         menu_data = {
             "name": u"menu12387640",
