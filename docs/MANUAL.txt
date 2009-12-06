@@ -150,7 +150,7 @@ you will first have to load the library they are contained in, with:
 ``show_menu``
 -------------
 
-This is the starting point. Call it whereever you want to display your menu
+This is the starting point. Call it wherever you want to display your menu
 (most of the time it will be in your site's base template).
 
 There are two attributes:
