@@ -3,29 +3,32 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: django-treemenus\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-15 18:16+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-10-14 21:41+0300\n"
+"Last-Translator: Alexander Yakovlev <ayakovlev@rambler.ru>\n"
+"Language-Team: Russian Language <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
 
 #: admin_views.py:85
 #, python-format
 msgid "The menu item \"%s\" was added successfully."
 msgstr "Пункт меню \"%s\" добавлен."
 
-#: admin_views.py:88 admin_views.py:133
+#: admin_views.py:88
+#: admin_views.py:133
 msgid "You may edit it again below."
 msgstr "Можно редактировать его ниже"
 
-#: admin_views.py:91 admin_views.py:136
+#: admin_views.py:91
+#: admin_views.py:136
 msgid "You may add another menu item below."
 msgstr "Можно добавить новый пункт меню."
 
@@ -45,13 +48,14 @@ msgstr "Изменить пункт меню"
 #: admin_views.py:166
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was deleted successfully."
-msgstr ""
+msgstr "%(name)s \"%(obj)s\" удален."
 
 #: admin_views.py:169
 msgid "Are you sure?"
-msgstr ""
+msgstr "Вы уверены?"
 
-#: admin_views.py:195 admin_views.py:210
+#: admin_views.py:195
+#: admin_views.py:210
 #, python-format
 msgid "The menu item \"%s\" was moved successfully."
 msgstr "Пункт меню \"%s\" перемещён"
@@ -70,7 +74,8 @@ msgstr "Пункт меню \"%s\" нельзя переместить выше.
 msgid "Parent"
 msgstr "Родительский элемент"
 
-#: models.py:18 templates/admin/treemenus/edit_menu.html:39
+#: models.py:18
+#: templates/admin/treemenus/edit_menu.html:39
 msgid "Caption"
 msgstr "Заголовок"
 
@@ -87,10 +92,12 @@ msgid "Level"
 msgstr "Уровень"
 
 #: models.py:22
+#, fuzzy
 msgid "Rank"
-msgstr ""
+msgstr "Положение"
 
-#: models.py:23 models.py:147
+#: models.py:23
+#: models.py:147
 msgid "Menu"
 msgstr "Меню"
 
@@ -106,7 +113,8 @@ msgstr "Корневой пункт"
 msgid "Root"
 msgstr "Корень"
 
-#: models.py:148 templates/admin/treemenus/add_edit_item.html:14
+#: models.py:148
+#: templates/admin/treemenus/add_edit_item.html:14
 #: templates/admin/treemenus/add_edit_item.html:20
 #: templates/admin/treemenus/delete_item_confirmation.html:9
 #: templates/admin/treemenus/edit_menu.html:11
@@ -118,7 +126,7 @@ msgstr "Меню"
 #: templates/admin/treemenus/delete_item_confirmation.html:8
 #: templates/admin/treemenus/edit_menu.html:10
 msgid "Home"
-msgstr ""
+msgstr "Начало"
 
 #: templates/admin/treemenus/add_edit_item.html:16
 #: templates/admin/treemenus/delete_item_confirmation.html:11
@@ -137,15 +145,15 @@ msgstr "Другие аттрибуты"
 #: templates/admin/treemenus/delete_item_confirmation.html:13
 #: templates/admin/treemenus/edit_menu.html:90
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: templates/admin/treemenus/add_edit_item.html:46
 msgid "Save and add another"
-msgstr ""
+msgstr "Сохранить и добавить другой"
 
 #: templates/admin/treemenus/add_edit_item.html:47
 msgid "Save and continue editing"
-msgstr ""
+msgstr "Сохранить и продолжить редактировать"
 
 #: templates/admin/treemenus/add_edit_item.html:48
 #: templates/admin/treemenus/edit_menu.html:91
@@ -201,3 +209,4 @@ msgstr "Вниз"
 #: templates/admin/treemenus/edit_menu.html:74
 msgid "Up"
 msgstr "Вверх"
+
