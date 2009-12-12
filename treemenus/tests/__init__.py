@@ -13,8 +13,8 @@ class TreemenusTestCase(TestCase):
     def setUp(self):
         # Install testapp
         self.old_INSTALLED_APPS = settings.INSTALLED_APPS
-        settings.INSTALLED_APPS += ['treemenus.tests.menu_extension']
-        load_app('menu_extension')
+        settings.INSTALLED_APPS += ['treemenus.tests.fake_menu_extension']
+        load_app('fake_menu_extension')
         call_command('flush', verbosity=0, interactive=False)
         call_command('syncdb', verbosity=0, interactive=False)
         
