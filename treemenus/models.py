@@ -21,7 +21,7 @@ class MenuItem(models.Model):
     def __unicode__(self):
         return self.caption
     
-    def save(self, force_insert=False, force_update=False):
+    def save(self, force_insert=False, **kwargs):
         from treemenus.utils import clean_ranks
 
         # Calculate level
@@ -39,11 +39,11 @@ class MenuItem(models.Model):
                 if new_parent:
                     clean_ranks(new_parent.children()) # Clean ranks for new siblings
                     self.rank = new_parent.children().count()
-                super(MenuItem, self).save(force_insert, force_update) # Save menu item in DB. It has now officially changed parent.
+                super(MenuItem, self).save(force_insert, **kwargs) # Save menu item in DB. It has now officially changed parent.
                 if old_parent:
                     clean_ranks(old_parent.children()) # Clean ranks for old siblings
             else:
-                super(MenuItem, self).save(force_insert, force_update) # Save menu item in DB
+                super(MenuItem, self).save(force_insert, **kwargs) # Save menu item in DB
         
         else: # Saving the menu item for the first time (i.e creating the object)
             if not self.has_siblings():
@@ -53,7 +53,7 @@ class MenuItem(models.Model):
                 # Has siblings - initial rank is highest sibling rank plus 1.
                 siblings = self.siblings().order_by('-rank')
                 self.rank = siblings[0].rank + 1
-            super(MenuItem, self).save(force_insert, force_update)
+            super(MenuItem, self).save(force_insert, **kwargs)
        
         # If level has changed, force children to refresh their own level
         if old_level != self.level:
@@ -118,17 +118,17 @@ class MenuItem(models.Model):
 class Menu(models.Model):
     name = models.CharField(ugettext_lazy('Name'), max_length=50)
     root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=ugettext_lazy('Root Item'), null=True, blank=True, editable=False)
-    def save(self, force_insert=False, force_update=False):
+    def save(self, force_insert=False, **kwargs):
         if not self.root_item:
             root_item = MenuItem()
             root_item.caption = _('Root')
             if not self.pk: # If creating a new object (i.e does not have a pk yet)
-                super(Menu, self).save(force_insert, force_update) # Save, so that it gets a pk
+                super(Menu, self).save(force_insert, **kwargs) # Save, so that it gets a pk
                 force_insert = False
             root_item.menu = self
             root_item.save() # Save, so that it gets a pk
             self.root_item = root_item
-        super(Menu, self).save(force_insert, force_update)
+        super(Menu, self).save(force_insert, **kwargs)
 
     def delete(self):
         if self.root_item is not None:
