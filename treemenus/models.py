@@ -92,11 +92,6 @@ class MenuItem(models.Model):
             else:
                 return self.parent.children().exclude(pk=self.pk)
     
-    def hasSiblings(self):
-        import warnings
-        warnings.warn('hasSiblings() is deprecated, use has_siblings() instead.', DeprecationWarning, stacklevel=2)
-        return self.has_siblings()
-    
     def has_siblings(self):
         return self.siblings().count() > 0
     
@@ -105,11 +100,6 @@ class MenuItem(models.Model):
         for child in _children:
             child.parent = self # Hack to avoid unnecessary DB queries further down the track.
         return _children
-    
-    def hasChildren(self):
-        import warnings
-        warnings.warn('hasChildren() is deprecated, use has_children() instead.', DeprecationWarning, stacklevel=2)
-        return self.has_children()
     
     def has_children(self):
         return self.children().count() > 0
