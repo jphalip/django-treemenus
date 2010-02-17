@@ -8,6 +8,12 @@ setup(
     author_email='julien@julienphalip.com',
     url='http://code.google.com/p/django-treemenus/',
     packages=find_packages(),
+    package_data={
+        'treemenus': [
+            'templates/admin/treemenus/menu/*.html',
+            'templates/admin/treemenus/menuitem/*.html'
+        ]
+    },
     zip_safe=False,
     classifiers=[
         'Development Status :: 4 - Beta',
