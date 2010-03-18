@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.conf import settings
 from django.core.management import call_command
 from django.db.models.loading import load_app
+from django import template
+from django.template.loaders import app_directories
 from django.contrib.auth.models import User
 
 from treemenus.models import Menu, MenuItem
@@ -17,7 +19,16 @@ class TreemenusTestCase(TestCase):
         load_app('fake_menu_extension')
         call_command('flush', verbosity=0, interactive=False)
         call_command('syncdb', verbosity=0, interactive=False)
+
+        # since django's r11862 templatags_modules and app_template_dirs are cached
+        # the cache is not emptied between tests
+        # clear out the cache of modules to load templatetags from so it gets refreshed
+        template.templatetags_modules = []
         
+        # clear out the cache of app_directories to load templates from so it gets refreshed
+        app_directories.app_template_dirs = []
+        # reload the module to refresh the cache
+        reload(app_directories)
         # Log in as admin
         User.objects.create_superuser('super', 'super@test.com', 'secret')
         login = self.client.login(username='super', password='secret')
