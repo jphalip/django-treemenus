@@ -10,13 +10,13 @@ from django.utils.translation import ugettext as _
 
 
 class MenuItem(models.Model):
-    parent = models.ForeignKey('self', verbose_name=ugettext_lazy('Parent'), null=True, blank=True)
-    caption = models.CharField(ugettext_lazy('Caption'), max_length=50)
+    parent = models.ForeignKey('self', verbose_name=ugettext_lazy('parent'), null=True, blank=True)
+    caption = models.CharField(ugettext_lazy('caption'), max_length=50)
     url = models.CharField(ugettext_lazy('URL'), max_length=200, blank=True)
-    named_url = models.CharField(ugettext_lazy('Named URL'), max_length=200, blank=True)
-    level = models.IntegerField(ugettext_lazy('Level'), default=0, editable=False)
-    rank = models.IntegerField(ugettext_lazy('Rank'), default=0, editable=False)
-    menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('Menu'), null=True, blank=True, editable=False)
+    named_url = models.CharField(ugettext_lazy('named URL'), max_length=200, blank=True)
+    level = models.IntegerField(ugettext_lazy('level'), default=0, editable=False)
+    rank = models.IntegerField(ugettext_lazy('rank'), default=0, editable=False)
+    menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('menu'), null=True, blank=True, editable=False)
     
     def __unicode__(self):
         return self.caption
@@ -106,12 +106,12 @@ class MenuItem(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(ugettext_lazy('Name'), max_length=50)
-    root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=ugettext_lazy('Root Item'), null=True, blank=True, editable=False)
+    name = models.CharField(ugettext_lazy('name'), max_length=50)
+    root_item = models.ForeignKey(MenuItem, related_name='is_root_item_of', verbose_name=ugettext_lazy('root item'), null=True, blank=True, editable=False)
     def save(self, force_insert=False, **kwargs):
         if not self.root_item:
             root_item = MenuItem()
-            root_item.caption = _('Root')
+            root_item.caption = _('root')
             if not self.pk: # If creating a new object (i.e does not have a pk yet)
                 super(Menu, self).save(force_insert, **kwargs) # Save, so that it gets a pk
                 force_insert = False
@@ -129,5 +129,5 @@ class Menu(models.Model):
         return self.name
     
     class Meta:
-        verbose_name = _('Menu')
-        verbose_name_plural = _('Menus')
+        verbose_name = _('menu')
+        verbose_name_plural = _('menus')
