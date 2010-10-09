@@ -334,6 +334,7 @@ the following command from the root of your project::
 Now, you need to specify a form to let you edit those extra attributes from the admin interface.
 In your project's ``admin.py`` or your extension menu app's ``admin.py``, add the following::
 
+    from django.contrib import admin
     from treemenus.admin import MenuAdmin, MenuItemAdmin
     from treemenus.models import Menu
     from menu_extension.models import MenuItemExtension
