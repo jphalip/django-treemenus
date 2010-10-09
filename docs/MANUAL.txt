@@ -466,7 +466,7 @@ Then, in your ``menu_item.html`` template, use the following 'if' statement::
 
     {% load menu_extension_filters %}
     ...
-    <li><a href="{{ menu_item.url }}" class="{% if menu_item.extension.selected_patterns|match_path:request.path %} selected{% endif %}">{{ menu_item.caption }}</a></li>
+    <li><a href="{{ menu_item.url }}" class="{% if menu_item.extension.selected_patterns|match_path:request.path %}selected{% endif %}">{{ menu_item.caption }}</a></li>
 
 With this code, every menu item whose attribute ``selected_patterns`` matches the
 current url will be given the 'selected' CSS class (it's up to you to define in
@@ -481,7 +481,7 @@ create in a moment.
 We now need to create the 'match_path' filter. In your ``menu_extension``
 application (or whatever name you've given to your menu extension application)
 create a directory ``templatetags`` containing two files: ``__init__.py`` (leave it
-empty) and ``menu_extension_filters`` containing the following code::
+empty) and ``menu_extension_filters.py`` containing the following code::
 
     import re
     from django import template
@@ -489,9 +489,10 @@ empty) and ``menu_extension_filters`` containing the following code::
     register = template.Library()
     
     def match_path(patterns, path):
-        for pattern in patterns.splitlines():
-            if re.compile(pattern).match(path):
-                return True
+        if patterns:
+            for pattern in patterns.splitlines():
+                if re.compile(pattern).match(path):
+                    return True
         return False
     register.filter('match_path', match_path)
 
