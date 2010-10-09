@@ -6,7 +6,7 @@ setup(
     description='Tree-structured menuing application for Django.',
     author='Julien Phalip',
     author_email='julien@julienphalip.com',
-    url='http://code.google.com/p/django-treemenus/',
+    url='http://github.com/jphalip/django-treemenus/',
     packages=find_packages(),
     package_data={
         'treemenus': [
