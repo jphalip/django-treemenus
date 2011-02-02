@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-treemenus',
-    version='0.8.7-pre',
+    version='0.8.8-pre',
     description='Tree-structured menuing application for Django.',
     author='Julien Phalip',
     author_email='julien@julienphalip.com',
