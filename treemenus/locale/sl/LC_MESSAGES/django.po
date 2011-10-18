@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-treemenus\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-30 14:08-0600\n"
+"PO-Revision-Date: 2011-08-27 18:23+0100\n"
+"Last-Translator: Domen Kožar <domen@dev.si>\n"
+"Language-Team: SLOVENIAN <domen@dev.si>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3;\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-Country: SLOVENIA\n"
+
+#: admin.py:149
+#: admin.py:161
+#, python-format
+msgid "The menu item \"%s\" was moved successfully."
+msgstr "Element v meniju \"%s\" je bil uspešno premaknjen."
+
+#: admin.py:151
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move down."
+msgstr "Elementa v meniju \"%s\" ni mogoče premakniti nižje."
+
+#: admin.py:163
+#, python-format
+msgid "The menu item \"%s\" is not allowed to move up."
+msgstr "Elementa v meniju \"%s\" ni mogoče premakniti višje."
+
+#: models.py:8
+msgid "parent"
+msgstr "nadrejeni"
+
+#: models.py:9
+msgid "caption"
+msgstr "naslov"
+
+#: models.py:10
+msgid "URL"
+msgstr "URL"
+
+#: models.py:11
+msgid "named URL"
+msgstr "poimenovan URL"
+
+#: models.py:12
+msgid "level"
+msgstr "nivo"
+
+#: models.py:13
+msgid "rank"
+msgstr "prioriteta"
+
+#: models.py:14
+#: models.py:130
+msgid "menu"
+msgstr "meni"
+
+#: models.py:104
+msgid "name"
+msgstr "ime"
+
+#: models.py:105
+msgid "root item"
+msgstr "vrhnji element"
+
+#: models.py:112
+msgid "root"
+msgstr "vrh"
+
+#: models.py:131
+msgid "menus"
+msgstr "meniji"
+
+#: templates/admin/treemenus/menu/change_form.html:8
+msgid "Menu Items"
+msgstr "Element v meniju"
+
+#: templates/admin/treemenus/menu/change_form.html:11
+msgid "Add an item"
+msgstr "Dodaj element"
+
+#: templates/admin/treemenus/menu/change_form.html:24
+msgid "Caption"
+msgstr "Naslov"
+
+#: templates/admin/treemenus/menu/change_form.html:25
+msgid "Url"
+msgstr "Url"
+
+#: templates/admin/treemenus/menu/change_form.html:26
+msgid "Named url"
+msgstr "Poimenovan URL"
+
+#: templates/admin/treemenus/menu/change_form.html:27
+msgid "Move"
+msgstr "Premakni"
+
+#: templates/admin/treemenus/menu/change_form.html:38
+msgid "[Root]"
+msgstr "[Vrh]"
+
+#: templates/admin/treemenus/menu/change_form.html:54
+msgid "Down"
+msgstr "Dol"
+
+#: templates/admin/treemenus/menu/change_form.html:60
+msgid "Up"
+msgstr "Gor"
+
+#: templates/admin/treemenus/menuitem/change_form.html:18
+#: templates/admin/treemenus/menuitem/change_form.html:23
+#: templates/admin/treemenus/menuitem/delete_confirmation.html:15
+#: templates/admin/treemenus/menuitem/object_history.html:15
+msgid "Home"
+msgstr "Domov"
+
+#: templates/admin/treemenus/menuitem/change_form.html:19
+#: templates/admin/treemenus/menuitem/change_form.html:24
+#: templates/admin/treemenus/menuitem/delete_confirmation.html:16
+#: templates/admin/treemenus/menuitem/object_history.html:16
+msgid "Menus"
+msgstr "Meniji"
+
+#: templates/admin/treemenus/menuitem/change_form.html:21
+msgid "Add Item"
+msgstr "Dodaj element"
+
+#: templates/admin/treemenus/menuitem/change_form.html:26
+#: templates/admin/treemenus/menuitem/delete_confirmation.html:18
+#: templates/admin/treemenus/menuitem/object_history.html:18
+msgid "Items"
+msgstr "Elementi"
+
+#: templates/admin/treemenus/menuitem/delete_confirmation.html:20
+msgid "Delete"
+msgstr "Izbriši"
+
+#: templates/admin/treemenus/menuitem/object_history.html:20
+msgid "History"
+msgstr "Zgodovina"
+
