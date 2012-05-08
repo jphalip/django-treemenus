@@ -1,6 +1,6 @@
 {% extends "admin/change_form.html" %}
-{% load i18n adminmedia %}
-{% load static %}
+{% load i18n %}
+{% load tree_menu_tags %}
 
 {% block after_related_objects %}
 {% if change %}
@@ -8,7 +8,7 @@
   <h2>{% trans "Menu Items" %}</h2>
 
   <div class="form-row" >
-  	  <img src="{% get_static_prefix %}img/treemenus/icon_addlink.gif" width="10" height="10"/> <a href="items/add/">{% trans "Add an item" %}</a>
+  	  <img src="{% get_treemenus_static_prefix %}/icon_addlink.gif" width="10" height="10"/> <a href="items/add/">{% trans "Add an item" %}</a>
   </div>
 
   <style type="text/css">
@@ -50,13 +50,13 @@
 
 				{% if menu_item.has_siblings %}
 					{% ifnotequal menu_item.rank menu_item.siblings.count %}
-						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% get_static_prefix %}img/treemenus/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% get_treemenus_static_prefix %}/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
 					{% else %}
 						<td width="20">&nbsp;</td>
 					{% endifnotequal %}
 
 					{% ifnotequal menu_item.rank 0 %}
-						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_up/"><img src="{% get_static_prefix %}img/treemenus/arrow-up.gif" border="0" alt="{% trans 'Up' %}"/></a></td>
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_up/"><img src="{% get_treemenus_static_prefix %}/arrow-up.gif" border="0" alt="{% trans 'Up' %}"/></a></td>
 					{% else %}
 						<td width="20">&nbsp;</td>
 					{% endifnotequal %}

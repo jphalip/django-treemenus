@@ -19,3 +19,6 @@ INSTALLED_APPS = [
 ROOT_URLCONF = 'treemenus.tests.urls'
 
 SECRET_KEY = 'Shush... Tell no one.'
+
+# For Django 1.3 and above
+STATIC_URL = '/static/'

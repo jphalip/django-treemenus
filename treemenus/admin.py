@@ -187,10 +187,5 @@ class MenuAdmin(admin.ModelAdmin):
 
         return HttpResponseRedirect('../../../')
 
-if django.VERSION >= (1, 3):
-    MenuAdmin.change_form_template = 'admin/treemenus/menu/change_form_django1.3_and_above.html'
-else:
-    MenuAdmin.change_form_template = 'admin/treemenus/menu/change_form_django1.2_and_below.html'
-
 
 admin.site.register(Menu, MenuAdmin)
