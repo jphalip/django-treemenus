@@ -1,15 +1,14 @@
 import re
 
+import django
 from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
 from django.contrib.admin.util import unquote
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
-from django.views.generic import RedirectView
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_or_clean_ranks
@@ -101,12 +100,18 @@ class MenuAdmin(admin.ModelAdmin):
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history/$', self.admin_site.admin_view(self.history_menu_item)),
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up/$', self.admin_site.admin_view(self.move_up_item)),
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$', self.admin_site.admin_view(self.move_down_item)),
-
-            # A dummy named URL to satisfy reversing the reversing requirements
-            # of the menuitem add/change views. It shouldn't ever be used; it
-            # just needs to be exist so that it resolves internally.
-            url(r'^item_changelist/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_changelist'),
         )
+
+        if django.VERSION >= (1, 4):
+            # Dummy named URLs to satisfy reversing the reversing requirements
+            # of the menuitem add/change views. It shouldn't ever be used; it
+            # just needs to exist so that it get resolved internally by the
+            # django admin.
+            from django.views.generic import RedirectView
+            my_urls += patterns('',
+                url(r'^item_changelist/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_changelist'),
+                url(r'^item_add/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_add'),
+            )
         return my_urls + urls
 
     def get_object_with_change_permissions(self, request, model, obj_pk):
@@ -157,7 +162,12 @@ class MenuAdmin(admin.ModelAdmin):
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
         else:
             msg = _('The menu item "%s" is not allowed to move down.') % force_unicode(menu_item)
-        request.user.message_set.create(message=msg)
+
+        if django.VERSION >= (1, 4):
+            self.message_user(request, message=msg)
+        else:
+            request.user.message_set.create(message=msg)
+
         return HttpResponseRedirect('../../../')
 
     def move_up_item(self, request, menu_pk, menu_item_pk):
@@ -169,8 +179,18 @@ class MenuAdmin(admin.ModelAdmin):
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
         else:
             msg = _('The menu item "%s" is not allowed to move up.') % force_unicode(menu_item)
-        request.user.message_set.create(message=msg)
+
+        if django.VERSION >= (1, 4):
+            self.message_user(request, message=msg)
+        else:
+            request.user.message_set.create(message=msg)
+
         return HttpResponseRedirect('../../../')
+
+if django.VERSION >= (1, 3):
+    MenuAdmin.change_form_template = 'admin/treemenus/menu/change_form_django1.3_and_above.html'
+else:
+    MenuAdmin.change_form_template = 'admin/treemenus/menu/change_form_django1.2_and_below.html'
 
 
 admin.site.register(Menu, MenuAdmin)
