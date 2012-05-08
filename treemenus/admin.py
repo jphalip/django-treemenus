@@ -2,7 +2,7 @@ import re
 from django.contrib import admin
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.admin.util import unquote
-from django.utils.utils import escape
+from django.utils.html import escape
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 from django.conf.urls.defaults import patterns
