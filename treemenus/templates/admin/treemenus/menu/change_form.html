@@ -1,22 +1,23 @@
 {% extends "admin/change_form.html" %}
 {% load i18n adminmedia %}
+{% load static %}
 
 
 {% block after_related_objects %}
 {% if change %}
   <fieldset class="module aligned">
   <h2>{% trans "Menu Items" %}</h2>
-  
+
   <div class="form-row" >
-  	  <img src="{% admin_media_prefix %}img/admin/icon_addlink.gif" width="10" height="10"/> <a href="items/add/">{% trans "Add an item" %}</a>
+  	  <img src="{% get_static_prefix %}img/treemenus/icon_addlink.gif" width="10" height="10"/> <a href="items/add/">{% trans "Add an item" %}</a>
   </div>
-  
+
   <style type="text/css">
       .form-row tbody tr:hover{
           background-color: #ffffbe;
       }
   </style>
-  
+
   <div class="form-row" >
 	  <table cellspacing="0" width="100%">
 		<thead>
@@ -31,9 +32,9 @@
 		<tbody>
 		  {% for menu_item in original.root_item.get_flattened %}
 			<tr class="{% cycle 'row1' 'row2' %}">
-			
+
 				{% if forloop.first %}
-					<td colspan="3">						
+					<td colspan="3">
 						{% trans "[Root]" %}
 					</td>
 				{% else %}
@@ -47,16 +48,16 @@
 						{{ menu_item.named_url }}
 					</td>
 				{% endif %}
-				
+
 				{% if menu_item.has_siblings %}
 					{% ifnotequal menu_item.rank menu_item.siblings.count %}
-						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% admin_media_prefix %}img/admin/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_down/"><img src="{% get_static_prefix %}img/treemenus/arrow-down.gif" border="0" alt="{% trans 'Down' %}"/></b></td>
 					{% else %}
 						<td width="20">&nbsp;</td>
 					{% endifnotequal %}
-					
+
 					{% ifnotequal menu_item.rank 0 %}
-						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_up/"><img src="{% admin_media_prefix %}img/admin/arrow-up.gif" border="0" alt="{% trans 'Up' %}"/></a></td>
+						<td width="20" align="center"><a href="items/{{ menu_item.pk }}/move_up/"><img src="{% get_static_prefix %}img/treemenus/arrow-up.gif" border="0" alt="{% trans 'Up' %}"/></a></td>
 					{% else %}
 						<td width="20">&nbsp;</td>
 					{% endifnotequal %}
