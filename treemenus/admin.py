@@ -1,12 +1,15 @@
 import re
+
+from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
-from django.http import HttpResponseRedirect, Http404
 from django.contrib.admin.util import unquote
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, Http404
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
-from django.conf.urls.defaults import patterns
-from django.core.exceptions import PermissionDenied
+from django.views.generic import RedirectView
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_or_clean_ranks
@@ -98,6 +101,11 @@ class MenuAdmin(admin.ModelAdmin):
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history/$', self.admin_site.admin_view(self.history_menu_item)),
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up/$', self.admin_site.admin_view(self.move_up_item)),
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$', self.admin_site.admin_view(self.move_down_item)),
+
+            # A dummy named URL to satisfy reversing the reversing requirements
+            # of the menuitem add/change views. It shouldn't ever be used; it
+            # just needs to be exist so that it resolves internally.
+            url(r'^item_changelist/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_changelist'),
         )
         return my_urls + urls
 
