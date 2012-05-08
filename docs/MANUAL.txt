@@ -21,13 +21,18 @@ Installation
 Installing an official release
 ------------------------------
 
-Official releases are made available from
-http://code.google.com/p/django-treemenus/
+django-treemenus is available on PyPI, and can be installed using Pip::
+
+    pip install django-treemenus
+
+Alternatively, official source releases are made available from
+
+    https://github.com/jphalip/django-treemenus/downloads
 
 Download the .zip distribution file and unpack it. Inside is a script
 named ``setup.py``. Run this command::
 
-   python setup.py install
+    python setup.py install
 
 ...and the package will install automatically.
 
@@ -36,9 +41,9 @@ Installing the development version
 
 If you prefer to update Django Tree Menus occasionally to get the latest bug
 fixes and improvements before they are included in an official release, do a
-Subversion checkout instead::
+git clone instead::
 
-   svn checkout http://django-treemenus.googlecode.com/svn/trunk/treemenus/
+    git clone https://github.com/jphalip/django-treemenus
 
 Then add the ``treemenus`` folder to your PYTHONPATH or symlink (junction, if
 you're on Windows), such as in your Python's ``site-packages`` directory.
@@ -95,7 +100,7 @@ Template to specify how to display a menu.
 ``menu``
     Pointer to the menu to display. You can access its root item with
     ``menu.root_item``.
-    
+
 ``menu_type`` (optional)
     This variable will only be present if it has been specified when
     calling the ``show_menu`` template tag. (See the "Template tags"
@@ -139,7 +144,17 @@ Template to specify how to display a menu item.
 
 **Example for this template**::
 
-    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+    {% load tree_menu_tags %}
+    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
+        {% if menu_item.children %}
+        <ul>
+            {% for child_item in menu_item.children %}
+            {% show_menu_item child_item %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </li>
+
 
 Template tags
 =============
@@ -242,7 +257,7 @@ you can move it up or down through the admin interface.
 ``level``
 
 Returns the item's level in the hierarchy. This is automatically calculated by
-the system. For example, the root item has a level 0, and its children have a 
+the system. For example, the root item has a level 0, and its children have a
 level 1.
 
 **Example of use**::
@@ -286,7 +301,7 @@ Returns a list with the menu item's children, ordered by rank.
     {% else %}
         <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
     {% endif %}
-    
+
 ``siblings``
 
 Returns a list with the menu item's siblings (i.e all other items that have the
@@ -315,7 +330,7 @@ Then, in ``menu_extension.models.py`` add the following::
 
     from django.db import models
     from treemenus.models import MenuItem
-    
+
     class MenuItemExtension(models.Model):
         menu_item = models.OneToOneField (MenuItem, related_name="extension")
         published = models.BooleanField(default=False)
@@ -338,14 +353,14 @@ In your project's ``admin.py`` or your extension menu app's ``admin.py``, add th
     from treemenus.admin import MenuAdmin, MenuItemAdmin
     from treemenus.models import Menu
     from menu_extension.models import MenuItemExtension
-    
+
     class MenuItemExtensionInline(admin.StackedInline):
         model = MenuItemExtension
         max_num = 1
-    
+
     class CustomMenuItemAdmin(MenuItemAdmin):
         inlines = [MenuItemExtensionInline,]
-    
+
     class CustomMenuAdmin(MenuAdmin):
         menu_item_admin_class = CustomMenuItemAdmin
 
@@ -383,7 +398,7 @@ Internationalization
 Making your menus multi-lingual is very easy if you use the `Django internationalization`_
 module. What you can do is apply the translation to the ``caption`` attribute
 of a menu_item. For example::
-    
+
     {% load i18n %}
     ...
     <li><a href="{{ menu_item.url }}">{% trans menu_item.caption %}</a></li>
@@ -399,7 +414,7 @@ the translation, for example::
     class MenuItemExtension(models.Model):
         menu_item = models.OneToOneField (MenuItem, related_name="extension")
         ...
-       
+
         def translation():
             translation = do_something_with(self.menu_item.caption)
             return translation
@@ -419,7 +434,7 @@ already have one) like the following::
         menu_item = models.OneToOneField (MenuItem, related_name="extension")
         protected = models.BooleanField(default=False)
         ...
-        
+
 And then in your template::
     {% if menu_item.extension.protected %}
         {% if user.is_authenticated %}
@@ -488,9 +503,9 @@ empty) and ``menu_extension_filters.py`` containing the following code::
 
     import re
     from django import template
-    
+
     register = template.Library()
-    
+
     def match_path(patterns, path):
         if patterns:
             for pattern in patterns.splitlines():
