@@ -1,7 +1,8 @@
-from django.utils.safestring import mark_safe    
+from django.utils.safestring import mark_safe
 from django.forms import ChoiceField
 
 from treemenus.models import MenuItem
+
 
 class MenuItemChoiceField(ChoiceField):
     ''' Custom field to display the list of items in a tree manner '''
@@ -12,14 +13,12 @@ class MenuItemChoiceField(ChoiceField):
 def move_item(menu_item, vector):
     ''' Helper function to move and item up or down in the database '''
     old_rank = menu_item.rank
-    swapping_sibling = MenuItem.objects.get(parent=menu_item.parent, rank=old_rank+vector)
+    swapping_sibling = MenuItem.objects.get(parent=menu_item.parent, rank=old_rank + vector)
     new_rank = swapping_sibling.rank
     swapping_sibling.rank = old_rank
     menu_item.rank = new_rank
     menu_item.save()
     swapping_sibling.save()
-
-
 
 
 def move_item_or_clean_ranks(menu_item, vector):
@@ -36,7 +35,6 @@ def move_item_or_clean_ranks(menu_item, vector):
             move_item(fresh_menu_item, vector)
 
 
-
 def get_parent_choices(menu, menu_item=None):
     """
     Returns flat list of tuples (possible_parent.pk, possible_parent.caption_with_spacer).
@@ -51,9 +49,8 @@ def get_parent_choices(menu, menu_item=None):
                 for child in menu_item.children():
                     choices += get_flat_tuples(child, excepted_item)
             return choices
-    
-    return get_flat_tuples(menu.root_item, menu_item)
 
+    return get_flat_tuples(menu.root_item, menu_item)
 
 
 def clean_ranks(menu_items):

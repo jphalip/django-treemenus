@@ -1,10 +1,8 @@
 import re
-from django.utils.functional import wraps
 from django.contrib import admin
-from django.conf import settings
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.contrib.admin.util import unquote
+from django.utils.utils import escape
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 from django.conf.urls.defaults import patterns
@@ -14,20 +12,16 @@ from treemenus.models import Menu, MenuItem
 from treemenus.utils import get_parent_choices, MenuItemChoiceField, move_item_or_clean_ranks
 
 
-
-
-
-
 class MenuItemAdmin(admin.ModelAdmin):
     ''' This class is used as a proxy by MenuAdmin to manipulate menu items. It should never be registered. '''
     def __init__(self, model, admin_site, menu):
         super(MenuItemAdmin, self).__init__(model, admin_site)
         self._menu = menu
-    
+
     def delete_view(self, request, object_id, extra_context=None):
-        if request.method == 'POST': # The user has already confirmed the deletion.
+        if request.method == 'POST':  # The user has already confirmed the deletion.
             # Delete and return to menu page
-            ignored_response = super(MenuItemAdmin, self).delete_view(request, object_id, extra_context)
+            super(MenuItemAdmin, self).delete_view(request, object_id, extra_context)
             return HttpResponseRedirect("../../../")
         else:
             # Show confirmation page
@@ -39,22 +33,22 @@ class MenuItemAdmin(admin.ModelAdmin):
 
     def response_add(self, request, obj, post_url_continue='../%s/'):
         response = super(MenuItemAdmin, self).response_add(request, obj, post_url_continue)
-        if request.POST.has_key("_continue"):
+        if "_continue" in request.POST:
             return response
-        elif request.POST.has_key("_addanother"):
+        elif "_addanother" in request.POST:
             return HttpResponseRedirect(request.path)
-        elif request.POST.has_key("_popup"):
+        elif "_popup" in request.POST:
             return response
         else:
             return HttpResponseRedirect("../../")
 
     def response_change(self, request, obj):
-        response =  super(MenuItemAdmin, self).response_change(request, obj)
-        if request.POST.has_key("_continue"):
+        super(MenuItemAdmin, self).response_change(request, obj)
+        if "_continue" in request.POST:
             return HttpResponseRedirect(request.path)
-        elif request.POST.has_key("_addanother"):
+        elif "_addanother" in request.POST:
             return HttpResponseRedirect("../add/")
-        elif request.POST.has_key("_saveasnew"):
+        elif "_saveasnew" in request.POST:
             return HttpResponseRedirect("../%s/" % obj._get_pk_val())
         else:
             return HttpResponseRedirect("../../")
@@ -65,9 +59,10 @@ class MenuItemAdmin(admin.ModelAdmin):
         form.base_fields['parent'] = MenuItemChoiceField(choices=choices)
         return form
 
+
 class MenuAdmin(admin.ModelAdmin):
     menu_item_admin_class = MenuItemAdmin
-    
+
     def __call__(self, request, url):
         ''' DEPRECATED!! More recent versions of Django use the get_urls method instead.
             Overriden to route extra URLs.
@@ -93,7 +88,7 @@ class MenuAdmin(admin.ModelAdmin):
             if match:
                 return self.move_down_item(request, match.group('menu_pk'), match.group('menu_item_pk'))
         return super(MenuAdmin, self).__call__(request, url)
-    
+
     def get_urls(self):
         urls = super(MenuAdmin, self).get_urls()
         my_urls = patterns('',
@@ -105,7 +100,7 @@ class MenuAdmin(admin.ModelAdmin):
             (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$', self.admin_site.admin_view(self.move_down_item)),
         )
         return my_urls + urls
-    
+
     def get_object_with_change_permissions(self, request, model, obj_pk):
         ''' Helper function that returns a menu/menuitem if it exists and if the user has the change permissions '''
         try:
@@ -125,30 +120,30 @@ class MenuAdmin(admin.ModelAdmin):
         ''' Custom view '''
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
         menuitem_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
-        return menuitem_admin.add_view(request, extra_context={ 'menu': menu })
+        return menuitem_admin.add_view(request, extra_context={'menu': menu})
 
     def edit_menu_item(self, request, menu_pk, menu_item_pk):
         ''' Custom view '''
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
-        return menu_item_admin.change_view(request, menu_item_pk, extra_context={ 'menu': menu })
+        return menu_item_admin.change_view(request, menu_item_pk, extra_context={'menu': menu})
 
     def delete_menu_item(self, request, menu_pk, menu_item_pk):
         ''' Custom view '''
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
-        return menu_item_admin.delete_view(request, menu_item_pk, extra_context={ 'menu': menu })
+        return menu_item_admin.delete_view(request, menu_item_pk, extra_context={'menu': menu})
 
     def history_menu_item(self, request, menu_pk, menu_item_pk):
         ''' Custom view '''
         menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item_admin = self.menu_item_admin_class(MenuItem, self.admin_site, menu)
-        return menu_item_admin.history_view(request, menu_item_pk, extra_context={ 'menu': menu })
+        return menu_item_admin.history_view(request, menu_item_pk, extra_context={'menu': menu})
 
     def move_down_item(self, request, menu_pk, menu_item_pk):
-        menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
+        self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item = self.get_object_with_change_permissions(request, MenuItem, menu_item_pk)
-        
+
         if menu_item.rank < menu_item.siblings().count():
             move_item_or_clean_ranks(menu_item, 1)
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
@@ -156,11 +151,11 @@ class MenuAdmin(admin.ModelAdmin):
             msg = _('The menu item "%s" is not allowed to move down.') % force_unicode(menu_item)
         request.user.message_set.create(message=msg)
         return HttpResponseRedirect('../../../')
-    
+
     def move_up_item(self, request, menu_pk, menu_item_pk):
-        menu = self.get_object_with_change_permissions(request, Menu, menu_pk)
+        self.get_object_with_change_permissions(request, Menu, menu_pk)
         menu_item = self.get_object_with_change_permissions(request, MenuItem, menu_item_pk)
-        
+
         if menu_item.rank > 0:
             move_item_or_clean_ranks(menu_item, -1)
             msg = _('The menu item "%s" was moved successfully.') % force_unicode(menu_item)
