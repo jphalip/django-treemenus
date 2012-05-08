@@ -1,3 +1,7 @@
+# For Django 1.1 and under
+DATABASE_ENGINE = 'django.db.backends.sqlite3'
+
+# For Django 1.2 and above
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3'

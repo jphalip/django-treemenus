@@ -7,11 +7,13 @@ install:
   - pip install Django==$DJANGO_VERSION
   - pip install -e .
 script:
-  - make test-django-$SETTINGS_VERSION
+  - make test
 env:
-  - DJANGO_VERSION=1.2.7 SETTINGS_VERSION=1-2
-  - DJANGO_VERSION=1.3.1 SETTINGS_VERSION=1-3
-  - DJANGO_VERSION=1.4   SETTINGS_VERSION=1-4
+  - DJANGO_VERSION=1.0.4
+  - DJANGO_VERSION=1.1.4
+  - DJANGO_VERSION=1.2.7
+  - DJANGO_VERSION=1.3.1
+  - DJANGO_VERSION=1.4
 branches:
   only:
     - master
