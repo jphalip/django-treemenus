@@ -10,8 +10,9 @@ setup(
     packages=find_packages(),
     package_data={
         'treemenus': [
+            'static/img/treemenus/*.gif',
             'templates/admin/treemenus/menu/*.html',
-            'templates/admin/treemenus/menuitem/*.html'
+            'templates/admin/treemenus/menuitem/*.html',
         ]
     },
     zip_safe=False,
