@@ -3,6 +3,8 @@ python:
   - "2.5"
   - "2.6"
   - "2.7"
+before_install:
+  - export PIP_INDEX_URL=https://simple.crate.io/
 install:
   - pip install Django==$DJANGO_VERSION
   - pip install -e .
@@ -18,3 +20,7 @@ env:
 branches:
   only:
     - master
+matrix:
+  exclude:
+    - python: "2.5"
+      env: DJANGO_VERSION=1.5
