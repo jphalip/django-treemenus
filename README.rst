@@ -22,9 +22,7 @@ django-treemenus is available on PyPI, and can be installed using Pip::
 
     pip install django-treemenus
 
-Alternatively, official source releases are made available from
-
-    https://github.com/jphalip/django-treemenus/downloads
+Alternatively, official source releases are made available from https://github.com/jphalip/django-treemenus/downloads
 
 Download the .zip distribution file and unpack it. Inside is a script
 named ``setup.py``. Run this command::
@@ -94,11 +92,11 @@ Template to specify how to display a menu.
 
 **Context:**
 
-``menu``
+* ``menu``
     Pointer to the menu to display. You can access its root item with
     ``menu.root_item``.
 
-``menu_type`` (optional)
+* ``menu_type`` (optional)
     This variable will only be present if it has been specified when
     calling the ``show_menu`` template tag. (See the "Template tags"
     section for more details).
@@ -130,11 +128,11 @@ Template to specify how to display a menu item.
 
 **Context:**
 
-``menu_item``
+* ``menu_item``
     Pointer to the menu_item to display. You can directly access all
     its methods and variables.
 
-``menu_type`` (optional)
+* ``menu_type`` (optional)
     This variable will only be accessible if it has been specified when
     calling the ``show_menu`` template tag (See the "Template tags"
     section for more details).
@@ -157,9 +155,9 @@ Template tags
 =============
 
 There a 3 template tags to let you display your menus. To be able to use them
-you will first have to load the library they are contained in, with:
+you will first have to load the library they are contained in, with::
 
-{% load tree_menu_tags %}
+    {% load tree_menu_tags %}
 
 ``show_menu``
 -------------
@@ -169,14 +167,15 @@ This is the starting point. Call it wherever you want to display your menu
 
 There are two attributes:
 
-    * ``menu_name``: name of the menu to display, as it has been saved via
-                     the admin interface.
-    * ``menu_type``: This attribute is optional. If it is given it is simply
-                     passed to the ``treemenus/menu.html`` template. It does
-                     not have any particular pre-defined function but can be
-                     tested with (% ifequal menu_type "sometype" %} to
-                     determine how to display the menu (See above example for
-                     the template ``treemenus/menu.html``).
+* ``menu_name``
+    Name of the menu to display, as it has been saved via the admin interface.
+* ``menu_type``
+    This attribute is optional. If it is given it is simply
+    passed to the ``treemenus/menu.html`` template. It does
+    not have any particular pre-defined function but can be
+    tested with (% ifequal menu_type "sometype" %} to
+    determine how to display the menu (See above example for
+    the template ``treemenus/menu.html``).
 
 **Example of use**::
 
@@ -203,7 +202,7 @@ single string. To know more about named URLs, refer to `the Django template docu
 For example, the passed value could be 'latest_news' or 'show_profile user.id', and that
 would be reversed to the corresponding URL (as defined in your URLConf).
 
-.. _the Django template documentation: http://www.djangoproject.com/documentation/templates/#url
+.. _the Django template documentation: https://docs.djangoproject.com/en/dev/ref/templates/builtins/#url
 
 **Example of use**::
 
@@ -225,84 +224,74 @@ you got it, the menu's root item.
 Menu item
 ---------
 
-``menu``
+* ``menu``
+    Returns the menu to which it belongs.
 
- Returns the menu to which it belongs.
+* ``url``
+    Returns the item's url.
 
-``url``
+    **Example of use**::
 
-Returns the item's url.
-
-**Example of use**::
-
-    <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-
-``parent``
-
-Returns the menu item's parent (that is, another menu item).
-
-``rank``
-
-Returns the item's rank amongst its siblings. The first item of a branch has
-a rank of 0, the second one has a rank of 1, etc. To change an item's ranking
-you can move it up or down through the admin interface.
-
-**Example of use**::
-
-    <li><a class="menuitem-{{ menu_item.rank }}" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-
-``level``
-
-Returns the item's level in the hierarchy. This is automatically calculated by
-the system. For example, the root item has a level 0, and its children have a
-level 1.
-
-**Example of use**::
-
-    {% ifequal menu_item.level 1 %}
-        <li><a class="top-item" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-    {% else %}
         <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-    {% endifequal %}
 
-``caption``
+* ``parent``
+    Returns the menu item's parent (that is, another menu item).
 
-Returns the item's caption.
+* ``rank``
+    Returns the item's rank amongst its siblings. The first item of a branch has
+    a rank of 0, the second one has a rank of 1, etc. To change an item's ranking
+    you can move it up or down through the admin interface.
 
-``named_url``
+    **Example of use**::
 
-Use this attribute if you want to use named URLs instead of raw URLs.
+        <li><a class="menuitem-{{ menu_item.rank }}" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
 
-**Example of use**::
+* ``level``
+    Returns the item's level in the hierarchy. This is automatically calculated by
+    the system. For example, the root item has a level 0, and its children have a
+    level 1.
 
-    <li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
+    **Example of use**::
 
-``has_children``
+        {% ifequal menu_item.level 1 %}
+            <li><a class="top-item" href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+        {% else %}
+            <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+        {% endifequal %}
 
-Returns True if the item has some children, False otherwise.
+* ``caption``
+    Returns the item's caption.
 
-``children``
+* ``named_url``
+    Use this attribute if you want to use named URLs instead of raw URLs.
 
-Returns a list with the menu item's children, ordered by rank.
+    **Example of use**::
 
-**Example of use**::
+        <li><a href="{% reverse_named_url menu_item.named_url %}">{{ menu_item.caption }}</a></li>
 
-    {% if menu_item.has_children %}
-        <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
-            <ul>
-                {% for child in menu_item.children %}
-                    {% show_menu_item child %}
-                {% endfor %}
-            </ul>
-        </li>
-    {% else %}
-        <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
-    {% endif %}
+* ``has_children``
+    Returns True if the item has some children, False otherwise.
 
-``siblings``
+* ``children``
+    Returns a list with the menu item's children, ordered by rank.
 
-Returns a list with the menu item's siblings (i.e all other items that have the
-same parent), ordered by rank.
+    **Example of use**::
+
+        {% if menu_item.has_children %}
+            <li><a class="daddy" href="{{ menu_item.url }}">{{ menu_item.caption }}</a>
+                <ul>
+                    {% for child in menu_item.children %}
+                        {% show_menu_item child %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
+        {% endif %}
+
+* ``siblings``
+    Returns a list with the menu item's siblings (i.e all other items that have the
+    same parent), ordered by rank.
 
 Customizing/Extending
 =====================
@@ -400,9 +389,9 @@ of a menu_item. For example::
     ...
     <li><a href="{{ menu_item.url }}">{% trans menu_item.caption %}</a></li>
 
-Then, add manually the translation entries in your *.po file.
+Then, add manually the translation entries in your ``*.po`` file.
 
-_Django internationalization:http://www.djangoproject.com/documentation/i18n/
+.. _Django internationalization: https://docs.djangoproject.com/en/dev/topics/i18n/
 
 If you use more complex or custom translation systems, you may simply define your
 extension class (or create it if you don't already have one) with a method to manage
@@ -418,7 +407,7 @@ the translation, for example::
 
 And then in your template::
 
-<li><a href="{{ menu_item.url }}">{% trans menu_item.extension.translation %}</a></li>
+    <li><a href="{{ menu_item.url }}">{% trans menu_item.extension.translation %}</a></li>
 
 Login restriction
 -----------------
@@ -433,6 +422,7 @@ already have one) like the following::
         ...
 
 And then in your template::
+
     {% if menu_item.extension.protected %}
         {% if user.is_authenticated %}
             <li><a href="{{ menu_item.url }}">{{ menu_item.caption }}</a></li>
@@ -450,7 +440,7 @@ Here I'm going to explain how to automatically select a menu item when visiting
 a given page of your site. This is a good example to illustrate the power of
 extensions for customizing your menu's behaviour.
 For this example, let's say that you'd like to visually select the menu item
-'Contact' when visiting the url 'http://www.mysite.com/contact/'
+'Contact' when visiting the url 'http://www.example.com/contact/'
 
 First, define your extension class (or create it if you don't already have one)
 like the following::
@@ -475,7 +465,7 @@ our 'selected' url patterns. Refer to the official python documentation on
 only using one regular expression pattern (^/contact/$) but you could add as many
 as you'd like by typing a different pattern on each line of the textfield.
 
-_regular expressions syntax:http://docs.python.org/lib/re-syntax.html
+.. _regular expressions syntax: http://docs.python.org/lib/re-syntax.html
 
 Then, in your ``menu_item.html`` template, use the following 'if' statement::
 
@@ -519,21 +509,23 @@ Finally, to be able to access the current url through ``request.path`` in your
 template, you need to do 2 things:
 
 1) Add ``django.core.context_processors.request`` to your
-``TEMPLATE_CONTEXT_PROCESSORS`` setting (see the `Django documentation on context
+``TEMPLATE_CONTEXT_PROCESSORS`` setting (see the Django documentation on `context
 processors`_ for more details).
 
-_Django documentation on context processor:http://www.djangoproject.com/documentation/templates_python/#django-core-context-processors-request
+.. _context processors: https://docs.djangoproject.com/en/dev/ref/templates/api/#django-core-context-processors-request
 
 2) Use a RequestContext object in your views to pass to your templates. (see Django
 documentation on RequestContext_).
 
-_RequestContext:http://www.djangoproject.com/documentation/templates_python/#subclassing-context-requestcontext
+.. _RequestContext: https://docs.djangoproject.com/en/dev/ref/templates/api/#subclassing-context-requestcontext
 
 That's it!!
 ===========
 
-Please log any issue or bug report at http://code.google.com/p/django-treemenus/
+Please log any issue or bug report at https://github.com/jphalip/django-treemenus/issues
 
 Enjoy!
 
-Julien Phalip (project developer)
+`Julien Phalip`_ (project developer)
+
+.. _Julien Phalip: https://twitter.com/julienphalip
