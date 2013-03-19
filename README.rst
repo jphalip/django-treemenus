@@ -2,6 +2,8 @@
 Django Tree Menus
 =================
 
+.. image:: https://travis-ci.org/jphalip/django-treemenus.png
+
 This is a simple and generic tree-like menuing system for Django_ with an
 easy-to-use admin interface. It covers all the essentials for building
 tree-structured menus and should be enough for a lot of projects.
