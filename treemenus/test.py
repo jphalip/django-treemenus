@@ -101,7 +101,7 @@ class TreemenusTestCase(TestCase):
 
         # Delete item confirmation
         response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/history/' % (menu.pk, menu_item.pk))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue('Change history' in response.content)
 
     def test_view_delete_item(self):
@@ -125,7 +125,7 @@ class TreemenusTestCase(TestCase):
 
         # Delete item confirmation
         response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
-        self.assertEquals(response.request['PATH_INFO'], '/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
+        self.assertEqual(response.request['PATH_INFO'], '/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
 
         # Delete item for good
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk), {'post': 'yes'})
@@ -216,28 +216,28 @@ class TreemenusTestCase(TestCase):
         #             mi6
 
         # Check initial ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 0)
-        self.assertEquals(menu_item4.rank, 1)
-        self.assertEquals(menu_item5.rank, 2)
-        self.assertEquals(menu_item6.rank, 0)
-        self.assertEquals(menu_item7.rank, 0)
-        self.assertEquals(menu_item8.rank, 1)
-        self.assertEquals(menu_item9.rank, 3)
-        self.assertEquals(menu_item10.rank, 2)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 0)
+        self.assertEqual(menu_item4.rank, 1)
+        self.assertEqual(menu_item5.rank, 2)
+        self.assertEqual(menu_item6.rank, 0)
+        self.assertEqual(menu_item7.rank, 0)
+        self.assertEqual(menu_item8.rank, 1)
+        self.assertEqual(menu_item9.rank, 3)
+        self.assertEqual(menu_item10.rank, 2)
 
         # Check initial levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 1)
-        self.assertEquals(menu_item3.level, 2)
-        self.assertEquals(menu_item4.level, 2)
-        self.assertEquals(menu_item5.level, 2)
-        self.assertEquals(menu_item6.level, 2)
-        self.assertEquals(menu_item7.level, 3)
-        self.assertEquals(menu_item8.level, 3)
-        self.assertEquals(menu_item9.level, 2)
-        self.assertEquals(menu_item10.level, 3)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 1)
+        self.assertEqual(menu_item3.level, 2)
+        self.assertEqual(menu_item4.level, 2)
+        self.assertEqual(menu_item5.level, 2)
+        self.assertEqual(menu_item6.level, 2)
+        self.assertEqual(menu_item7.level, 3)
+        self.assertEqual(menu_item8.level, 3)
+        self.assertEqual(menu_item9.level, 2)
+        self.assertEqual(menu_item10.level, 3)
 
         # Delete some items
         menu_item8.delete()
@@ -265,24 +265,24 @@ class TreemenusTestCase(TestCase):
         menu_item10 = MenuItem.objects.get(pk=menu_item10.pk)
 
         # Check ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item4.rank, 0)
-        self.assertEquals(menu_item5.rank, 1)
-        self.assertEquals(menu_item6.rank, 0)
-        self.assertEquals(menu_item7.rank, 0)
-        self.assertEquals(menu_item9.rank, 2)
-        self.assertEquals(menu_item10.rank, 1)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item4.rank, 0)
+        self.assertEqual(menu_item5.rank, 1)
+        self.assertEqual(menu_item6.rank, 0)
+        self.assertEqual(menu_item7.rank, 0)
+        self.assertEqual(menu_item9.rank, 2)
+        self.assertEqual(menu_item10.rank, 1)
 
         # Check levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 1)
-        self.assertEquals(menu_item4.level, 2)
-        self.assertEquals(menu_item5.level, 2)
-        self.assertEquals(menu_item6.level, 2)
-        self.assertEquals(menu_item7.level, 3)
-        self.assertEquals(menu_item9.level, 2)
-        self.assertEquals(menu_item10.level, 3)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 1)
+        self.assertEqual(menu_item4.level, 2)
+        self.assertEqual(menu_item5.level, 2)
+        self.assertEqual(menu_item6.level, 2)
+        self.assertEqual(menu_item7.level, 3)
+        self.assertEqual(menu_item9.level, 2)
+        self.assertEqual(menu_item10.level, 3)
 
         # Delete some items
         menu_item4.delete()
@@ -302,16 +302,16 @@ class TreemenusTestCase(TestCase):
         menu_item9 = MenuItem.objects.get(pk=menu_item9.pk)
 
         # Check ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item6.rank, 0)
-        self.assertEquals(menu_item9.rank, 0)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item6.rank, 0)
+        self.assertEqual(menu_item9.rank, 0)
 
         # Check levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 1)
-        self.assertEquals(menu_item6.level, 2)
-        self.assertEquals(menu_item9.level, 2)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 1)
+        self.assertEqual(menu_item6.level, 2)
+        self.assertEqual(menu_item9.level, 2)
 
         # Check that deleted items are in fact, gone.
         self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item3.pk))
@@ -339,18 +339,18 @@ class TreemenusTestCase(TestCase):
         #         mi2
 
         # Check initial ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 0)
-        self.assertEquals(menu_item4.rank, 1)
-        self.assertEquals(menu_item5.rank, 2)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 0)
+        self.assertEqual(menu_item4.rank, 1)
+        self.assertEqual(menu_item5.rank, 2)
 
         # Check initial levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 1)
-        self.assertEquals(menu_item3.level, 2)
-        self.assertEquals(menu_item4.level, 2)
-        self.assertEquals(menu_item5.level, 2)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 1)
+        self.assertEqual(menu_item3.level, 2)
+        self.assertEqual(menu_item4.level, 2)
+        self.assertEqual(menu_item5.level, 2)
 
         # Change parent for some items
         menu_item4.parent = menu.root_item
@@ -374,18 +374,18 @@ class TreemenusTestCase(TestCase):
         menu_item5 = MenuItem.objects.get(pk=menu_item5.pk)
 
         # Check ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 0)
-        self.assertEquals(menu_item4.rank, 2)
-        self.assertEquals(menu_item5.rank, 0)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 0)
+        self.assertEqual(menu_item4.rank, 2)
+        self.assertEqual(menu_item5.rank, 0)
 
         # Check levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 1)
-        self.assertEquals(menu_item3.level, 2)
-        self.assertEquals(menu_item4.level, 1)
-        self.assertEquals(menu_item5.level, 2)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 1)
+        self.assertEqual(menu_item3.level, 2)
+        self.assertEqual(menu_item4.level, 1)
+        self.assertEqual(menu_item5.level, 2)
 
         # Change parent for some items
         menu_item2.parent = menu_item1
@@ -413,18 +413,18 @@ class TreemenusTestCase(TestCase):
         menu_item5 = MenuItem.objects.get(pk=menu_item5.pk)
 
         # Check ranks
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 0)
-        self.assertEquals(menu_item3.rank, 1)
-        self.assertEquals(menu_item4.rank, 0)
-        self.assertEquals(menu_item5.rank, 1)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 0)
+        self.assertEqual(menu_item3.rank, 1)
+        self.assertEqual(menu_item4.rank, 0)
+        self.assertEqual(menu_item5.rank, 1)
 
         # Check levels
-        self.assertEquals(menu_item1.level, 2)
-        self.assertEquals(menu_item2.level, 3)
-        self.assertEquals(menu_item3.level, 1)
-        self.assertEquals(menu_item4.level, 1)
-        self.assertEquals(menu_item5.level, 3)
+        self.assertEqual(menu_item1.level, 2)
+        self.assertEqual(menu_item2.level, 3)
+        self.assertEqual(menu_item3.level, 1)
+        self.assertEqual(menu_item4.level, 1)
+        self.assertEqual(menu_item5.level, 3)
 
         # Change parent for some items
         menu_item2.parent = menu_item4
@@ -452,18 +452,18 @@ class TreemenusTestCase(TestCase):
         menu_item5 = MenuItem.objects.get(pk=menu_item5.pk)
 
         # Check ranks
-        self.assertEquals(menu_item1.rank, 1)
-        self.assertEquals(menu_item2.rank, 0)
-        self.assertEquals(menu_item3.rank, 0)
-        self.assertEquals(menu_item4.rank, 0)
-        self.assertEquals(menu_item5.rank, 1)
+        self.assertEqual(menu_item1.rank, 1)
+        self.assertEqual(menu_item2.rank, 0)
+        self.assertEqual(menu_item3.rank, 0)
+        self.assertEqual(menu_item4.rank, 0)
+        self.assertEqual(menu_item5.rank, 1)
 
         # Check levels
-        self.assertEquals(menu_item1.level, 1)
-        self.assertEquals(menu_item2.level, 3)
-        self.assertEquals(menu_item3.level, 1)
-        self.assertEquals(menu_item4.level, 2)
-        self.assertEquals(menu_item5.level, 3)
+        self.assertEqual(menu_item1.level, 1)
+        self.assertEqual(menu_item2.level, 3)
+        self.assertEqual(menu_item3.level, 1)
+        self.assertEqual(menu_item4.level, 2)
+        self.assertEqual(menu_item5.level, 3)
 
 
     def test_move_up(self):
@@ -474,10 +474,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.create(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.create(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 2)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 2)
+        self.assertEqual(menu_item4.rank, 3)
 
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/move_up/' % (menu.pk, menu_item3.pk))
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
@@ -488,10 +488,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.get(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.get(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 2)
-        self.assertEquals(menu_item3.rank, 1)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 2)
+        self.assertEqual(menu_item3.rank, 1)
+        self.assertEqual(menu_item4.rank, 3)
 
         # Test forbidden move up
         self.assertRaises(MenuItem.DoesNotExist, lambda: move_item(menu_item1, -1))
@@ -504,10 +504,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.create(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.create(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 2)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 2)
+        self.assertEqual(menu_item4.rank, 3)
 
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/move_down/' % (menu.pk, menu_item3.pk))
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
@@ -518,10 +518,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.get(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.get(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 3)
-        self.assertEquals(menu_item4.rank, 2)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 3)
+        self.assertEqual(menu_item4.rank, 2)
 
         # Test forbidden move up
         self.assertRaises(MenuItem.DoesNotExist, lambda: move_item(menu_item3, 1))
@@ -535,10 +535,10 @@ class TreemenusTestCase(TestCase):
         menu_item4 = MenuItem.objects.create(caption='menu_item4', parent=menu.root_item)
 
         # Initial check
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 2)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 2)
+        self.assertEqual(menu_item4.rank, 3)
 
         # Mess up ranks
         menu_item1.rank = 99
@@ -558,10 +558,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.get(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.get(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 3)
-        self.assertEquals(menu_item2.rank, 0)
-        self.assertEquals(menu_item3.rank, 1)
-        self.assertEquals(menu_item4.rank, 2)
+        self.assertEqual(menu_item1.rank, 3)
+        self.assertEqual(menu_item2.rank, 0)
+        self.assertEqual(menu_item3.rank, 1)
+        self.assertEqual(menu_item4.rank, 2)
 
 
 
@@ -573,10 +573,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.create(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.create(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 1)
-        self.assertEquals(menu_item3.rank, 2)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 1)
+        self.assertEqual(menu_item3.rank, 2)
+        self.assertEqual(menu_item4.rank, 3)
 
         # Corrupt ranks
         menu_item1.rank = 0
@@ -596,10 +596,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.get(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.get(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 0)
-        self.assertEquals(menu_item2.rank, 2)
-        self.assertEquals(menu_item3.rank, 1)
-        self.assertEquals(menu_item4.rank, 3)
+        self.assertEqual(menu_item1.rank, 0)
+        self.assertEqual(menu_item2.rank, 2)
+        self.assertEqual(menu_item3.rank, 1)
+        self.assertEqual(menu_item4.rank, 3)
 
         # Corrupt ranks
         menu_item1.rank = 18
@@ -619,10 +619,10 @@ class TreemenusTestCase(TestCase):
         menu_item3 = MenuItem.objects.get(caption='menu_item3', parent=menu.root_item)
         menu_item4 = MenuItem.objects.get(caption='menu_item4', parent=menu.root_item)
 
-        self.assertEquals(menu_item1.rank, 3)
-        self.assertEquals(menu_item2.rank, 0)
-        self.assertEquals(menu_item3.rank, 1)
-        self.assertEquals(menu_item4.rank, 2)
+        self.assertEqual(menu_item1.rank, 3)
+        self.assertEqual(menu_item2.rank, 0)
+        self.assertEqual(menu_item3.rank, 1)
+        self.assertEqual(menu_item4.rank, 2)
 
     def test_menu_create(self):
         # Regression test for issue #18
