@@ -59,7 +59,6 @@ class TreemenusTestCase(TestCase):
         self.assertEqual(menu_item.menu, menu)
 
         # Save and continue editing
-        # TODO: Fix me (Py2.7, Django 1.6c1)
         menu_item_data = {
             "parent": menu.root_item.pk,
             "caption": "something0987456987546",
