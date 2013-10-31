@@ -1,3 +1,4 @@
+from imp import reload
 from django.test import TestCase
 from django.conf import settings
 from django.core.management import call_command
