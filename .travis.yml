@@ -1,6 +1,5 @@
 language: python
 python:
-  - "2.5"
   - "2.6"
   - "2.7"
   - "3.2"
@@ -8,40 +7,35 @@ python:
 before_install:
   - export PIP_INDEX_URL=https://simple.crate.io/
 install:
-  - pip install Django==$DJANGO_VERSION
-  - pip install six
+  - pip install six $DJANGO --allow-all-external --use-mirrors
   - pip install -e .
 script:
   - make test
 env:
-  - DJANGO_VERSION=1.1.4
-  - DJANGO_VERSION=1.2.7
-  - DJANGO_VERSION=1.3.7
-  - DJANGO_VERSION=1.4.9
-  - DJANGO_VERSION=1.5.5
-  - DJANGO_VERSION=https://github.com/django/django/zipball/stable/1.6.x
+  - DJANGO="Django==1.1.4"
+  - DJANGO="Django==1.2.7"
+  - DJANGO="Django==1.3.7"
+  - DJANGO="Django==1.4.9"
+  - DJANGO="Django==1.5.5"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.6.x"
 branches:
   only:
     - master
 matrix:
   exclude:
-    - python: "2.5"
-      env: DJANGO_VERSION=1.5
-    - python: "2.5"
-      env: DJANGO_VERSION=https://github.com/django/django/zipball/stable/1.6.x
     - python: "3.2"
-      env: DJANGO_VERSION=1.1.4
+      env: DJANGO="Django==1.1.4"
     - python: "3.2"
-      env: DJANGO_VERSION=1.2.7
+      env: DJANGO="Django==1.2.7"
     - python: "3.2"
-      env: DJANGO_VERSION=1.3.7
+      env: DJANGO="Django==1.3.7"
     - python: "3.2"
-      env: DJANGO_VERSION=1.4.9
+      env: DJANGO="Django==1.4.9"
     - python: "3.3"
-      env: DJANGO_VERSION=1.1.4
+      env: DJANGO="Django==1.1.4"
     - python: "3.3"
-      env: DJANGO_VERSION=1.2.7
+      env: DJANGO="Django==1.2.7"
     - python: "3.3"
-      env: DJANGO_VERSION=1.3.7
+      env: DJANGO="Django==1.3.7"
     - python: "3.3"
-      env: DJANGO_VERSION=1.4.9
+      env: DJANGO="Django==1.4.9"
