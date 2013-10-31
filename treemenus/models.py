@@ -14,6 +14,9 @@ class MenuItem(models.Model):
     rank = models.IntegerField(ugettext_lazy('rank'), default=0, editable=False)
     menu = models.ForeignKey('Menu', related_name='contained_items', verbose_name=ugettext_lazy('menu'), null=True, blank=True, editable=False)
 
+    def __str__(self):
+        return self.caption
+
     def __unicode__(self):
         return self.caption
 
@@ -56,7 +59,7 @@ class MenuItem(models.Model):
             for child in self.children():
                 child.save()  # Just saving is enough, it'll refresh its level correctly.
 
-    def delete(self):
+    def delete(self, using=None):
         from treemenus.utils import clean_ranks
         old_parent = self.parent
         super(MenuItem, self).delete()
@@ -66,10 +69,10 @@ class MenuItem(models.Model):
     def caption_with_spacer(self):
         spacer = ''
         for i in range(0, self.level):
-            spacer += u'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+            spacer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         if self.level > 0:
-            spacer += u'|-&nbsp;'
-        return spacer + self.caption
+            spacer += '|-&nbsp;'
+        return '%s%s' % (spacer, self.caption)
 
     def get_flattened(self):
         flat_structure = [self]
@@ -115,10 +118,13 @@ class Menu(models.Model):
             self.root_item = root_item
         super(Menu, self).save(force_insert, **kwargs)
 
-    def delete(self):
+    def delete(self, using=None):
         if self.root_item is not None:
             self.root_item.delete()
         super(Menu, self).delete()
+
+    def __str__(self):
+        return self.name
 
     def __unicode__(self):
         return self.name

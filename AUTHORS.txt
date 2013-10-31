@@ -1,0 +1,5 @@
+Original work by Julien Phalip <julien@julienphalip.com>
+
+Contributions by
+
+    * Alexander Ovchinnikov <alexander@entropia.us>
