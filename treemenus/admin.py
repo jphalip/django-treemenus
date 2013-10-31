@@ -37,8 +37,12 @@ class MenuItemAdmin(admin.ModelAdmin):
         obj.save()
 
     def response_add(self, request, obj, post_url_continue=None):
-        pk_value = obj._get_pk_val()
-        response = super(MenuItemAdmin, self).response_add(request, obj, '../{0}/'.format(pk_value))
+        if django.VERSION[1] < 5:
+            post_url_continue = '../%s/'
+        else:
+            pk_value = obj._get_pk_val()
+            post_url_continue = '../{0}/'.format(pk_value)
+        response = super(MenuItemAdmin, self).response_add(request, obj, post_url_continue)
         if "_continue" in request.POST:
             return response
         elif "_addanother" in request.POST:
