@@ -66,9 +66,9 @@ class MenuItem(models.Model):
     def caption_with_spacer(self):
         spacer = ''
         for i in range(0, self.level):
-            spacer += u'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+            spacer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         if self.level > 0:
-            spacer += u'|-&nbsp;'
+            spacer += '|-&nbsp;'
         return spacer + self.caption
 
     def get_flattened(self):
