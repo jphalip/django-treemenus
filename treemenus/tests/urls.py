@@ -9,9 +9,11 @@ admin.autodiscover()
 
 if django.VERSION >= (1, 1):
     urlpatterns = patterns('',
-        (r'^test_treemenus_admin/', include(admin.site.urls)),
-    )
+                           (r'^test_treemenus_admin/',
+                            include(admin.site.urls)),
+                           )
 else:
     urlpatterns = patterns('',
-        (r'^test_treemenus_admin/(.*)', admin.site.root),
-    )
+                           (r'^test_treemenus_admin/(.*)',
+                            admin.site.root),
+                           )

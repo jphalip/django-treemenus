@@ -44,7 +44,7 @@ class MenuItemAdmin(admin.ModelAdmin):
             post_url_continue = '../%s/'
         else:
             pk_value = obj._get_pk_val()
-            post_url_continue = '../{0}/'.format(pk_value)
+            post_url_continue = '../%s/' % pk_value
         response = super(MenuItemAdmin, self).response_add(request, obj, post_url_continue)
         if "_continue" in request.POST:
             return response
@@ -105,13 +105,19 @@ class MenuAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(MenuAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^(?P<menu_pk>[-\w]+)/items/add/$', self.admin_site.admin_view(self.add_menu_item)),
-            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/$', self.admin_site.admin_view(self.edit_menu_item)),
-            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/delete/$', self.admin_site.admin_view(self.delete_menu_item)),
-            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history/$', self.admin_site.admin_view(self.history_menu_item)),
-            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up/$', self.admin_site.admin_view(self.move_up_item)),
-            (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$', self.admin_site.admin_view(self.move_down_item)),
-        )
+                           (r'^(?P<menu_pk>[-\w]+)/items/add/$',
+                            self.admin_site.admin_view(self.add_menu_item)),
+                           (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/$',
+                            self.admin_site.admin_view(self.edit_menu_item)),
+                           (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/delete/$',
+                            self.admin_site.admin_view(self.delete_menu_item)),
+                           (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/history/$',
+                            self.admin_site.admin_view(self.history_menu_item)),
+                           (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_up/$',
+                            self.admin_site.admin_view(self.move_up_item)),
+                           (r'^(?P<menu_pk>[-\w]+)/items/(?P<menu_item_pk>[-\w]+)/move_down/$',
+                            self.admin_site.admin_view(self.move_down_item)),
+                           )
 
         if django.VERSION >= (1, 4):
             # Dummy named URLs to satisfy reversing the reversing requirements
@@ -120,11 +126,19 @@ class MenuAdmin(admin.ModelAdmin):
             # django admin.
             from django.views.generic import RedirectView
             my_urls += patterns('',
-                url(r'^item_changelist/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_changelist'),
-                url(r'^item_add/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_add'),
-                url(r'^item_history/(?P<pk>[-\w]+)/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_history'),
-                url(r'^item_delete/(?P<pk>[-\w]+)/$', RedirectView.as_view(url='/'), name='treemenus_menuitem_delete'),
-            )
+                                url(r'^item_changelist/$',
+                                    RedirectView.as_view(url='/'),
+                                    name='treemenus_menuitem_changelist'),
+                                url(r'^item_add/$',
+                                    RedirectView.as_view(url='/'),
+                                    name='treemenus_menuitem_add'),
+                                url(r'^item_history/(?P<pk>[-\w]+)/$',
+                                    RedirectView.as_view(url='/'),
+                                    name='treemenus_menuitem_history'),
+                                url(r'^item_delete/(?P<pk>[-\w]+)/$',
+                                    RedirectView.as_view(url='/'),
+                                    name='treemenus_menuitem_delete'),
+                                )
         return my_urls + urls
 
     def get_object_with_change_permissions(self, request, model, obj_pk):

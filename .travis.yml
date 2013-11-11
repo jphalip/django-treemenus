@@ -13,11 +13,11 @@ install:
 script:
   - make test
 env:
-  - DJANGO="Django==1.1.4"
-  - DJANGO="Django==1.2.7"
-  - DJANGO="Django==1.3.7"
-  - DJANGO="Django==1.4.9"
-  - DJANGO="Django==1.5.5"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.1.x"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.2.x"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.3.x"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.4.x"
+  - DJANGO="https://github.com/django/django/zipball/stable/1.5.x"
   - DJANGO="https://github.com/django/django/zipball/stable/1.6.x"
 branches:
   only:
@@ -25,22 +25,22 @@ branches:
 matrix:
   exclude:
     - python: "2.5"
-      env: DJANGO="Django==1.5.5"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.5.x"
     - python: "2.5"
       env: DJANGO="https://github.com/django/django/zipball/stable/1.6.x"
     - python: "3.2"
-      env: DJANGO="Django==1.1.4"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.1.x"
     - python: "3.2"
-      env: DJANGO="Django==1.2.7"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.2.x"
     - python: "3.2"
-      env: DJANGO="Django==1.3.7"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.3.x"
     - python: "3.2"
-      env: DJANGO="Django==1.4.9"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.4.x"
     - python: "3.3"
-      env: DJANGO="Django==1.1.4"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.1.x"
     - python: "3.3"
-      env: DJANGO="Django==1.2.7"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.2.x"
     - python: "3.3"
-      env: DJANGO="Django==1.3.7"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.3.x"
     - python: "3.3"
-      env: DJANGO="Django==1.4.9"
+      env: DJANGO="https://github.com/django/django/zipball/stable/1.4.x"

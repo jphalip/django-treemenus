@@ -1,4 +1,7 @@
-from imp import reload
+try:
+    from imp import reload  # Python 3
+except ImportError:
+    pass
 from django.test import TestCase
 from django.conf import settings
 from django.core.management import call_command
@@ -15,6 +18,7 @@ except ImportError:  # Django < 1.5
         from six import b as smart_bytes
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
+
 
 class TreemenusTestCase(TestCase):
     urls = 'treemenus.tests.urls'
@@ -138,7 +142,6 @@ class TreemenusTestCase(TestCase):
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
         self.assertRaises(MenuItem.DoesNotExist, lambda: MenuItem.objects.get(pk=menu_item.pk))
 
-
     def test_view_change_item(self):
         # Add the menu
         menu_data = {
@@ -159,7 +162,7 @@ class TreemenusTestCase(TestCase):
         self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/' % menu.pk)
 
         menu_item = menu.root_item.children()[0]
-        menu_item.menu = None # Corrupt it!
+        menu_item.menu = None  # Corrupt it!
 
         # Change the item
         menu_item_data = {
@@ -471,7 +474,6 @@ class TreemenusTestCase(TestCase):
         self.assertEqual(menu_item4.level, 2)
         self.assertEqual(menu_item5.level, 3)
 
-
     def test_move_up(self):
         menu = Menu(name='menu_move_up')
         menu.save()
@@ -569,8 +571,6 @@ class TreemenusTestCase(TestCase):
         self.assertEqual(menu_item3.rank, 1)
         self.assertEqual(menu_item4.rank, 2)
 
-
-
     def test_move_item_or_clean_ranks(self):
         menu = Menu(name='menu_move_item_or_clean_ranks')
         menu.save()
@@ -594,7 +594,7 @@ class TreemenusTestCase(TestCase):
         menu_item4.rank = 0
         menu_item4.save()
 
-        move_item_or_clean_ranks(menu_item3, -1) # Move up
+        move_item_or_clean_ranks(menu_item3, -1)  # Move up
 
         # Retrieve objects from db
         menu_item1 = MenuItem.objects.get(caption='menu_item1', parent=menu.root_item)
@@ -617,7 +617,7 @@ class TreemenusTestCase(TestCase):
         menu_item4.rank = 99
         menu_item4.save()
 
-        move_item_or_clean_ranks(menu_item1, 1) # Try to move down
+        move_item_or_clean_ranks(menu_item1, 1)  # Try to move down
 
         # Retrieve objects from db
         menu_item1 = MenuItem.objects.get(caption='menu_item1', parent=menu.root_item)
