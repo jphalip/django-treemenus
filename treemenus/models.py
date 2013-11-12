@@ -72,7 +72,7 @@ class MenuItem(models.Model):
             spacer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         if self.level > 0:
             spacer += '|-&nbsp;'
-        return '{0}{1}'.format(spacer, self.caption)
+        return '%s%s' % (spacer, self.caption)
 
     def get_flattened(self):
         flat_structure = [self]
