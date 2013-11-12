@@ -22,3 +22,5 @@ SECRET_KEY = 'Shush... Tell no one.'
 
 # For Django 1.3 and above
 STATIC_URL = '/static/'
+
+DEBUG = True  # AttributeError: 'module' object has no attribute 'handler500'
