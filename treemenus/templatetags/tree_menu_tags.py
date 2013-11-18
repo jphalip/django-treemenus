@@ -2,10 +2,12 @@ import django
 from django import template
 from django.template.defaulttags import url
 from django.template import Node, TemplateSyntaxError
+
+SIX_AVAILABLE = True
 try:
     from django.utils import six
 except ImportError:  # Django < 1.5
-    import six
+    SIX_AVAILABLE = False
 
 from treemenus.models import Menu, MenuItem
 from treemenus.config import APP_LABEL
@@ -36,8 +38,11 @@ register.inclusion_tag('%s/menu.html' % APP_LABEL, takes_context=True)(show_menu
 
 def show_menu_item(context, menu_item):
     if not isinstance(menu_item, MenuItem):
-        six.reraise(template.TemplateSyntaxError, 'Given argument must be a '
-                                                  'MenuItem object.')
+        error_message = 'Given argument must be a MenuItem object.'
+        if SIX_AVAILABLE:
+            six.reraise(template.TemplateSyntaxError, error_message)
+        else:
+            raise template.TemplateSyntaxError, error_message
 
     context['menu_item'] = menu_item
     return context
