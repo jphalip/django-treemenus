@@ -40,7 +40,7 @@ class MenuItemAdmin(admin.ModelAdmin):
         obj.save()
 
     def response_add(self, request, obj, post_url_continue=None):
-        if django.VERSION[1] < 5:
+        if django.VERSION < (1, 5):
             post_url_continue = '../%s/'
         else:
             pk_value = obj._get_pk_val()
