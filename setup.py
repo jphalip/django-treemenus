@@ -1,12 +1,15 @@
 from setuptools import setup, find_packages
 
+from treemenus import __version__
+
 setup(
     name='django-treemenus',
-    version='0.8.8-pre',
+    version=__version__,
     description='Tree-structured menuing application for Django.',
     author='Julien Phalip',
-    author_email='julien@julienphalip.com',
+    author_email='jphalip@gmail.com',
     url='http://github.com/jphalip/django-treemenus/',
+    license='BSD',
     packages=find_packages(),
     package_data={
         'treemenus': [
