@@ -1,5 +1,12 @@
-Original work by Julien Phalip <julien@julienphalip.com>
+Main author: Julien Phalip <jphalip@gmail.com>
 
-Contributions by
+Contributions by:
 
     * Alexander Ovchinnikov <alexander@entropia.us>
+    * Domen Kožar <domen@dev.si>
+    * Helmy Giacoman <helmygb@gmail.com>
+    * Reavis Sutphin-Gray <reavis+github.com@sutphin-gray.com>
+    * Russell Keith-Magee <russell@keith-magee.com>
+    * artscoop <artscoop93.info@gmail.com>
+    * maxim.oransky <maxim.oransky@gmail.com>
+    * Alastair Weakley <alastair@interaction.net.au>
