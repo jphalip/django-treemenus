@@ -10,6 +10,11 @@ from django import template
 from django.template.loaders import app_directories
 from django.contrib.auth.models import User
 
+try:
+    from django.utils.encoding import smart_bytes
+except ImportError:  # Django < 1.5
+    smart_bytes = str
+
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
 
@@ -106,7 +111,7 @@ class TreemenusTestCase(TestCase):
         # Delete item confirmation
         response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/history/' % (menu.pk, menu_item.pk))
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Change history' in response.content)
+        self.assertTrue(smart_bytes('Change history') in response.content)
 
     def test_view_delete_item(self):
         menu_data = {
