@@ -17,3 +17,5 @@ else:
                            (r'^test_treemenus_admin/(.*)',
                             admin.site.root),
                            )
+
+handler500 = 'django.views.defaults.server_error'
