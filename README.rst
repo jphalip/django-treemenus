@@ -24,7 +24,7 @@ django-treemenus is available on PyPI, and can be installed using Pip::
 
     pip install django-treemenus
 
-Alternatively, official source releases are made available from https://github.com/jphalip/django-treemenus/downloads
+Alternatively, official source releases are made available at https://pypi.python.org/pypi/django-treemenus
 
 Download the .zip distribution file and unpack it. Inside is a script
 named ``setup.py``. Run this command::
