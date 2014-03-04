@@ -3,12 +3,14 @@ import re
 import django
 try:
     from django.conf.urls import patterns, url
+    from django.views.generic import RedirectView
 except ImportError:  # Django < 1.4
     from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
 from django.contrib.admin.util import unquote
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponsePermanentRedirect
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
 try:
@@ -124,7 +126,7 @@ class MenuAdmin(admin.ModelAdmin):
             # of the menuitem add/change views. It shouldn't ever be used; it
             # just needs to exist so that it get resolved internally by the
             # django admin.
-            from django.views.generic import RedirectView
+            
             my_urls += patterns('',
                                 url(r'^item_changelist/$',
                                     RedirectView.as_view(url='/'),
@@ -133,10 +135,12 @@ class MenuAdmin(admin.ModelAdmin):
                                     RedirectView.as_view(url='/'),
                                     name='treemenus_menuitem_add'),
                                 url(r'^item_history/(?P<pk>[-\w]+)/$',
-                                    RedirectView.as_view(url='/'),
+                                    self.menu_item_redirect,
+                                    {'action' : 'history'},
                                     name='treemenus_menuitem_history'),
                                 url(r'^item_delete/(?P<pk>[-\w]+)/$',
-                                    RedirectView.as_view(url='/'),
+                                    self.menu_item_redirect,
+                                    {'action': 'delete'},
                                     name='treemenus_menuitem_delete'),
                                 )
         return my_urls + urls
@@ -155,6 +159,11 @@ class MenuAdmin(admin.ModelAdmin):
         if obj is None:
             raise Http404('%s object with primary key %r does not exist.' % (model.__name__, escape(obj_pk)))
         return obj
+
+    def menu_item_redirect(self, request, pk, action):
+        menu_pk = MenuItem.objects.select_related('menu').get(id=pk).menu.id
+        return HttpResponsePermanentRedirect(
+                r'../../%d/items/%s/%s/' % (menu_pk, pk, action))
 
     def add_menu_item(self, request, menu_pk):
         ''' Custom view '''
