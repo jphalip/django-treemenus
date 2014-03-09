@@ -10,3 +10,4 @@ Contributions by:
     * artscoop <artscoop93.info@gmail.com>
     * maxim.oransky <maxim.oransky@gmail.com>
     * Alastair Weakley <alastair@interaction.net.au>
+    * Thomas Sorrel <thomas@pandeiro.fr>
