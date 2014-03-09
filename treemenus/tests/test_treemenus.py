@@ -9,6 +9,8 @@ from django.db.models.loading import load_app
 from django import template
 from django.template.loaders import app_directories
 from django.contrib.auth.models import User
+import django
+from django.core.urlresolvers import reverse
 
 try:
     from django.utils.encoding import smart_bytes
@@ -108,10 +110,16 @@ class TreemenusTestCase(TestCase):
 
         menu_item = menu.root_item.children()[0]
 
-        # Delete item confirmation
+        # Check if history is a valid page
         response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/history/' % (menu.pk, menu_item.pk))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(smart_bytes('Change history') in response.content)
+
+        if django.VERSION >= (1, 4):
+            # Use reverse to get url as admin does when clicking on history button and check redirection
+            response = self.client.get(reverse('admin:treemenus_menuitem_history', args=(menu_item.pk,)))
+            self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/history/' % (menu.pk, menu_item.pk),
+                                 status_code=301)
 
     def test_view_delete_item(self):
         menu_data = {
@@ -135,6 +143,12 @@ class TreemenusTestCase(TestCase):
         # Delete item confirmation
         response = self.client.get('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
         self.assertEqual(response.request['PATH_INFO'], '/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk))
+
+        if django.VERSION >= (1, 4):
+            # Use reverse to get url as admin does when clicking on delete button and check redirection
+            response = self.client.get(reverse('admin:treemenus_menuitem_delete', args=(menu_item.pk,)))
+            self.assertRedirects(response, '/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk),
+                                 status_code=301)
 
         # Delete item for good
         response = self.client.post('/test_treemenus_admin/treemenus/menu/%s/items/%s/delete/' % (menu.pk, menu_item.pk), {'post': 'yes'})
