@@ -2,6 +2,7 @@ import sys
 
 import django
 from django import template
+from django.conf import settings
 from django.template.defaulttags import url
 from django.template import Node, TemplateSyntaxError
 
@@ -28,7 +29,13 @@ def get_treemenus_static_prefix():
 
 
 def show_menu(context, menu_name, menu_type=None):
-    menu = Menu.objects.get(name=menu_name)
+    try:
+        menu = Menu.objects.get(name=menu_name)
+    except Menu.DoesNotExist as e:
+        if settings.TEMPLATE_DEBUG:
+            raise e
+        else:
+            return context
     context['menu'] = menu
     context['menu_name'] = menu_name
     if menu_type:

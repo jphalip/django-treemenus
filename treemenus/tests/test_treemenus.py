@@ -19,6 +19,7 @@ except ImportError:  # Django < 1.5
 
 from treemenus.models import Menu, MenuItem
 from treemenus.utils import move_item, clean_ranks, move_item_or_clean_ranks
+from treemenus.templatetags.tree_menu_tags import show_menu
 
 
 class TreemenusTestCase(TestCase):
@@ -647,3 +648,41 @@ class TreemenusTestCase(TestCase):
         # Regression test for issue #18
         # http://code.google.com/p/django-treemenus/issues/detail?id=18
         menu = Menu.objects.create(name="menu_created_with_force_insert_True")
+
+    def test_show_menu_context_happy_path(self):
+        # Happy path related to issue #32
+        # https://github.com/jphalip/django-treemenus/issues/32
+        # To ensure the fix won't break expected behavior
+        menu_name = 'menu_show_menu_happy_path'
+        menu = Menu.objects.create(name=menu_name)
+
+        context = {}
+        new_context = show_menu(context, menu_name)
+
+        self.assertEqual(new_context.get('menu'), menu)
+        self.assertEqual(new_context.get('menu_name'), menu_name)
+
+    def test_show_menu_should_fail_gracefully_when_menu_does_not_exist_and_debug_false(self):
+        # Regression test for issue #32
+        # https://github.com/jphalip/django-treemenus/issues/32
+        menu_name = 'menu_show_menu_fail_gracefully'
+        context = {}
+        args = (context, menu_name)
+
+        # Ensures menu wont exist (in case another test creates it!)
+        existing_menus = Menu.objects.filter(name=menu_name)
+        existing_menus.delete()
+
+        old_TEMPLATE_DEBUG = settings.TEMPLATE_DEBUG
+
+        settings.TEMPLATE_DEBUG=False
+        new_context = show_menu(*args)
+        # Should not raise DoesNotExist
+        # Should by-pass context
+        self.assertEqual(new_context, context)
+
+        settings.TEMPLATE_DEBUG=True
+        # Should raise DoesNotExist
+        self.assertRaises(Menu.DoesNotExist, show_menu, *args)
+
+        settings.TEMPLATE_DEBUG = old_TEMPLATE_DEBUG
